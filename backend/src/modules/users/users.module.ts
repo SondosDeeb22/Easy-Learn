@@ -20,6 +20,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
   imports: [
     SequelizeModule.forFeature([User])
   ],
-  exports: [SequelizeModule]
+  exports: [SequelizeModule, UsersService]
 })
 export class UsersModule { }

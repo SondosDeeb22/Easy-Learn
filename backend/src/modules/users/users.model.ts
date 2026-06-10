@@ -15,10 +15,9 @@ export class User extends Model<User> {
 
     // id =============================================
     @PrimaryKey
-    @AutoIncrement
-    @Column(DataType.INTEGER)
+    @Column(DataType.STRING)
     @ApiProperty()
-    declare id: number;
+    declare id: string;
 
     // name ==============================================
     @Column(DataType.STRING)
@@ -58,10 +57,10 @@ export class User extends Model<User> {
     @ApiProperty()
     declare email: string;
 
-    // hashPassword ==============================================
+    // password ==============================================
     @Column(DataType.STRING)
     @Exclude()
-    declare hashPassword: string;
+    declare password: string;
 
 
 }
