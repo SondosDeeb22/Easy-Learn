@@ -1,0 +1,401 @@
+/* ============================================
+   Login Page 
+   ============================================ */
+
+/* ---------- Page Container ---------- */
+.login-page {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+/* ============================================
+   LEFT PANEL — Form Section
+   ============================================ */
+.login-left {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--color-bg);
+
+  padding: 64px 40px;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Inner wrapper — constrains content width & keeps it centred */
+.login-left-inner {
+  width: 100%;
+  max-width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Logo ---------- */
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-logo-icon {
+  width: 130px;
+  height: 130px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+/* ---------- Header ---------- */
+.login-logo-name {
+  color: var(--color-text-primary);
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+
+
+/* ---------- Form ---------- */
+.login-form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ---------- Field Group --------------------------------------------- */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+
+/* fields(input boxes) styling ----------*/
+.field-input-wrapper {
+  position: relative;
+}
+
+.field-input {
+  width: 100%;
+  padding: 13px 16px;
+
+  font-size: 0.9rem;
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+
+  background-color: var(--color-input-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field-input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.field-input:hover {
+  border-color: #c5c0b8;
+}
+
+.field-input:focus {
+  border-color: var(--color-burgundy);
+  box-shadow: 0 0 0 3px rgba(89, 1, 26, 0.1);
+}
+
+/* Password toggle button ---------------- */
+.password-toggle {
+  display: flex;
+  align-items: center;
+  transition: color var(--transition);
+  padding: 2px;
+
+  position: absolute;
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  background: none;
+  color: var(--color-text-muted);
+  border: none;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: var(--color-text-primary);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- Field Error ----------------- */
+.field-input--error {
+  border-color: #c0392b !important;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12) !important;
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+
+
+  width: 100%;
+
+  background-color: rgba(220, 62, 44, 0.18);
+  padding: 10px;
+
+  border: 1px solid #c0392b;
+  border-radius: var(--radius-sm);
+
+}
+
+
+/* ---------- Sign In Button ------------------------------------------- */
+.btn-signin {
+  width: 100%;
+  padding: 14px 24px;
+
+  position: relative;
+  overflow: hidden;
+  margin: 28px 0px;
+
+  background-color: var(--color-burgundy);
+  color: var(--color-white);
+
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+
+  border: none;
+  border-radius: var(--radius-sm);
+
+  cursor: pointer;
+
+  transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 2px 8px rgba(89, 1, 26, 0.30);
+}
+
+.btn-signin::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background var(--transition);
+}
+
+.btn-signin:hover {
+  background-color: var(--color-burgundy-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(89, 1, 26, 0.40);
+}
+
+.btn-signin:hover::after {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-signin:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(89, 1, 26, 0.30);
+}
+
+.btn-signin.loading {
+  opacity: 0.85;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner inside button --- */
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+
+/* ============================================
+   RIGHT PANEL — Image Section
+   ============================================ */
+.login-right {
+  flex: 0 0 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-right-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Gradient overlay for readability */
+.login-right-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(0, 0, 0, 0.05) 40%,
+      rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* Quote card at bottom of image */
+.login-right-quote {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  pointer-events: none;
+}
+
+.login-right-quote blockquote {
+  font-size: 1.15rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.login-right-quote-source {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-right-quote-source-line {
+  width: 28px;
+  height: 1.5px;
+  background-color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+}
+
+.login-right-quote-source-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .login-left {
+    flex: 0 0 55%;
+    padding: 48px 32px;
+  }
+
+  .login-right {
+    flex: 0 0 45%;
+  }
+}
+
+/* Mobile — hide image, full-width form */
+@media (max-width: 640px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-left {
+    flex: none;
+    width: 100%;
+    min-height: 100vh;
+    padding: 48px 24px;
+    align-items: center;
+  }
+
+  .login-left-inner {
+    max-width: 100%;
+  }
+
+  .login-logo {
+    margin-bottom: 40px;
+  }
+
+  .login-header {
+    text-align: left;
+  }
+
+  .login-title {
+    font-size: 1.9rem;
+  }
+
+  .login-right {
+    display: none;
+  }
+
+
+  /* login form  */
+  .login-form {
+    align-items: center;
+  }
+
+  .field-group {
+    width: 300px;
+  }
+
+  /* signin button */
+  .btn-signin {
+    width: 300px;
+  }
+
+  .field-error {
+    width: 300px;
+  }
+
+}
