@@ -3,10 +3,19 @@
 // ============================================
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
 // to send http request
 import axios from 'axios';
+
+
+import { getApiErrorMessage } from './services/apiError';
+
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { setId, setPassword, clearId, clearPassword } from './auth/authSlice';
 
 // ==============================================
 //   Types
@@ -19,10 +28,10 @@ interface FormErrors {
   general?: string;
 }
 
-type ApiErrorResponse = {
-  code: string,
-  message: string
-}
+// type ApiErrorResponse = {
+//   code: string,
+//   message: string
+// }
 
 // ==============================================
 //   Icons (inline, no external deps)
@@ -52,14 +61,17 @@ const EyeOffIcon = () => (
 export default function Login() {
 
   // State Management 
-  const [id, setId] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  // const [id, setId] = useState<string>('');
+  // const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // typed with FormErrors so TS knows every possible key
   const [errors, setErrors] = useState<FormErrors>({});
 
+
+  // using redux 
+  const { id, password } = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch();
   //=========================================================================
   // Validation 
 
@@ -92,20 +104,15 @@ export default function Login() {
       const { data } = await axios.post('http://localhost:3000/auth/login', { id, password });
       console.log('finished');
       localStorage.setItem('token', data.token);
-      alert('Login successful');
+      // remove id and password from state after login
+      dispatch(clearId());
+      dispatch(clearPassword());
 
       // ----------------------------------
     } catch (error) {
-      console.log("Error occured : ", error, "----")
-      // console.log(error.response.data)
 
-      // console.log(error.response.data.message)
-      if (axios.isAxiosError<ApiErrorResponse>(error)) {
-        const message = error.response?.data?.message ?? '';
-        setErrors({ general: message });
-      } else {
-        setErrors({ general: 'An unexpected error occurred.' });
-      }
+      const message = getApiErrorMessage(error);
+      setErrors({ general: message });
     }
 
     setIsLoading(false);
@@ -149,10 +156,11 @@ export default function Login() {
                   className={`field-input${errors.id ? ' field-input--error' : ''}`}
                   placeholder="Enter your Id"
                   value={id}
-                  onChange={(event) => {
-                    setId(event.target.value);
-                    if (errors.id) setErrors((prev) => ({ ...prev, id: undefined }));
-                  }}
+                  // onChange={(event) => {
+                  //   setId(event.target.value);
+                  //   if (errors.id) setErrors((prev) => ({ ...prev, id: undefined }));
+                  // }}
+                  onChange={(event) => dispatch(setId(event.target.value))}
                   autoComplete="id"
                 />
               </div>
@@ -176,10 +184,11 @@ export default function Login() {
                   className={`field-input${errors.password ? ' field-input--error' : ''}`}
                   placeholder="••••••••••••"
                   value={password}
-                  onChange={(event) => {
-                    setPassword(event.target.value);
-                    if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
-                  }}
+                  // onChange={(event) => {
+                  //   setPassword(event.target.value);
+                  //   if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
+                  // }}
+                  onChange={(event) => dispatch(setPassword(event.target.value))}
                   autoComplete="current-password"
                   style={{ paddingRight: '44px' }}
                 />

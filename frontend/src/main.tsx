@@ -7,14 +7,20 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 
+
+// redux 
+import store from './app/store';
+import { Provider } from 'react-redux';
 // ============================================
 
-// The `!` non-null assertion tells TypeScript that `getElementById('root')`
-// will never be null at runtime (the element is guaranteed to exist in index.html).
-const rootElement = document.getElementById('root')!;
+
+const rootElement = document.getElementById('root')!; // the "!" is non-null assertation here
+
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </StrictMode>,
 );
