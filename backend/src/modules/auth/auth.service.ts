@@ -57,17 +57,18 @@ export class AuthService {
         if (!secret) throw new Error('JWT_LOGIN_KEY is not defined');
 
         const payload: LoginJwtInterface = {
-            userId: user.data.id,
+            id: user.data.id,
             email: user.data.email,
             role: user.data.role
         }
         const token = jwt.sign(payload, secret, { expiresIn: '36000s' });
 
+        console.log(payload)
         return {
             message: "Login successful",
             data: {
                 token: token,
-                data: user.data
+                data: payload
             },
         };
 

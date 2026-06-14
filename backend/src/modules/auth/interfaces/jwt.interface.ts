@@ -2,13 +2,12 @@
 // importing interfaces
 // ===========================================================================
 import { Roles } from "../../users/enums/roles.enum"
-import { User } from "../../users/users.model";
 
 // =======================================================
 
 // interface for jwt token
 export interface LoginJwtInterface {
-    userId: string;
+    id: string;
     role: Roles;
     email: string;
 }
@@ -18,5 +17,5 @@ export interface LoginJwtInterface {
 // interface for login result
 export interface LoginResultInterface {
     token: string;
-    data: User;
+    data: LoginJwtInterface;
 }
