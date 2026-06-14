@@ -1,7 +1,7 @@
 // ===============================================
 //? Importing 
 // ===============================================
-import { Controller, Post, Body, Res, HttpCode, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, Res, Req, Get, HttpCode, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginCredDto } from './dtos/login-cred.dto';
 
@@ -16,7 +16,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 //helper
 import { AuthHelper } from './helpers/auth.helper';
 
-
+//error
+import { UnauthorizedError } from 'src/common/errors';
 // ===============================================
 @Controller('auth')
 export class AuthController {
@@ -69,4 +70,31 @@ export class AuthController {
       message: "Logout success"
     }
   }
+
+
+  // ==============================================
+  //? Get user data from JWT 
+  // ===============================================
+
+  @Get('user')
+  // error
+  @ApiUnauthorizedResponse({ description: 'Session Expired, please login again!' })
+
+  async getUserData(
+    @Req() req: express.Request
+  ) {
+
+    const token: string | undefined = req.cookies?.['login-token'];
+    if (!token) {
+      throw new UnauthorizedError("Session Expired, please login again!");
+    }
+
+    return await this.authService.getUserFromToken(token)
+
+
+  }
+
+
+
+
 }

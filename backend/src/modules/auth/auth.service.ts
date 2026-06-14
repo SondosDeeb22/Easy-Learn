@@ -15,12 +15,15 @@ import { LoginCredDto } from './dtos/login-cred.dto';
 import { LoginJwtInterface, LoginResultInterface } from './interfaces/jwt.interface';
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
 
+
 //model
 import { User } from '../users/users.model';
 
 //service
 import { UsersService } from '../users/users.service';
 
+//helper
+import { extractJwtData } from '../auth/helpers/jwt.helper';
 //errors
 import { NotFoundError } from '../../common/errors';
 
@@ -59,7 +62,8 @@ export class AuthService {
         const payload: LoginJwtInterface = {
             id: user.data.id,
             email: user.data.email,
-            role: user.data.role
+            role: user.data.role,
+            name: user.data.name
         }
         const token = jwt.sign(payload, secret, { expiresIn: '36000s' });
 
@@ -72,6 +76,19 @@ export class AuthService {
             },
         };
 
+    }
+
+    // =========================================================================
+    // ? get user data from JWT  
+    // =========================================================================   
+    async getUserFromToken(token: string): Promise<ServiceResult<LoginJwtInterface | null>> {
+
+        const data = await extractJwtData<LoginJwtInterface>(token, 'JWT_LOGIN_KEY');
+
+        return {
+            message: "User data extracted successfully",
+            data: data
+        }
     }
 
 }

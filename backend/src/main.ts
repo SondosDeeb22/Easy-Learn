@@ -6,6 +6,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import cookieParser from 'cookie-parser';
+
 //interceptors
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
@@ -18,6 +20,10 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+
+  // cookieParser setup ------------------------------------
+  app.use(cookieParser());
+
   // --------------------------------------------
   const config = new DocumentBuilder()
     .setTitle('APIs Documentation for EasyLearn Web App')

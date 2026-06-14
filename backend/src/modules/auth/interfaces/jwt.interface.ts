@@ -10,6 +10,7 @@ export interface LoginJwtInterface {
     id: string;
     role: Roles;
     email: string;
+    name: string;
 }
 
 
