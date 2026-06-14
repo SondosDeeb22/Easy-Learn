@@ -9,7 +9,7 @@ import App from './App';
 
 
 // redux 
-import store from './app/store';
+import store from './redux/reduxConfig';
 import { Provider } from 'react-redux';
 // ============================================
 

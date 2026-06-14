@@ -3,19 +3,21 @@
 // ============================================
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './Login.css';
-
-// to send http request
-import axios from 'axios';
-
 
 import { getApiErrorMessage } from './services/apiError';
 
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { setId, setPassword, clearId, clearPassword } from './auth/authSlice';
+import { useAppDispatch } from './redux/hooks';
+
+import { RootState } from './redux/reduxConfig'; // 
+
+import { login } from './redux/actions/authAction';
+import { startLoading, stopLoading, setError, clearError, clearSpecificError } from './redux/slices/authSlice';
+
+
 
 // ==============================================
 //   Types
@@ -27,11 +29,6 @@ interface FormErrors {
   password?: string;
   general?: string;
 }
-
-// type ApiErrorResponse = {
-//   code: string,
-//   message: string
-// }
 
 // ==============================================
 //   Icons (inline, no external deps)
@@ -61,23 +58,28 @@ const EyeOffIcon = () => (
 export default function Login() {
 
   // State Management 
-  // const [id, setId] = useState<string>('');
-  // const [password, setPassword] = useState<string>('');
+  const [id, setId] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<FormErrors>({});
+
+  // using redux  ======================================================
+  // set the state
+  const dispatch = useAppDispatch();
+
+  // read the state
+  const user = useSelector((state: RootState) => state.auth);
 
 
-  // using redux 
-  const { id, password } = useSelector((state: any) => state.auth);
-  const dispatch = useDispatch();
+
   //=========================================================================
   // Validation 
 
-  // must be valid id and password
+  // setting the specific errors
   const validate = (): FormErrors => {
+
     const newErrors: FormErrors = {};
+
     if (!id) newErrors.id = 'Id is required.';
     if (!password) newErrors.password = 'Password is required.';
     return newErrors;
@@ -91,31 +93,29 @@ export default function Login() {
 
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+      dispatch(setError(validationErrors));
+
       return;
     }
-    setErrors({});
-    setIsLoading(true);
+
+    // clear previous errors and start loading spinner
+    dispatch(clearError());
+    dispatch(startLoading());
+
 
     //===========================================================
-    // send login request 
+    // send api login request 
     try {
-      console.log('started');
-      const { data } = await axios.post('http://localhost:3000/auth/login', { id, password });
-      console.log('finished');
-      localStorage.setItem('token', data.token);
-      // remove id and password from state after login
-      dispatch(clearId());
-      dispatch(clearPassword());
+      await dispatch(login({ id, password }));
 
       // ----------------------------------
     } catch (error) {
-
       const message = getApiErrorMessage(error);
-      setErrors({ general: message });
-    }
+      dispatch(setError(message));
 
-    setIsLoading(false);
+    } finally {
+      dispatch(stopLoading());
+    }
   };
 
   //=========================================================================
@@ -135,9 +135,9 @@ export default function Login() {
           </div>
 
           {/* General error */}
-          {errors.general && (
+          {user.errors?.general && (
             <span className="field-error" role="alert" style={{ marginBottom: '12px' }}>
-              {errors.general}
+              {user.errors.general}
             </span>
           )}
 
@@ -153,21 +153,26 @@ export default function Login() {
                 <input
                   id="login-Id"
                   type="text"
-                  className={`field-input${errors.id ? ' field-input--error' : ''}`}
+                  className={`field-input${user.errors?.id ? ' field-input--error' : ''}`}
                   placeholder="Enter your Id"
                   value={id}
-                  // onChange={(event) => {
-                  //   setId(event.target.value);
-                  //   if (errors.id) setErrors((prev) => ({ ...prev, id: undefined }));
-                  // }}
-                  onChange={(event) => dispatch(setId(event.target.value))}
+                  // -----------
+                  onChange={(event) => {
+                    setId(event.target.value);
+
+                    dispatch(clearSpecificError('id'));// clear specific field error (id) when user types
+
+                    if (user.errors?.general) dispatch(clearSpecificError('general'));// clear general API errors on type
+
+                  }}
+                  // ------------------
                   autoComplete="id"
                 />
               </div>
-              {/* if error exists show it below input box*/}
-              {errors.id && (
+              {/* If local validation error exists, show it below input box */}
+              {user.errors?.id && (
                 <span id="id-error" className="field-error" role="alert">
-                  {errors.id}
+                  {user.errors.id}
                 </span>
               )}
             </div>
@@ -181,18 +186,24 @@ export default function Login() {
                 <input
                   id="login-password"
                   type={showPassword ? 'text' : 'password'}
-                  className={`field-input${errors.password ? ' field-input--error' : ''}`}
+                  className={`field-input${user.errors?.password ? ' field-input--error' : ''}`}
                   placeholder="••••••••••••"
                   value={password}
-                  // onChange={(event) => {
-                  //   setPassword(event.target.value);
-                  //   if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
-                  // }}
-                  onChange={(event) => dispatch(setPassword(event.target.value))}
+                  // -----------
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+
+                    dispatch(clearSpecificError('password'));// clear specific field error when user types
+
+                    if (user.errors?.general) dispatch(clearSpecificError('general'));// clear general API errors on type
+
+                  }}
+                  // -----------------
                   autoComplete="current-password"
                   style={{ paddingRight: '44px' }}
                 />
-                {/* --------------------- */}
+
+                {/* ---------------------------------------------------------------------------------- */}
                 <button
                   type="button"
                   className="password-toggle"
@@ -202,9 +213,12 @@ export default function Login() {
                 </button>
 
               </div>
-              {errors.password && (
+
+
+              {/* If local validation error exists, show it below input box -----------------------------*/}
+              {user.errors?.password && (
                 <span id="password-error" className="field-error" role="alert">
-                  {errors.password}
+                  {user.errors.password}
                 </span>
               )}
             </div>
@@ -214,11 +228,12 @@ export default function Login() {
             <button
               id="login-submit"
               type="submit"
-              className={`btn-signin${isLoading ? ' loading' : ''}`}
-              disabled={isLoading}
+              className={`btn-signin${user.isLoading ? ' loading' : ''}`}
+              disabled={user.isLoading}
             >
-              {isLoading ? <span className="btn-spinner" /> : 'Sign In'}
+              {user.isLoading ? <span className="btn-spinner" /> : 'Sign In'}
             </button>
+
 
           </form>
 
@@ -235,11 +250,11 @@ export default function Login() {
         <div className="login-right-overlay" />
         <div className="login-right-quote">
           <blockquote>
-            &ldquo;Education is the most powerful weapon which you can use to change the world.&rdquo;
+            &ldquo;Education is the passport to the future, for tomorrow belongs to those who prepare for it today.&rdquo;
           </blockquote>
           <div className="login-right-quote-source">
             <span className="login-right-quote-source-line" />
-            <span className="login-right-quote-source-text">Nelson Mandela</span>
+            <span className="login-right-quote-source-text">Malcolm X</span>
           </div>
         </div>
       </section>
