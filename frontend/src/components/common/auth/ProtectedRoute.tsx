@@ -4,16 +4,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { setError } from '../../../redux/slices/authSlice';
-// -----
+import { useAppSelector } from '../../../redux/hooks';
+
 interface ProtectedRouteProps {
     children: React.ReactNode;
 }
 
-
 //====================================================================================================================================
-//? protects routes based on authentication
+//? protects routes based on authentication and authorization
 //====================================================================================================================================
 
 
@@ -23,9 +21,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
     // state from redux --------------------------
     const user = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
-
-    // --------------------------------------------------------------
 
     // Show loading state while checking authentication
     if (user.isLoading) {
@@ -39,21 +34,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         );
     }
 
-
-    // Redirect to login if not authenticated
-    if (!user.isAuthenticated) {
+    // Redirect to login if not authenticated or not authorized as admin
+    if (!user.isAuthenticated || user.userRole !== authroizedRole) {
         return <Navigate to="/" replace />;
-
     }
 
-    // redicretct to login if user not authorized
-    if (user.userRole != authroizedRole && user.userRole != "") {
-        dispatch(setError("Sorry, you are not authorized to perform this action!"));
-        return <Navigate to="/" replace />;
-
-    }
-
-    // If authenticated, render children
+    // If authenticated and authorized, render children
     return <>{children}</>;
 };
 

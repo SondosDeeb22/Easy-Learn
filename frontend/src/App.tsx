@@ -19,7 +19,7 @@ import Dashboard from './pages/dashboard';
 import { useEffect } from 'react';
 
 import { useAppDispatch } from './redux/hooks';
-import { setUser, clearUser, stopLoading } from './redux/slices/authSlice';
+import { setUser, clearUser, stopLoading, setError } from './redux/slices/authSlice';
 
 import { apiClient } from './services/apiClient';
 
@@ -43,7 +43,8 @@ const router = createBrowserRouter([
 
   }
 ])
-
+// ============================================================
+// ============================================================
 const App = () => {
   const dispatch = useAppDispatch();
 
@@ -52,15 +53,26 @@ const App = () => {
     const bootstrapAuth = async () => {
       try {
         const response = await apiClient.get('/auth/user');
-        dispatch(setUser(response.data.data));
+        const userData = response.data.data;
 
+        if (userData && userData.role !== 'admin') {
+          await apiClient.post('/auth/logout', {});
+          dispatch(clearUser());
+          dispatch(setError("Sorry, you are not authorized to perform this action!"));
+          // ----------------------
+        } else {
+          dispatch(setUser(userData));
+        }
+
+        // ============================================================
       } catch (error) {
         dispatch(clearUser());
-
+        // ============================================================
       } finally {
         dispatch(stopLoading());
       }
     };
+    // ============================================================
 
     bootstrapAuth();
   }, [dispatch]);

@@ -12,7 +12,6 @@ import * as express from 'express';
 //interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
-
 //helper
 import { AuthHelper } from './helpers/auth.helper';
 

@@ -2,18 +2,17 @@
 // import
 // ============================================
 import { HttpException, HttpStatus } from '@nestjs/common';
-
 // ============================================
-export class UnauthorizedError extends HttpException {
+
+export class ForbiddenError extends HttpException {
     constructor(message: string) {
         super(
             {
-                code: 'UNAUTHORIZED_ERROR',
-                message
+                code: 'FORBIDDEN_ERROR',
+                message,
             },
-            HttpStatus.UNAUTHORIZED
+            HttpStatus.FORBIDDEN,
         );
-        // console.log(message)
     }
 
-}
+} 

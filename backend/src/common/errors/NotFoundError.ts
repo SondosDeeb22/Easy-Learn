@@ -1,8 +1,8 @@
 // ============================================
 // import
 // ============================================
-import { HttpException } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 // ============================================
 
 export class NotFoundError extends HttpException {
