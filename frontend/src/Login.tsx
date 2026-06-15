@@ -5,12 +5,12 @@
 import { useState } from 'react';
 import './Login.css';
 
+import { useNavigate } from 'react-router-dom';
 import { getApiErrorMessage } from './services/apiError';
 
 
 // redux
-import { useSelector, useDispatch } from 'react-redux';
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 import { RootState } from './redux/reduxConfig'; // 
 
@@ -57,6 +57,7 @@ const EyeOffIcon = () => (
 // ==================================================================== 
 export default function Login() {
 
+  const navigate = useNavigate();
   // State Management 
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -68,8 +69,7 @@ export default function Login() {
   const dispatch = useAppDispatch();
 
   // read the state
-  const user = useSelector((state: RootState) => state.auth);
-
+  const user = useAppSelector((state) => state.auth);
 
 
   //=========================================================================
@@ -92,11 +92,14 @@ export default function Login() {
     event.preventDefault(); // stop default form submission behaviour(which is refreshing the page)
 
     const validationErrors = validate();
+
+    // if local validation error exists, show it below input box and stop submission
     if (Object.keys(validationErrors).length > 0) {
       dispatch(setError(validationErrors));
 
       return;
     }
+
 
     // clear previous errors and start loading spinner
     dispatch(clearError());
@@ -107,6 +110,7 @@ export default function Login() {
     // send api login request 
     try {
       await dispatch(login({ id, password }));
+      navigate('/dashboard');
 
       // ----------------------------------
     } catch (error) {

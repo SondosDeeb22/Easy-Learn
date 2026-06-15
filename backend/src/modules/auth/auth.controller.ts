@@ -81,7 +81,8 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Session Expired, please login again!' })
 
   async getUserData(
-    @Req() req: express.Request
+    @Req() req: express.Request,
+    @Res({ passthrough: true }) res: express.Response
   ) {
 
     const token: string | undefined = req.cookies?.['login-token'];
@@ -89,9 +90,12 @@ export class AuthController {
       throw new UnauthorizedError("Session Expired, please login again!");
     }
 
-    return await this.authService.getUserFromToken(token)
-
-
+    try {
+      return await this.authService.getUserFromToken(token);
+    } catch (error) {
+      await this.authHelper.removeCookie(res, 'login-token');
+      throw new UnauthorizedError("Session Expired, please login again!");
+    }
   }
 
 

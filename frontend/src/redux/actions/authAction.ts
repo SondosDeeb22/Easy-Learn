@@ -30,6 +30,7 @@ export const login = ({ id, password }: LoginCredentials) => async (dispatch: Di
             console.log(error)
             const errorMessage = error.response?.data?.message || error.message;
             dispatch(setError(errorMessage))
+            throw error;
         })
 }
 

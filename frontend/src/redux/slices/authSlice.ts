@@ -14,14 +14,16 @@ interface AuthErrors {
 
 const initialState = {
     userId: "",
+    userName: "",
     userRole: "",
     userEmail: "",
     isAuthenticated: false,
 
-    isLoading: false,
+    isLoading: true, // to check authoritiy at first
     errors: {} as AuthErrors,
 }
 
+// =========================================================
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -35,6 +37,7 @@ export const authSlice = createSlice({
         // user << ----------------------------------------------
         setUser: (state, action) => {
             state.userId = action.payload?.id || "";
+            state.userName = action.payload?.name || "";
             state.userRole = action.payload?.role || "";
             state.userEmail = action.payload?.email || "";
 
@@ -45,6 +48,7 @@ export const authSlice = createSlice({
 
         clearUser: (state) => {
             state.userId = "";
+            state.userName = "";
             state.userRole = "";
             state.userEmail = "";
 
@@ -70,7 +74,6 @@ export const authSlice = createSlice({
                 state.errors = { ...state.errors, ...action.payload };
             }
         },
-
 
         clearError: (state) => {
             state.errors = {};
