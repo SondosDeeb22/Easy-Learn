@@ -1,0 +1,10 @@
+{
+    "name": "codebase",
+    "private": true,
+    "scripts": {
+        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1"
+    }
+}

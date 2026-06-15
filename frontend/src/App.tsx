@@ -52,10 +52,11 @@ const App = () => {
   useEffect(() => {
     const bootstrapAuth = async () => {
       try {
+        const targetRole: string = "admin"
         const response = await apiClient.get('/auth/user');
         const userData = response.data.data;
 
-        if (userData && userData.role !== 'admin') {
+        if (userData && userData.role !== targetRole) {
           await apiClient.post('/auth/logout', {});
           dispatch(clearUser());
           dispatch(setError("Sorry, you are not authorized to perform this action!"));
