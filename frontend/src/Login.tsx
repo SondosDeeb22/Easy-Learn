@@ -109,8 +109,14 @@ export default function Login() {
     //===========================================================
     // send api login request 
     try {
-      await dispatch(login({ id, password }));
-      navigate('/dashboard');
+      const loggedInUser = await dispatch(login({ id, password }));
+      const role = loggedInUser?.role;
+      if (role === "admin") {
+        navigate('/admin/dashboard');
+      }
+      else if (role === "student") {
+        navigate('/student/dashboard');
+      }
 
       // ----------------------------------
     } catch (error) {

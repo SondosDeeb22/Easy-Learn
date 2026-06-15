@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 
 interface ProtectedRouteProps {
+    targetRole: string
     children: React.ReactNode;
 }
 
@@ -15,9 +16,7 @@ interface ProtectedRouteProps {
 //====================================================================================================================================
 
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-
-    const authroizedRole = "admin";
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ targetRole, children }) => {
 
     // state from redux --------------------------
     const user = useAppSelector((state) => state.auth);
@@ -35,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     }
 
     // Redirect to login if not authenticated or not authorized as admin
-    if (!user.isAuthenticated || user.userRole !== authroizedRole) {
+    if (!user.isAuthenticated || user.userRole !== targetRole) {
         return <Navigate to="/" replace />;
     }
 

@@ -22,14 +22,10 @@ export const login = ({ id, password }: LoginCredentials) => async (dispatch: Di
         const response = await apiClient.post('/auth/login', { id, password });
         const userData = response.data.data;
 
-        if (userData && userData.role !== 'admin') {
-            await apiClient.post('/auth/logout', {});
-            throw new Error("Sorry, you are not authorized to perform this action!");
-        }
-
         dispatch(setUser(userData));
         dispatch(setError(""));
 
+        return userData;
         // ==============================================================
     } catch (error: any) {
         console.log(error);

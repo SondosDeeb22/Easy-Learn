@@ -61,7 +61,7 @@ const Header = () => {
                 {/* Logo -------------- */}
                 <div className="flex items-center space-x-4 ml-5">
                     <img className="h-10 w-10 object-contain" src={logoWhite} alt="Easy Learn Logo" />
-                    <p className="text-lg font-semibold text-white tracking-wide">Easy Learn - Admin</p>
+                    <p className="text-lg font-semibold text-white tracking-wide">Easy Learn</p>
                 </div>
 
                 {/* username, pic and dropdown -------------- */}
@@ -97,24 +97,6 @@ const Header = () => {
                 </div>
             </header>
 
-            {/* Navigation bar ================================================================================================================ */}
-            <nav className="h-12 w-full flex items-center justify-center " style={{ backgroundColor: COLORS.navbar }}>
-                <div className="flex justify-between w-full max-w-[80%] mx-auto px-5">
-
-                    <Link to="/dashboard" className="flex items-center gap-2 font-medium transition-colors duration-200"
-                        style={{ color: '#374151' }}
-                        onMouseEnter={(e) => e.currentTarget.style.color = COLORS.burgundy}
-                        onMouseLeave={(e) => e.currentTarget.style.color = '#374151'}>
-
-                        <HomeIcon className="h-5 w-5" />
-
-                        <span>{'Dashboard'}</span>
-                    </Link>
-
-
-
-                </div>
-            </nav>
         </>
 
     )

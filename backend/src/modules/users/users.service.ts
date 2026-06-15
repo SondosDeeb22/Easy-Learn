@@ -26,6 +26,7 @@ export class UsersService {
 
         const user = await this.userModel.findByPk(id);
 
+
         if (!user) {
             customMessage = "User not found"
         }
