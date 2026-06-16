@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 //interceptors
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
+
 // =============================================================
 
 async function bootstrap() {
@@ -24,14 +25,14 @@ async function bootstrap() {
   // cookieParser setup ------------------------------------
   app.use(cookieParser());
 
-  // --------------------------------------------
+  //swagger setup --------------------------------------------
   const config = new DocumentBuilder()
     .setTitle('APIs Documentation for EasyLearn Web App')
     .setDescription('APIs description')
     .setVersion('1.0')
     .build();
 
-  // swagger setup ------------------------------------
+  //  -----------
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/apis', app, document);
 

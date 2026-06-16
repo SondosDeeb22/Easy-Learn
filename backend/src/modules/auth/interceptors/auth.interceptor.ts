@@ -10,7 +10,7 @@ import {
 import { Observable, map } from 'rxjs';
 
 import { plainToInstance } from 'class-transformer';
-import { User } from '../../users/users.model';
+import { UsersModel } from '../../users/users.model';
 
 
 // ====================================================================================
@@ -19,7 +19,7 @@ import { User } from '../../users/users.model';
 // Convert plain response data to User instances before returning it
 // the password will be excluded as i marked it @Exclude in user.model
 export class AuthInterceptor implements NestInterceptor {
-    intercept(context: ExecutionContext, next: CallHandler<any>): Observable<User> | Promise<Observable<User>> {
+    intercept(context: ExecutionContext, next: CallHandler<any>): Observable<UsersModel> | Promise<Observable<UsersModel>> {
         return next.handle().pipe(
             //  Response ======================================
 
@@ -45,7 +45,7 @@ export class AuthInterceptor implements NestInterceptor {
                     if (data.data) {
                         return {
                             ...data,// message
-                            data: plainToInstance(User, toPlain(data.data)) // returend data in the object
+                            data: plainToInstance(UsersModel, toPlain(data.data)) // returend data in the object
                         };
                     }
                     return data;
@@ -53,7 +53,7 @@ export class AuthInterceptor implements NestInterceptor {
 
                 // reponse is Array, transform each item into a User instance
                 if (Array.isArray(data)) {
-                    return plainToInstance(User, data.map(toPlain));
+                    return plainToInstance(UsersModel, data.map(toPlain));
                 }
 
                 // If the response contains a nested user object,
@@ -61,12 +61,12 @@ export class AuthInterceptor implements NestInterceptor {
                 if (data.user) {
                     return {
                         ...data,
-                        user: plainToInstance(User, toPlain(data.user))
+                        user: plainToInstance(UsersModel, toPlain(data.user))
                     };
                 }
 
                 // Otherwise, transform the single response object into a User instance
-                return plainToInstance(User, toPlain(data));
+                return plainToInstance(UsersModel, toPlain(data));
             })
         );
     }

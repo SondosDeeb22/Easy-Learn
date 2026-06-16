@@ -8,11 +8,6 @@ import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 // ==========================================================================================
 export const getSequelizeConfig = (configService: ConfigService): SequelizeModuleOptions => {
-    // base url provide access to serverless database(neon)
-    const databaseUrl = configService.get<string>('DATABASE_URL');
-    // ---------------------------------
-
-
     return {
         dialect: 'postgres',
         host: configService.get<string>('DB_HOST', 'localhost'),

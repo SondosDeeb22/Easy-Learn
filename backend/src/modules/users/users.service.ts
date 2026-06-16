@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 
 
 import { InjectModel } from '@nestjs/sequelize';
-import { User } from './users.model';
+import { UsersModel } from './users.model';
 
 
 //interface
@@ -13,14 +13,14 @@ import { ServiceResult } from '../../common/interfaces/service-result.interface'
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectModel(User)
-        private readonly userModel: typeof User
+        @InjectModel(UsersModel)
+        private readonly userModel: typeof UsersModel
     ) { }
 
 
     //? function to Find user by ID 
     // ==================================================
-    async findById(id: string): Promise<ServiceResult<User | null>> {
+    async findById(id: string): Promise<ServiceResult<UsersModel | null>> {
 
         let customMessage: string;
 

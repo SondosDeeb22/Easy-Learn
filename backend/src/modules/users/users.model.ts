@@ -1,17 +1,20 @@
 // =============================================================
 //? Importing
 // =============================================================
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, HasMany } from "sequelize-typescript";
 import { Exclude } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
+import { AcademicRecordsModel } from "./academicRecords.model";
 
+
+import { UserInterface } from "./interfaces/user.interface";
 
 //enum 
 import { Roles } from "./enums/roles.enum";
 import { Gender } from "./enums/gender.enum";
 // =============================================================
 @Table({ tableName: "users" })
-export class User extends Model<User> {
+export class UsersModel extends Model<UsersModel> implements UserInterface {
 
     // id =============================================
     @PrimaryKey
@@ -61,6 +64,20 @@ export class User extends Model<User> {
     @Column(DataType.STRING)
     @Exclude()
     declare password: string;
+
+    // credit ==============================================
+    @Column(DataType.INTEGER)
+    @ApiProperty()
+    declare currentSemesterCredit: number;
+
+    // total credit ==============================================
+    @Column(DataType.INTEGER)
+    @ApiProperty()
+    declare totalCredit: number;
+
+    // Associations ========================================
+    @HasMany(() => AcademicRecordsModel)
+    declare academicRecords: AcademicRecordsModel[];
 
 
 }

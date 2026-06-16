@@ -17,7 +17,7 @@ import { ServiceResult } from '../../common/interfaces/service-result.interface'
 
 
 //model
-import { User } from '../users/users.model';
+import { UsersModel } from '../users/users.model';
 
 //service
 import { UsersService } from '../users/users.service';
@@ -46,7 +46,7 @@ export class AuthService {
         // console.log(credentials);
 
         // check user exist by id -------------------------------
-        const user: ServiceResult<User | null> = await this.usersService.findById(id);
+        const user: ServiceResult<UsersModel | null> = await this.usersService.findById(id);
         // console.log(user);
         if (!user.data) throw new NotFoundError('this user is not registered');
 

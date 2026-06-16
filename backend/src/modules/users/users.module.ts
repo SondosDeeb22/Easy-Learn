@@ -7,7 +7,8 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 
 // model 
-import { User } from './users.model';
+import { UsersModel } from './users.model';
+import { AcademicRecordsModel } from './academicRecords.model';
 
 // sequelize 
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -18,7 +19,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
   providers: [UsersService],
 
   imports: [
-    SequelizeModule.forFeature([User])
+    SequelizeModule.forFeature([UsersModel, AcademicRecordsModel])
   ],
   exports: [SequelizeModule, UsersService]
 })
