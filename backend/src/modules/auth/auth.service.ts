@@ -82,8 +82,10 @@ export class AuthService {
     // ? get user data from JWT  
     // =========================================================================   
     async getUserFromToken(token: string): Promise<ServiceResult<LoginJwtInterface | null>> {
+        const secret = this.configService.get<string>('JWT_LOGIN_KEY');
+        if (!secret) throw new Error('JWT_LOGIN_KEY is not defined');
 
-        const data = await extractJwtData<LoginJwtInterface>(token, 'JWT_LOGIN_KEY');
+        const data = await extractJwtData<LoginJwtInterface>(token, secret);
 
         return {
             message: "User data extracted successfully",

@@ -1,7 +1,7 @@
 //==========================================================================================================
 //? Import
 //======================================================================================================
-import { Response } from 'express';
+import { Response, CookieOptions } from 'express';
 
 /// ======================================================================================
 // function to create a cookie
@@ -10,8 +10,7 @@ import { Response } from 'express';
 export const createCookie = (res: Response, token: string, tokenName: string) => {
     res.cookie(tokenName, token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "development",
-        sameSite: "strict"
+        sameSite: "lax"
     })
 }
 
@@ -21,11 +20,9 @@ export const createCookie = (res: Response, token: string, tokenName: string) =>
 
 export const removeCookie = (res: Response, tokenName: string): null => {
 
-    const isProduction = process.env.NODE_ENV === "development";
-    const baseOptions = {
+    const baseOptions: CookieOptions = {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" as const : "lax" as const,
+        sameSite: "lax",
         path: "/",
     }
 
