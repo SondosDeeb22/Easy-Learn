@@ -8,19 +8,20 @@ import { AuthController } from './auth.controller';
 import { AuthHelper } from './helpers/auth.helper';
 
 import { UsersModule } from '../users/users.module';
+import { RolesGuard } from './guards/auth.guard';
 
 // ===============================================
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, AuthHelper],
+  providers: [AuthService, AuthHelper, RolesGuard],
 
   imports: [
-    UsersModule,
+    UsersModule
   ],
 
   exports: [
-    AuthService,
-    AuthHelper
+    AuthHelper,
+    RolesGuard
   ]
 })
 

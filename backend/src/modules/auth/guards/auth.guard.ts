@@ -17,7 +17,7 @@ import { LoginJwtInterface } from '../interfaces/jwt.interface';
 // ===========================================================
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private authHelper: AuthHelper,
@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
 
-
     // get the required Roles from the route ----------------------------------------------------------------
     const requiredRoles = this.reflector.getAllAndOverride(
       'roles', [context.getHandler(), context.getClass(),],
@@ -40,8 +39,11 @@ export class AuthGuard implements CanActivate {
 
     // console.log(requiredRoles)
     if (!requiredRoles) {
+      console.log("No roles defined on controller")
       return true;
     }
+    console.log("requiredRoles: ", requiredRoles)
+
 
     // from request get the token --------------------------------
     const request = context.switchToHttp().getRequest();
@@ -64,16 +66,20 @@ export class AuthGuard implements CanActivate {
     try {
       const payload: LoginJwtInterface = this.authHelper.extractJwtData<LoginJwtInterface>(token, jwtLoginKey);
 
+      console.log("payload: ", payload);
+      request.user = payload;
+
       const userRole = payload.role;
-      console.log(userRole)
       if (!userRole) {
         this.authHelper.removeCookie(response, 'login-token');
         return false;
       }
 
       // check if user role is authorized to access the route -----------------------------------
-      const result = requiredRoles.some(role => role == userRole);
+      const result: boolean = requiredRoles.some(role => role == userRole);
       return result;
+
+      // ==========================================
     } catch (error) {
       this.authHelper.removeCookie(response, 'login-token');
       return false;

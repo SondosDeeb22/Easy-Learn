@@ -4,20 +4,15 @@
 import jwt from 'jsonwebtoken';
 
 import { UnauthorizedError } from 'src/common/errors';
-
 // =======================================================
 // extract token's data
 // =======================================================
 
-export const extractJwtData = <TokenInterface>(token: string, secretTitle: string): TokenInterface => {
+export const extractJwtData = <TokenInterface>(token: string, secretKey: string): TokenInterface => {
 
-    const secret = process.env[secretTitle];
-    if (!secret) {
-        throw new Error(`${secretTitle} is not defined`);
-    }
-
-    const data = jwt.verify(token, secret) as TokenInterface;
+    const data = jwt.verify(token, secretKey) as TokenInterface;
     if (!data || typeof data !== "object") {
+        console.log("data in token is not valid");
         throw new UnauthorizedError("Invalid Token");
     }
 

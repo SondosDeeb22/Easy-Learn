@@ -2,7 +2,6 @@
 //? import
 // ========================================================================
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo } from "sequelize-typescript";
-import { ApiProperty } from "@nestjs/swagger";
 
 // models
 import { CoursesModel } from "./courses.model";
@@ -15,19 +14,19 @@ export class OfferedCoursesModel extends Model<OfferedCoursesModel> implements O
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))
-    @ApiProperty()
+
     declare id: string;
 
     // courseId =============================================
     @ForeignKey(() => CoursesModel)
     @Column(DataType.STRING(8))
-    @ApiProperty()
+
     declare courseId: string;
 
     // semesterId =============================================
     @ForeignKey(() => SemestersModel)
     @Column(DataType.STRING(8))
-    @ApiProperty()
+
     declare semesterId: string;
 
     // relations --------------------------------------

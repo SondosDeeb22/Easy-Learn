@@ -2,7 +2,6 @@
 //? import
 // ========================================================================
 import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-typescript";
-import { ApiProperty } from "@nestjs/swagger";
 
 // models
 import { AcademicRecordsModel } from "../users/academicRecords.model";
@@ -15,22 +14,22 @@ export class SemestersModel extends Model<SemestersModel> implements SemestersIn
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))
-    @ApiProperty()
+
     declare id: string;
 
     // title =============================================
     @Column(DataType.STRING(250))
-    @ApiProperty()
+
     declare title: string;
 
     // startDate =============================================
     @Column(DataType.DATE)
-    @ApiProperty()
+
     declare startDate: Date;
 
     // endDate =============================================
     @Column(DataType.DATE)
-    @ApiProperty()
+
     declare endDate: Date;
 
     // maxCredits =============================================
@@ -38,7 +37,7 @@ export class SemestersModel extends Model<SemestersModel> implements SemestersIn
         type: DataType.INTEGER,
         field: 'maxCredtis'
     })
-    @ApiProperty()
+
     declare maxCredits: number;
 
     // Associations --------------------------------------

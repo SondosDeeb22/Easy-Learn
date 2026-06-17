@@ -16,12 +16,14 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CoursesModel } from './courses.model';
 import { SemestersModel } from './semesters.model';
 import { OfferedCoursesModel } from './offeredCourses.model';
-
+import { AcademicRecordsModel } from '../users/academicRecords.model';
+import { AuthModule } from '../auth/auth.module';
 
 // ========================================================================
 @Module({
   imports: [
-    SequelizeModule.forFeature([CoursesModel, SemestersModel, OfferedCoursesModel])
+    SequelizeModule.forFeature([CoursesModel, SemestersModel, OfferedCoursesModel, AcademicRecordsModel]),
+    AuthModule
   ],
   controllers: [CoursesController],
   providers: [CoursesService],
