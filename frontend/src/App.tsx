@@ -23,7 +23,7 @@ import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 import AdminDashboard from './admin/pages/adminDashboard';
 
 // Student - protected pages ---------------------------------------
-import StudentDashboard from './student/pages/studentDashboard';
+import StudentHomepage from './student/pages/studentHomepage';
 import MyCourses from './student/pages/myCourses';
 // ========================================================================
 
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <StudentDashboard />
+        element: <StudentHomepage />
       },
       {
         path: "courses",

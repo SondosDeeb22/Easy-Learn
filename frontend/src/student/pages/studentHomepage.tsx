@@ -4,7 +4,7 @@ import CurrentSemesterCoursesTable from "../components/CurrentSemesterCoursesTab
 import { useCurrentSemesterCourses } from '../hooks/currentSemesterCoursesHook';
 
 // ====================================================================
-export default function StudentDashboard() {
+export default function studentHomepage() {
 
     const { data } = useCurrentSemesterCourses();
 
