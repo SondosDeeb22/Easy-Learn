@@ -20,7 +20,7 @@ export class CoursesController {
 
 
   // ==========================================================================================
-  //? Get All courses 
+  //? Get Studnet all courses 
   // ==========================================================================================
   @ApiQuery({
     name: 'semester',
@@ -28,10 +28,22 @@ export class CoursesController {
     type: String,
   })
   //error
-  @ApiForbiddenResponse({ description: "You are not authorized to access this resource" })
+  @ApiForbiddenResponse({ description: "You are not authorized to access." })
   @Get("all")
   async getAllCourses(@Request() req, @Query("semester") semester?: string) {
     console.log(req.user);
-    return this.coursesService.getAllCourses(req.user.id, semester);
+    return this.coursesService.getAllStudentCourses(req.user.id, semester);
+  }
+
+
+  // ==========================================================================================
+  //? Get Studnet courses for current semester
+  // ==========================================================================================
+
+  //error
+  @ApiForbiddenResponse({ description: "You are not authorized to access." })
+  @Get("current")
+  async getCurrentSemesterCourses(@Request() req) {
+    return this.coursesService.getCurrentSemesterCourses(req.user.id);
   }
 }
