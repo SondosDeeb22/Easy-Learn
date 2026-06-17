@@ -31,11 +31,19 @@ export default defineConfig(({ mode }) => {
       allowedHosts: true,
 
       proxy: {
-        // Proxy auth endpoints directly to NestJS backend
-        "/auth": {
+        // Proxy all endpoints directly to backend
+        // "/auth": {
+        //   target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
+        //   changeOrigin: true,
+        // },
+        // "/courses": {
+        //   target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
+        //   changeOrigin: true,
+        // }
+        "/api": {
           target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
           changeOrigin: true,
-        },
+        }
       }
     }
   }

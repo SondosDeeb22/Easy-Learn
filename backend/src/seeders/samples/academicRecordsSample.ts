@@ -23,7 +23,7 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
     {
         id: '10000003',
         studentId: '20261144',
-        courseId: '50000003',
+        courseId: '50000015',
         semesterId: '20000007',
         grade: 'BA',
     },
@@ -74,7 +74,7 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261144',
         courseId: '50000003',
         semesterId: '20000008',
-        grade: 'BA',
+        grade: '',
     },
     {
         id: '10000011',

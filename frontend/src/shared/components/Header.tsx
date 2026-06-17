@@ -1,19 +1,14 @@
 // =======================================================================
 //? Importing
 // =======================================================================
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { apiClient } from '../../services/apiClient';
+import { apiClient } from '../services/apiClient';
 
 // Redux
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { clearUser } from '../../redux/slices/authSlice';
-
-
-// styling  -----------------
-
-import { COLORS } from '../../styles/colorPalette';
 
 // pictures 
 import logoWhite from '../../assets/logoWhite.png';
@@ -40,7 +35,7 @@ const Header = () => {
     // Handle logout
     const handleLogout = async () => {
         try {
-            await apiClient.post('/auth/logout', {});
+            await apiClient.post('/api/auth/logout', {});
 
         } catch (error) {
             console.error('Logout failed:', error);
@@ -57,7 +52,7 @@ const Header = () => {
     return (
         <>
             {/* header ================================================================================================================ */}
-            <header className="h-20 w-full flex items-center justify-between px-5" style={{ backgroundColor: COLORS.burgundy }}>
+            <header className="h-20 w-full flex items-center justify-between px-5 bg-burgundy">
                 {/* Logo -------------- */}
                 <div className="flex items-center space-x-4 ml-5">
                     <img className="h-10 w-10 object-contain" src={logoWhite} alt="Easy Learn Logo" />
@@ -73,7 +68,7 @@ const Header = () => {
                             className="flex items-center space-x-2 px-3 py-2 rounded-md text-white transition-colors duration-200"
                             title="User menu"
                         >
-                            <p className="text-white text-sm">{userState.userName || 'User'}</p>
+                            <p className="hidden sm:block text-white text-sm">{userState.userName || 'User'}</p>
                             <img className="h-8 w-8 rounded-full" src={user} alt="User" />
                             <ChevronDownIcon className={`h-5 w-5 transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
                         </button>

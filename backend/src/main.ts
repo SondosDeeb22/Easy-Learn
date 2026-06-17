@@ -41,6 +41,9 @@ async function bootstrap() {
 
 
 
+  // prefix all routes with /api, so vite proxy forwards all backend requests to /api/...
+  app.setGlobalPrefix('api')
+
   await app.listen(process.env.PORT ?? 3000);
 
 }

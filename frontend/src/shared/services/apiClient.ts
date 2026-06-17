@@ -12,7 +12,7 @@ import axios, {
 
 // API client
 export const apiClient = axios.create({
-  baseURL: '', // uses relative paths to leverage Vite proxy in dev / reverse proxy in prod
+  baseURL: '', // relative paths, so routing handled by Vite proxy (dev) / reverse proxy (prod)
   withCredentials: true,
   timeout: (10 * 1000), // 10 seconds - abort request if server doesn't respond
 });

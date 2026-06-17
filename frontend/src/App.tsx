@@ -10,21 +10,21 @@ import { useEffect } from 'react';
 import { useAppDispatch } from './redux/hooks';
 import { setUser, clearUser, stopLoading, setError } from './redux/slices/authSlice';
 
-import { apiClient } from './services/apiClient';
+import { apiClient } from './shared/services/apiClient';
 
-import DashboardLayout from './layout/dashboardLayout';
+import DashboardLayout from './admin/layout/dashboardLayout';
+import StudentLayout from './student/layout/studentLayout';
 
 // auth pages --------------------------------
 import Login from './Login';
-import ProtectedRoute from './components/common/auth/ProtectedRoute';
+import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 
 // Admin - protected pages ---------------------------------------
-import AdminDashboard from './pages/admin/adminDashboard';
+import AdminDashboard from './admin/pages/adminDashboard';
 
 // Student - protected pages ---------------------------------------
-import StudentDashboard from './pages/student/studentDashboard';
-
-
+import StudentDashboard from './student/pages/studentDashboard';
+import MyCourses from './student/pages/myCourses';
 // ========================================================================
 
 const router = createBrowserRouter([
@@ -48,50 +48,21 @@ const router = createBrowserRouter([
   {
     path: "/student",
     element: <ProtectedRoute targetRole="student">
-      <DashboardLayout />
+      <StudentLayout />
     </ProtectedRoute>,
     children: [
       {
         path: "dashboard",
         element: <StudentDashboard />
+      },
+      {
+        path: "courses",
+        element: <MyCourses />
       }
     ]
   }
 ])
 // ============================================================
-// ============================================================
-// const App = () => {
-//   const dispatch = useAppDispatch();
-
-//   // check if the user is authenticated or not
-//   useEffect(() => {
-//     const bootstrapAuth = async () => {
-//       try {
-//         const targetRole: string = "admin"
-//         const response = await apiClient.get('/auth/user');
-//         const userData = response.data.data;
-
-//         if (userData && userData.role !== targetRole) {
-//           await apiClient.post('/auth/logout', {});
-//           dispatch(clearUser());
-//           dispatch(setError("Sorry, you are not authorized to perform this action!"));
-//           // ----------------------
-//         } else {
-//           dispatch(setUser(userData));
-//         }
-
-//         // ============================================================
-//       } catch (error) {
-//         dispatch(clearUser());
-//         // ============================================================
-//       } finally {
-//         dispatch(stopLoading());
-//       }
-//     };
-//     // ============================================================
-
-//     bootstrapAuth();
-//   }, [dispatch]);
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -100,8 +71,7 @@ const App = () => {
   useEffect(() => {
     const bootstrapAuth = async () => {
       try {
-        const targetRole: string = "admin"
-        const response = await apiClient.get('/auth/user');
+        const response = await apiClient.get('/api/auth/user');
         const userData = response.data.data;
 
 

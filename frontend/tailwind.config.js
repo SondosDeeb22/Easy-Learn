@@ -1,3 +1,9 @@
+// ============================================================
+//? Tailwind Config
+// Colors sourced from src/styles/colors.js (single source of truth)
+// ============================================================
+import { colors } from './src/styles/colorPalette.ts';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -5,7 +11,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        burgundy: {
+          DEFAULT: colors.burgundy,
+          hover: colors.burgundyHover,
+          dark: colors.burgundyDark,
+        },
+        background: colors.background,
+        navbar: colors.navbar,
+      },
+    },
   },
   plugins: [],
 }

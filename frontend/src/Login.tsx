@@ -6,7 +6,7 @@ import { useState } from 'react';
 import './Login.css';
 
 import { useNavigate } from 'react-router-dom';
-import { getApiErrorMessage } from './services/apiError';
+import { getApiErrorMessage } from './shared/services/apiError';
 
 
 // redux
