@@ -76,6 +76,8 @@ export class AuthController {
   // ===============================================
 
   @Get('user')
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'User data fetched successfully' })
   // error
   @ApiUnauthorizedResponse({ description: 'Session Expired, please login again!' })
 

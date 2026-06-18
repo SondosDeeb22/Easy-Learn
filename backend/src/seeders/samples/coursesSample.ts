@@ -96,4 +96,10 @@ export const sampleCourses: CourseInterface[] = [
         title: 'Artificial Intelligence Basics',
         credit: 3,
     },
+    {
+        id: '50000016',
+        code: 'CSE310',
+        title: 'Machine Learning Basics',
+        credit: 5,
+    },
 ];

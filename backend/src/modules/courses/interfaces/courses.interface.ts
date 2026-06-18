@@ -1,3 +1,4 @@
+// interface for the model
 export interface CourseInterface {
     id: string;
     code: string;
@@ -5,13 +6,16 @@ export interface CourseInterface {
     credit: number;
 }
 
+// interface for retrieved courses
 export interface Courses {
     code: string,
     title: string,
     credit: number,
-    grade: string,
+    grade?: string | null,
 
 }
+
+// interface for current semester courses
 export interface CurrenseSemesterCoursesInterface {
     semesterTitle: string,
     startDate: Date,

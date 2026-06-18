@@ -86,4 +86,10 @@ export const sampleOfferedCourses: OfferedCoursesInterface[] = [
         semesterId: '20000009',
 
     },
+    {
+        id: '30000016',
+        courseId: '50000016',
+        semesterId: '20000008',
+
+    },
 ];

@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 
 // services
-import { getCurrentSemesterCourses } from '../services/course.service';
+import { getStudentCurrentCourses } from '../services/courses.service';
 
 // interace
-import { CurrentSemesterCourses } from '../interfaces/course.interface';
+import { StudentCurrentCourses } from '../interfaces/courses.interface';
 
 
 // =======================================================================
 //? fetch current semester courses
 // api: /courses/current 
 // ==============================================================
-export const useCurrentSemesterCourses = () => {
-    const [data, setData] = useState<CurrentSemesterCourses[]>([]);
+export const useStudentCurrentCourses = () => {
+    const [data, setData] = useState<StudentCurrentCourses[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                const result = await getCurrentSemesterCourses();
+                const result = await getStudentCurrentCourses();
                 setData(result);
             } catch (err) {
                 setError('Failed to load courses');

@@ -1,4 +1,5 @@
-import { Table, TableColumnsType } from 'antd';
+import { Table, TableColumnsType, Divider, ConfigProvider } from 'antd';
+import { colors } from '../../styles/colorPalette';
 
 // ===============================================
 
@@ -15,13 +16,16 @@ interface ReusableTableInterface<T> {
 
 function ReusableTable<T extends object>({ data, columns, loading, rowKey }: ReusableTableInterface<T>) {
     return (
-        <Table<T>
-            dataSource={data}
-            columns={columns}
-            rowKey={rowKey}
-            loading={loading}
-            pagination={data.length > 10 ? { pageSize: 10 } : false}
-        />
+        <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy, colorPrimaryBg: '#ecececff', colorPrimaryBgHover: "#ececec" } }}>
+            <Divider />
+            <Table<T>
+                dataSource={data}
+                columns={columns}
+                rowKey={rowKey}
+                loading={loading}
+                pagination={data.length > 10 ? { pageSize: 10, position: ['bottomCenter'] } : false}
+            />
+        </ConfigProvider>
     );
 }
 

@@ -30,6 +30,7 @@ async function bootstrap() {
     .setTitle('APIs Documentation for EasyLearn Web App')
     .setDescription('APIs description')
     .setVersion('1.0')
+    .addServer('/api')
     .build();
 
   //  -----------

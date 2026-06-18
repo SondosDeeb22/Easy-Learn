@@ -2,7 +2,7 @@
 //component
 import StudnetCoursesTable from '../components/StudnetCoursesTable';
 // ====================================================================
-export default function MyCourses() {
+export default function MyCoursesPage() {
 
     return (
         <div className="p-6">

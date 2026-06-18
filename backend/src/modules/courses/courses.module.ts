@@ -18,11 +18,12 @@ import { SemestersModel } from './semesters.model';
 import { OfferedCoursesModel } from './offeredCourses.model';
 import { AcademicRecordsModel } from '../users/academicRecords.model';
 import { AuthModule } from '../auth/auth.module';
+import { UsersModel } from '../users/users.model';
 
 // ========================================================================
 @Module({
   imports: [
-    SequelizeModule.forFeature([CoursesModel, SemestersModel, OfferedCoursesModel, AcademicRecordsModel]),
+    SequelizeModule.forFeature([CoursesModel, SemestersModel, OfferedCoursesModel, AcademicRecordsModel, UsersModel]),
     AuthModule
   ],
   controllers: [CoursesController],

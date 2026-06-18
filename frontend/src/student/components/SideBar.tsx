@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, BookOpenIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, BookOpenIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -11,7 +11,7 @@ export default function Sidebar() {
 
     const menuItems = [
         {
-            path: '/student/dashboard',
+            path: '/student/homepage',
             label: 'Home',
             icon: HomeIcon,
         },
@@ -19,6 +19,11 @@ export default function Sidebar() {
             path: '/student/courses',
             label: 'My Courses',
             icon: BookOpenIcon,
+        },
+        {
+            path: '/student/courses/add',
+            label: 'Add Courses',
+            icon: PlusIcon,
         },
     ];
 

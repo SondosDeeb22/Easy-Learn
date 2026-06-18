@@ -115,7 +115,7 @@ export default function Login() {
         navigate('/admin/dashboard');
       }
       else if (role === "student") {
-        navigate('/student/dashboard');
+        navigate('/student/homepage');
       }
 
       // ----------------------------------

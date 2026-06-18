@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 // services
-import { getStudnetCourses } from '../services/course.service';
+import { getStudnetCourses } from '../services/courses.service';
 
 // interace
-import { Course } from '../interfaces/course.interface';
+import { Course } from '../interfaces/courses.interface';
 
 
 // =======================================================================

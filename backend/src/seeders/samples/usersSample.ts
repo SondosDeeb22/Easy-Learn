@@ -33,10 +33,10 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '20261144',
-        name: 'Lina',
+        name: 'Tiana',
         role: Roles.STUDENT,
         birthDate: new Date('2004-08-20'),
-        email: 'lina@gmail.com',
+        email: 'tiana@gmail.com',
         gender: Gender.FEMALE,
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredit: 15,

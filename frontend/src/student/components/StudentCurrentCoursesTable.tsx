@@ -1,7 +1,7 @@
 import React from 'react';
 import { TableColumnsType } from 'antd';
-import { useCurrentSemesterCourses } from '../hooks/currentSemesterCoursesHook';
-import { Course } from '../interfaces/course.interface';
+import { useStudentCurrentCourses } from '../hooks/StudnetCurrentCoursesHook';
+import { Course } from '../interfaces/courses.interface';
 import Reusable from "../../shared/components/ReusableTable";
 
 // ====================================================
@@ -13,8 +13,8 @@ const columns: TableColumnsType<Course> = [
 ];
 
 // ====================================================
-const CurrentSemesterCoursesTable: React.FC = () => {
-    const { data, loading, error } = useCurrentSemesterCourses();
+const StudentCurrentCoursesTable: React.FC = () => {
+    const { data, loading, error } = useStudentCurrentCourses();
 
     if (error) return <div>{error}</div>
 
@@ -30,4 +30,4 @@ const CurrentSemesterCoursesTable: React.FC = () => {
     );
 };
 
-export default CurrentSemesterCoursesTable;
+export default StudentCurrentCoursesTable;

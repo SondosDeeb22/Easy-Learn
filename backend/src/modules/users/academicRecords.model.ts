@@ -1,7 +1,7 @@
 // =============================================================
 //? Importing
 // =============================================================
-import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo, AllowNull } from "sequelize-typescript";
 
 import { UsersModel } from "./users.model";
 import { CoursesModel } from "../courses/courses.model";
@@ -11,11 +11,11 @@ import { AcademicRecordInterface } from "./interfaces/academicRecord.interface";
 
 // =============================================================
 @Table({ tableName: "academic_records" })
-export class AcademicRecordsModel extends Model<AcademicRecordsModel> implements AcademicRecordInterface {
+export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRecordInterface> implements AcademicRecordInterface {
 
     // id =============================================
     @PrimaryKey
-    @Column(DataType.STRING(8))
+    @Column(DataType.STRING(255))
 
     declare id: string;
 
@@ -40,9 +40,9 @@ export class AcademicRecordsModel extends Model<AcademicRecordsModel> implements
 
 
     // grade =============================================
-    @Column(DataType.STRING)
-
-    declare grade: string;
+    @AllowNull(true)
+    @Column(DataType.STRING(3))
+    declare grade: string | null;
 
 
     // relation ----------------------------

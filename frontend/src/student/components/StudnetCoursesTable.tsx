@@ -4,8 +4,8 @@ import { TableColumnsType } from 'antd';
 // hooks
 import { useStudentCourses } from '../hooks/studnetCoursesHook';
 
-// interace
-import { Course } from '../interfaces/course.interface';
+// interface
+import { Course } from '../interfaces/courses.interface';
 
 // reusable component
 import Reusable from "../../shared/components/ReusableTable";

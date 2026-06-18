@@ -24,7 +24,8 @@ import AdminDashboard from './admin/pages/adminDashboard';
 
 // Student - protected pages ---------------------------------------
 import StudentHomepage from './student/pages/studentHomepage';
-import MyCourses from './student/pages/myCourses';
+import MyCoursesPage from './student/pages/myCoursesPage';
+import AddCoursePage from './student/pages/addCoursePage';
 // ========================================================================
 
 const router = createBrowserRouter([
@@ -52,12 +53,16 @@ const router = createBrowserRouter([
     </ProtectedRoute>,
     children: [
       {
-        path: "dashboard",
+        path: "homepage",
         element: <StudentHomepage />
       },
       {
         path: "courses",
-        element: <MyCourses />
+        element: <MyCoursesPage />
+      },
+      {
+        path: "courses/add",
+        element: <AddCoursePage />
       }
     ]
   }
