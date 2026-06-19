@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableColumnsType } from 'antd';
+import { TableColumnsType, Alert } from 'antd';
 
 // hooks
 import { useStudentCourses } from '../hooks/studnetCoursesHook';
@@ -22,7 +22,14 @@ const columns: TableColumnsType<Course> = [
 const StudnetCoursesTable: React.FC = () => {
     const { data, loading, error } = useStudentCourses();
 
-    if (error) return <div>{error}</div>
+    if (error) return (
+        <Alert
+            message={error}
+            type="error"
+            showIcon
+            style={{ margin: '16px 0', fontSize: '14px' }}
+        />
+    );
 
     const courses = data ?? [];
 

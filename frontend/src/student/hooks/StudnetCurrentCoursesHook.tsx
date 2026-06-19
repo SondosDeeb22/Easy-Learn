@@ -22,7 +22,7 @@ export const useStudentCurrentCourses = () => {
                 const result = await getStudentCurrentCourses();
                 setData(result);
             } catch (err) {
-                setError('Failed to load courses');
+                setError('Failed to load courses. Please, try later');
             } finally {
                 setLoading(false);
             }

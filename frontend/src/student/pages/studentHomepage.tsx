@@ -7,6 +7,23 @@ import { useStudentCurrentCourses } from '../hooks/StudnetCurrentCoursesHook';
 export default function StudentHomepage() {
 
     const { data } = useStudentCurrentCourses();
+    // ------------------------------------------------------
+
+    const { data: userData, loading, error } = useUserData(user?.userId);
+
+    // show loading
+    if (loading) return <div>Loading...</div>
+
+    // show error
+    if (error) return (
+        <Alert
+            message={error}
+            type="error"
+            showIcon
+            style={{ margin: '50px 20PX', fontSize: '14px' }}
+        />
+    );
+    // ------------------------------------------------------
 
     const semesterTitle = data?.[0]?.semesterTitle ?? "";
     return (

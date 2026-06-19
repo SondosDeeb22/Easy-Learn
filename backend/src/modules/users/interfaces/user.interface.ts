@@ -16,3 +16,16 @@ export interface UserInterface {
     currentSemesterCredit?: number,
     totalCredit?: number,
 }
+
+export interface StudnetData {
+    id: string,
+    name: string,
+    role: Roles,
+    birthDate: Date,
+    email: string,
+    gender: Gender,
+    currentSemesterCredit: number,
+    totalCredit: number,
+    maxCredits: number
+
+}

@@ -24,7 +24,7 @@ export default function AddCoursePage() {
     const semesterTitle = data?.[0]?.semesterTitle ?? "";
 
     // update offerd courses
-    const { data: offeredCourses, refetch } = useOfferedCourses();
+    const { data: offeredCourses, error, refetch } = useOfferedCourses();
 
 
     // ----------------------------------------------------
@@ -51,7 +51,7 @@ export default function AddCoursePage() {
             {/* page title ------------------------------- */}
             <div className="flex items-center justify-between mt-5 mb-10">
                 <h1 className="text-2xl  font-bold text-gray-800">
-                    Available Courses - {semesterTitle}
+                    {error ? "Available Courses" : `Available Courses - ${semesterTitle}`}
                     <p className="text-sm text-gray-500 mt-2 ">Select a Course to Insert</p>
                 </h1>
                 <EnrollButton

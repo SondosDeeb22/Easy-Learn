@@ -23,7 +23,7 @@ export const useOfferedCourses = () => {
             setData(result);
 
         } catch (err) {
-            setError('Failed to load courses. Please, try later.');
+            setError('Failed to load courses. Please, try later');
 
 
         } finally {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TableColumnsType } from 'antd';
+import { TableColumnsType, Alert } from 'antd';
 import { useStudentCurrentCourses } from '../hooks/StudnetCurrentCoursesHook';
 import { Course } from '../interfaces/courses.interface';
 import Reusable from "../../shared/components/ReusableTable";
@@ -16,7 +16,14 @@ const columns: TableColumnsType<Course> = [
 const StudentCurrentCoursesTable: React.FC = () => {
     const { data, loading, error } = useStudentCurrentCourses();
 
-    if (error) return <div>{error}</div>
+    if (error) return (
+        <Alert
+            message={error}
+            type="error"
+            showIcon
+            style={{ margin: '16px 0', fontSize: '14px' }}
+        />
+    );
 
     const courses = data?.[0]?.courses ?? [];
 

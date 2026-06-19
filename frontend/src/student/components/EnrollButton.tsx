@@ -24,6 +24,7 @@ const EnrollButton: React.FC<EnrollButtonProps> = ({ selectedCourse, onConfirm }
     const handleConfirm = () => {
         onConfirm();
         setIsModalOpen(false);
+        selectedCourse = null
     };
 
     // ====================================================================

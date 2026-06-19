@@ -1,28 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from "react";
 
-// services
-import { getStudnetCourses } from '../services/courses.service';
-
-// interace
-import { Course } from '../interfaces/courses.interface';
-
+import { getUserData } from "../services/users.service";
+import { UserData } from "../interfaces/users.interface";
 
 // =======================================================================
-//? fetch current semester courses
-// api: /courses/all 
+//? fetch user data
+// api: /users/:id
 // ==============================================================
-export const useStudentCourses = () => {
-    const [data, setData] = useState<Course[]>([]);
+
+export const useUserData = (studentId: string) => {
+    const [data, setData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetch = async () => {
             try {
-                const result = await getStudnetCourses();
+                const result = await getUserData(studentId);
                 setData(result);
             } catch (err) {
-                setError('Failed to load courses. Please, try later');
+                console.log("error(userDataHook):", err);
+                setError(`Failed to load user data. Please, try later`);
             } finally {
                 setLoading(false);
             }
@@ -32,4 +30,4 @@ export const useStudentCourses = () => {
     }, []);
 
     return { data, loading, error };
-};
+}
