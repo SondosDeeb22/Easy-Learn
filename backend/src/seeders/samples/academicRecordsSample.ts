@@ -90,4 +90,5 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         semesterId: '20000009',
         grade: 'BA',
     },
+
 ];

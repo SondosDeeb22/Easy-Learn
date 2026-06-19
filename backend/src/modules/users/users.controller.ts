@@ -1,5 +1,5 @@
-import { Controller, UseGuards, Get, Param, SetMetadata, HttpCode } from '@nestjs/common';
-import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse } from '@nestjs/swagger';
+import { Controller, UseGuards, Get, Param, SetMetadata, HttpCode, Query } from '@nestjs/common';
+import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQuery } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { NotFoundError } from 'src/common/errors';
 
@@ -22,7 +22,26 @@ import { StudentDataDto } from './dtos/users.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
+  /// ============================================================
 
+
+  @Get('/students')
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: "User fetched successfully" })
+
+  //error
+  @ApiForbiddenResponse({ description: "Forbidden access" })
+  @ApiQuery({ name: 'studentId', required: false })
+  @ApiQuery({ name: 'courseId', required: false })
+  @ApiQuery({ name: 'semesterId', required: false })
+  async getStudents(
+    @Query('studentId') studentId?: string,
+    @Query('courseId') courseId?: string,
+    @Query('semesterId') semesterId?: string,
+  ) {
+    return this.usersService.getStudents({ studentId, courseId, semesterId });
+  }
   /// ============================================================
 
   @Get('/:id')
@@ -40,5 +59,8 @@ export class UsersController {
     console.log("this is userData:\n", result)
     return result
   }
+  /// ============================================================
+
+
 
 }

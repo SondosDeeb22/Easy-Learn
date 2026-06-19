@@ -1,5 +1,7 @@
-import { ApiProperty, } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+
+
 export class StudentDataDto {
 
     @ApiProperty()
@@ -32,4 +34,21 @@ export class StudentDataDto {
 
     @ApiProperty()
     maxCredits: number;
+}
+
+
+// =================================================
+// dto of filters
+// =================================================
+
+export class StudentFilterParamsDto {
+    @ApiPropertyOptional({ description: 'User ID' })
+    studentId?: string
+
+    @ApiPropertyOptional({ description: 'Course ID' })
+    courseId?: string;
+
+    @ApiPropertyOptional({ description: 'Semester ID' })
+    semesterId?: string;
+
 }

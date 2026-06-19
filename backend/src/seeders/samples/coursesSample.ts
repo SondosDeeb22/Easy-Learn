@@ -238,7 +238,7 @@ export const sampleCourses: CourseInterface[] = [
         id: '50000039',
         code: 'HUM202',
         title: 'Critical Thinking',
-        credit: 2,
+        credit: 1,
     },
     {
         id: '50000040',

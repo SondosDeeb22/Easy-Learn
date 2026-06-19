@@ -53,7 +53,7 @@ export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRe
     declare course: CoursesModel;
 
     @BelongsTo(() => UsersModel)
-    declare student: UsersModel;
+    declare user: UsersModel;
 
 }
 
