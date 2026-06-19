@@ -22,3 +22,8 @@ export interface CurrenseSemesterCoursesInterface {
     endDate: Date,
     courses: Courses[],
 }
+
+export interface OfferedCoursesInterface {
+    remainingCredits: number;
+    courses: Courses[];
+};

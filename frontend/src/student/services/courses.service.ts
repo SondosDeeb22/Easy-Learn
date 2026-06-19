@@ -1,7 +1,5 @@
 import { apiClient } from '../../shared/services/apiClient';
-import { Course, StudentCurrentCourses, OfferedCourses } from '../interfaces/courses.interface';
-
-
+import { Course, StudentCurrentCourses, OfferedCourses, OfferedCoursesWithCredits } from '../interfaces/courses.interface';
 
 //=====================================================
 //? Get student courses for current semester
@@ -27,10 +25,15 @@ export const getStudnetCourses = async (): Promise<Course[]> => {
 //? Get offered courses
 //=====================================================
 
-export const getOfferedCourses = async (): Promise<OfferedCourses[]> => {
+export const getOfferedCourses = async (): Promise<OfferedCoursesWithCredits> => {
     const response = await apiClient.get('/api/courses/offered');
-    console.log("this is response for /courses/offered:", response.data);
-    return response.data.data;
+    console.log("this is response for /courses/offered:", response.data.data);
+
+    const { remainingCredits, courses } = response.data.data;
+    if (!Array.isArray(courses)) {
+        throw new Error("Expected courses to be an array");
+    }
+    return { remainingCredits, courses };
 }
 
 

@@ -19,6 +19,9 @@ export default {
           dark: colors.burgundyDark,
         },
         background: colors.background,
+        bgPrimary: colors.bgPrimary,
+        bgHover: colors.bgHover,
+
         navbar: colors.navbar,
       },
     },

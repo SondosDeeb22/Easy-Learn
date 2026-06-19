@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { TableColumnsType } from 'antd';
+import { TableColumnsType, Alert } from 'antd';
 
 // hooks
 import { useOfferedCourses } from '../hooks/offeredCoursesHook';
 
 // interface
-import { OfferedCourses } from '../interfaces/courses.interface';
+import { OfferedCourses, OfferedCoursesWithCredits } from '../interfaces/courses.interface';
 
 // reusable component
 import ReusableSelectTable from '../../shared/components/ReusableSelectTable';
@@ -18,7 +18,7 @@ const columns: TableColumnsType<OfferedCourses> = [
 ];
 
 interface OfferedCoursesTableProps {
-    data?: OfferedCourses[]
+    data?: OfferedCoursesWithCredits
     onSelect: (course: OfferedCourses) => void;
 }
 // ====================================================
@@ -26,9 +26,17 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({ data: externa
     const { data, loading, error } = useOfferedCourses();
     const [selectedCourse, setSelectedCourse] = useState<OfferedCourses | null>(null);
 
-    if (error) return <div>{error}</div>
+    if (error) return (
+        <Alert
+            message={error}
+            type="error"
+            showIcon
+            style={{ margin: '16px 0', fontSize: '14px' }}
+        />
+    );
 
-    const courses = externalData ?? data ?? [];
+    const courses = externalData?.courses ?? data?.courses ?? [];
+    console.log("courses from table: \n", courses);
 
     return (
         <ReusableSelectTable<OfferedCourses>
@@ -40,6 +48,7 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({ data: externa
                 onSelect(course);
                 setSelectedCourse(course)
             }}
+            emptyText="No Courses Available"
         />
     );
 };

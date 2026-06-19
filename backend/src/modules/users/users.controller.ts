@@ -1,4 +1,5 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards, Get, Param, SetMetadata, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { NotFoundError } from 'src/common/errors';
 
@@ -6,6 +7,12 @@ import { NotFoundError } from 'src/common/errors';
 import { Roles } from './enums/roles.enum';
 import { RolesGuard } from '../auth/guards/auth.guard';
 
+
+//interceptor
+import { TransformInterceptor } from '../../common/interceptors/Transform.interceptor';
+import { UseInterceptors } from '@nestjs/common';
+
+import { StudentDataDto } from './dtos/users.dto';
 // ============================================================
 
 @UseGuards(RolesGuard)
@@ -19,6 +26,7 @@ export class UsersController {
   /// ============================================================
 
   @Get('/:id')
+  @UseInterceptors(new TransformInterceptor(StudentDataDto))
 
   @HttpCode(200)
   @ApiOkResponse({ description: "user fetched successfully" })

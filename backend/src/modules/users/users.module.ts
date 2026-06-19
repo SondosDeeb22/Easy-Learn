@@ -13,14 +13,15 @@ import { SemestersModel } from '../courses/semesters.model';
 import { CoursesModule } from '../courses/courses.module';
 // sequelize 
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AuthHelper } from '../auth/helpers/auth.helper';
 
 //============================================================
 @Module({
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, AuthHelper],
 
   imports: [
-    SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel])
+    SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel]),
   ],
   exports: [SequelizeModule, UsersService]
 })

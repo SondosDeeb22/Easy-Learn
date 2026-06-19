@@ -9,9 +9,6 @@ import { ApiOkResponse, ApiNotFoundResponse, ApiUnauthorizedResponse, ApiOperati
 
 import * as express from 'express';
 
-//interceptors
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-
 //helper
 import { AuthHelper } from './helpers/auth.helper';
 
@@ -30,8 +27,6 @@ export class AuthController {
   // ===============================================
   @Post('login')
   @ApiOperation({ summary: 'User login', description: 'Login with Id and Password' })
-
-  @UseInterceptors(AuthInterceptor)
 
   @HttpCode(200)
   @ApiOkResponse({ description: 'Login successful' })

@@ -33,6 +33,7 @@ const StudentCurrentCoursesTable: React.FC = () => {
             columns={columns}
             loading={loading}
             rowKey="code"
+            emptyText="You haven't enrolled in any courses this semester"
         />
     );
 };

@@ -7,6 +7,9 @@
 /** @type {Record<string, string>} */
 export const colors = {
     background: '#F2F1ED',
+    bgPrimary: '#ecececff',
+    bgHover: '#ececec',
+
     burgundy: '#59011A',
     burgundyHover: '#6e0120',
     burgundyDark: '#420014',

@@ -2,9 +2,11 @@
     "name": "codebase",
     "private": true,
     "scripts": {
-        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\""
+        "dev": "dotenv -e .env -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:%BACKENDPORT% --timeout 60000 --interval 1000 && npm run dev --prefix frontend\""
     },
     "devDependencies": {
-        "concurrently": "^9.2.1"
+        "concurrently": "^9.2.1",
+        "dotenv-cli": "^7.4.4",
+        "wait-on": "^7.2.0"
     }
 }

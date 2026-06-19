@@ -37,7 +37,7 @@ function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey,
                 columns={columns}
                 dataSource={data}
                 locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
-                pagination={data.length > 10 ? { pageSize: 10, position: ['bottomCenter'] } : false}
+                pagination={data.length > 8 ? { pageSize: 8, position: ['bottomCenter'] } : false}
             />
         </ConfigProvider>
     );

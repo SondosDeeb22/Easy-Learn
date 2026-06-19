@@ -12,7 +12,7 @@ import { OfferedCoursesModel } from './offeredCourses.model';
 
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { Courses, CurrenseSemesterCoursesInterface } from './interfaces/courses.interface';
+import { Courses, CurrenseSemesterCoursesInterface, OfferedCoursesInterface } from './interfaces/courses.interface';
 
 //error
 import { NotFoundError } from "../../common/errors";
@@ -201,7 +201,7 @@ export class CoursesService {
     // =========================================================================
     //? fetch offered courses (available courses for registeration)
     // =========================================================================
-    async getOfferedCourses(studentId: string): Promise<ServiceResult<Courses[] | []>> {
+    async getOfferedCourses(studentId: string): Promise<ServiceResult<OfferedCoursesInterface>> {
 
         // get current semester
         const today = new Date();
@@ -236,7 +236,7 @@ export class CoursesService {
         console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredit} remaining ${remainingCredits}`)
         if (remainingCredits <= 0) return {
             message: "You have reached the maximum number of credits for this semester",
-            data: [],
+            data: { remainingCredits: 0, courses: [] },
         }
 
         // --------------------------------------------------------------------
@@ -267,7 +267,7 @@ export class CoursesService {
 
         return {
             message: formatted.length === 0 ? "No courses available" : "Courses fetched successfully",
-            data: formatted,
+            data: { remainingCredits, courses: formatted },
         }
     }
 

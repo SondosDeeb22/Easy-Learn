@@ -24,5 +24,5 @@ export interface OfferedCourses extends Course {
 
 export interface OfferedCoursesWithCredits {
     remainingCredits: number;
-    courses: OfferedCourses;
+    courses: OfferedCourses[];
 };

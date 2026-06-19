@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { getUserData } from "../services/users.service";
-import { UserData } from "../interfaces/users.interface";
+import { StudentData } from "../interfaces/users.interface";
 
 // =======================================================================
 //? fetch user data
@@ -9,7 +9,7 @@ import { UserData } from "../interfaces/users.interface";
 // ==============================================================
 
 export const useUserData = (studentId: string) => {
-    const [data, setData] = useState<UserData | null>(null);
+    const [data, setData] = useState<StudentData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

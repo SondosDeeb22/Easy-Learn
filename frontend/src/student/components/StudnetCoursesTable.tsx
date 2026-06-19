@@ -39,6 +39,7 @@ const StudnetCoursesTable: React.FC = () => {
             columns={columns}
             loading={loading}
             rowKey="code"
+            emptyText="You don't have any courses yet"
         />
     );
 };

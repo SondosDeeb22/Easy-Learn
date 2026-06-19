@@ -1,4 +1,4 @@
-import { Table, TableColumnsType, Divider, ConfigProvider } from 'antd';
+import { Table, TableColumnsType, Divider, ConfigProvider, Empty } from 'antd';
 import { colors } from '../../styles/colorPalette';
 
 // ===============================================
@@ -8,13 +8,14 @@ interface ReusableTableInterface<T> {
     columns: TableColumnsType<T>;
     loading?: boolean;
     rowKey: keyof T & string;
+    emptyText?: string;
 }
 
 // =======================================================
 //? reusable table component
 // =======================================================
 
-function ReusableTable<T extends object>({ data, columns, loading, rowKey }: ReusableTableInterface<T>) {
+function ReusableTable<T extends object>({ data, columns, loading, rowKey, emptyText }: ReusableTableInterface<T>) {
     return (
         <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy, colorPrimaryBg: '#ecececff', colorPrimaryBgHover: "#ececec" } }}>
             <Divider />
@@ -23,7 +24,8 @@ function ReusableTable<T extends object>({ data, columns, loading, rowKey }: Reu
                 columns={columns}
                 rowKey={rowKey}
                 loading={loading}
-                pagination={data.length > 10 ? { pageSize: 10, position: ['bottomCenter'] } : false}
+                locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
+                pagination={data.length > 8 ? { pageSize: 8, position: ['bottomCenter'] } : false}
             />
         </ConfigProvider>
     );

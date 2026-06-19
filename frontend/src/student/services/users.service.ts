@@ -13,6 +13,6 @@ export const getUserData = async (studentId: string): Promise<StudentData> => {
     if (!response.data.data) throw new Error("No user data returned from /api/users/:studentId:");
     const { id, name, role, birthDate, gender, email, currentSemesterCredit, totalCredit, maxCredits } = response.data.data;
 
-    console.log("this is response for /users/:studentId:", response.data.data.maxCredits);
+    console.log("this is response for /users/:studentId:", response.data.data);
     return { id, name, role, birthDate, gender, email, currentSemesterCredit, totalCredit, maxCredits };
 }

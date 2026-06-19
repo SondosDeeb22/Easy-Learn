@@ -18,6 +18,8 @@ import { OfferedCourses } from "../interfaces/courses.interface";
 // ====================================================================
 export default function AddCoursePage() {
     const [selectedCourse, setSelectedCourse] = useState<OfferedCourses | null>(null);
+    // Ant Design notification hook
+    const [api, contextHolder] = notification.useNotification();
 
     // get current semester title 
     const { data } = useStudentCurrentCourses();
@@ -33,13 +35,14 @@ export default function AddCoursePage() {
         if (!selectedCourse) return;
         try {
             await enrollStudent(selectedCourse.id);
-            notification.success({ message: "Enrolled successfully!", description: `You have been enrolled in  ${selectedCourse.code}` });
+            api.success({ title: "Enrolled successfully!", description: `You have been enrolled in  ${selectedCourse.code}` });
+            setSelectedCourse(null);
 
             refetch();
         } catch (error) {
             // show error message
             console.error("Enrollment failed:", error);
-            notification.error({ message: "Failed to enroll", description: "Try again later" });
+            api.error({ title: "Failed to enroll", description: "Try again later" });
         }
     };
 
@@ -60,6 +63,15 @@ export default function AddCoursePage() {
                 />
             </div>
 
+            {/* Warning banner ------------------- */}
+            <>{offeredCourses?.remainingCredits === 0 &&
+                <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg p-3 mb-5">
+                    <span className="text-amber-600 mt-0.5">⚠</span>
+                    <p className="text-sm text-amber-800">
+                        You have reached the maximum number of credits for this semester
+                    </p>
+                </div>
+            }</>
             {/* table --------------------------------- */}
             <OfferedCoursesTable data={offeredCourses} onSelect={setSelectedCourse} />
         </div>

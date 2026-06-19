@@ -11,7 +11,7 @@ import { Gender } from "src/modules/users/enums/gender.enum";
 export const sampleUsers: UserInterface[] = [
     {
         id: '20261234',
-        name: 'Sara',
+        name: 'Sara Latifi',
         role: Roles.STUDENT,
         birthDate: new Date('2004-01-01'),
         email: 'sara@gmail.com',
@@ -22,7 +22,7 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '20261155',
-        name: 'Ahmad',
+        name: 'Ahmad Dwikat',
         role: Roles.STUDENT,
         birthDate: new Date('2003-05-12'),
         email: 'ahmad@gmail.com',
@@ -33,7 +33,7 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '20261144',
-        name: 'Tiana',
+        name: 'Tiana Brown',
         role: Roles.STUDENT,
         birthDate: new Date('2004-08-20'),
         email: 'tiana@gmail.com',
@@ -44,7 +44,7 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '20261133',
-        name: 'Omar',
+        name: 'Omar Qasim',
         role: Roles.STUDENT,
         birthDate: new Date('2002-11-15'),
         email: 'omar@gmail.com',
@@ -55,7 +55,7 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '20261122',
-        name: 'Maya',
+        name: 'Maya Queens',
         role: Roles.STUDENT,
         birthDate: new Date('2003-03-30'),
         email: 'maya@gmail.com',
@@ -66,7 +66,7 @@ export const sampleUsers: UserInterface[] = [
     },
     {
         id: '10001234',
-        name: 'Admin',
+        name: 'Emily Smith',
         role: Roles.ADMIN,
         birthDate: new Date('1990-01-01'),
         email: 'admin@gmail.com',

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-
+import { ApiProperty, } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 export class StudentDataDto {
 
     @ApiProperty()
@@ -19,6 +19,10 @@ export class StudentDataDto {
 
     @ApiProperty()
     email: string;
+
+    @ApiProperty()
+    @Exclude()
+    password: string;
 
     @ApiProperty()
     currentSemesterCredit: number;
