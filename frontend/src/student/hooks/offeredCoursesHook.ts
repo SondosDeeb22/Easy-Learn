@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getOfferedCourses } from '../services/courses.service';
 
 // interace
-import { OfferedCourses } from '../interfaces/courses.interface';
+import { OfferedCourses, OfferedCoursesWithCredits } from '../interfaces/courses.interface';
 
 
 // =======================================================================
@@ -12,17 +12,20 @@ import { OfferedCourses } from '../interfaces/courses.interface';
 // api: /courses/offered 
 // ==============================================================
 export const useOfferedCourses = () => {
-    const [data, setData] = useState<OfferedCourses[]>([]);
+    const [data, setData] = useState<OfferedCoursesWithCredits>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const fetchCourses = async () => {
         try {
             setLoading(true);
-            const result = await getOfferedCourses();
+            const result: OfferedCoursesWithCredits = await getOfferedCourses();
             setData(result);
+
         } catch (err) {
-            setError('Failed to load courses');
+            setError('Failed to load courses. Please, try later.');
+
+
         } finally {
             setLoading(false);
         }

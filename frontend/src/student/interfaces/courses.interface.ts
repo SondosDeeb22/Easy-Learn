@@ -19,3 +19,10 @@ export interface OfferedCourses extends Course {
     id: string;
 }
 
+//===================================================
+
+
+export interface OfferedCoursesWithCredits {
+    remainingCredits: number;
+    courses: OfferedCourses;
+};
