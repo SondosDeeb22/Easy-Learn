@@ -4,8 +4,9 @@ import { TableColumnsType, Alert } from 'antd';
 // interface
 import { CourseWithGrade } from '../interfaces/courses.interface';
 
-// reusable component
+// component
 import Reusable from "../../shared/components/ReusableTable";
+
 
 // ====================================================
 const columns: TableColumnsType<CourseWithGrade> = [
@@ -15,18 +16,18 @@ const columns: TableColumnsType<CourseWithGrade> = [
     { title: 'Grade', dataIndex: 'grade', key: 'grade', width: "20%" },
 ];
 
-interface AllStudentCourses {
-    allCourses: CourseWithGrade[];
-    loading: boolean;
-    error?: string;
-    page: number;
-    limit: number;
-    totalRows: number;
-    setPage: (page: number) => void;
+interface CurrentStudentCourses {
+    currentCourses: CourseWithGrade[],
+    loading: boolean,
+    error?: string,
+    page: number,
+    limit: number,
+    totalRows: number,
+    setPage: (page: number) => void,
 }
 // ====================================================
-const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
-    allCourses,
+const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
+    currentCourses,
     loading,
     error,
     page,
@@ -43,25 +44,26 @@ const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
             style={{ margin: '16px 0', fontSize: '14px' }}
         />
     );
-    console.log(`/offeredCoursesTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nCourses:${JSON.stringify(allCourses, null, 0)}`);
+
+    console.log(`/offeredCoursesTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nCourses:${JSON.stringify(currentCourses, null, 0)}`);
 
     // =======================================================================================================================
 
     return (
         <Reusable<CourseWithGrade>
-            data={allCourses}
+            data={currentCourses}
             columns={columns}
             loading={loading}
             rowKey="id"
-            emptyText="You don't have any courses yet"
+            emptyText="You haven't enrolled in any courses this semester"
             pagination={{
                 current: page,
-                pageSize: limit,
                 total: totalRows,
-                onChange: (newPage) => setPage(newPage)
+                pageSize: limit,
+                onChange: (page) => setPage(page),
             }}
         />
     );
 };
 
-export default StudnetCoursesTable;
+export default StudentCurrentCoursesTable;

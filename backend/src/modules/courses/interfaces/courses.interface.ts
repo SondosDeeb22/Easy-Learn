@@ -1,5 +1,5 @@
 // interface for the model
-export interface CourseInterface {
+export interface Course {
     id: string;
     code: string;
     title: string;
@@ -7,24 +7,30 @@ export interface CourseInterface {
 }
 
 // interface for retrieved courses
-export interface Courses {
-    code: string,
-    title: string,
-    credit: number,
+export interface CourseWithGrade extends Course {
     grade?: string | null,
 
 }
 
-// interface for current semester courses
-export interface CurrenseSemesterCoursesInterface {
+export interface AllStudentCourses {
+    courses: CourseWithGrade[],
+    totalRows: number;
+}
+
+// =========================================================== 
+
+export interface CurrentStudentCourses {
     semesterTitle: string,
     startDate: Date,
     endDate: Date,
-    courses: Courses[],
+    totalRows: number,
+    courses: CourseWithGrade[],
 }
+
+// =========================================================== 
 
 export interface OfferedCoursesInterface {
     remainingCredits: number;
-    courses: Courses[];
+    courses: CourseWithGrade[];
     totalRows: number
 };

@@ -1,4 +1,5 @@
 import { Table, TableColumnsType, Divider, ConfigProvider, Empty } from 'antd';
+
 import { colors } from '../../styles/colorPalette';
 
 // ===============================================
@@ -10,12 +11,13 @@ interface ReusableTableInterface<T> {
     rowKey: keyof T & string;
     emptyText?: string;
 
-    pagination?: boolean
-
-    page?: number;
-    limit?: number;
-    total?: number;
-    onChange?: (newPage: number) => void;
+    // Pagination can be a simple boolean (default) or an object with settings
+    pagination?: {
+        current?: number;
+        pageSize?: number;
+        total?: number;
+        onChange?: (page: number, pageSize: number) => void;
+    };
 
 }
 
@@ -23,7 +25,7 @@ interface ReusableTableInterface<T> {
 //? reusable table component
 // =======================================================
 
-function ReusableTable<T extends object>({ data, columns, loading, rowKey, emptyText, page, limit, total, onChange }: ReusableTableInterface<T>) {
+function ReusableTable<T extends object>({ data, columns, loading, rowKey, emptyText, pagination }: ReusableTableInterface<T>) {
     return (
         <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy, colorPrimaryBg: '#ecececff', colorPrimaryBgHover: "#ececec" } }}>
             <Divider />
@@ -34,13 +36,11 @@ function ReusableTable<T extends object>({ data, columns, loading, rowKey, empty
                 loading={loading}
                 locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
                 // pagination={data.length > 8 ? { pageSize: 8, position: ['bottomCenter'] } : false}
-                pagination={{
-                    current: page,
-                    pageSize: limit,
-                    total: total,
-                    onChange: onChange,
-                    position: ['bottomCenter'],
-                }}
+                pagination={pagination ? {
+                    ...pagination,
+                    hideOnSinglePage: true,
+                    placement: ['bottomCenter'],
+                } : false}
 
             />
         </ConfigProvider>

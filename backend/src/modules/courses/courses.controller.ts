@@ -35,9 +35,14 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-  async getAllCourses(@Request() req, @Query("semester") semester?: string) {
+  async getAllCourses(
+    @Request() req,
+    @Query("page") page: number,
+    @Query("limit") limit: number,
+    @Query("semester") semester?: string,
+  ) {
     console.log(req.user);
-    return this.coursesService.getAllStudentCourses(req.user.id, semester);
+    return this.coursesService.getAllStudentCourses(req.user.id, page, limit, semester);
   };
 
 
@@ -56,8 +61,12 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-  async getStudentCurrentCourses(@Request() req) {
-    return this.coursesService.getStudentCurrentCourses(req.user.id);
+  async getStudentCurrentCourses(
+    @Request() req,
+    @Query("page") page: number,
+    @Query("limit") limit: number,
+  ) {
+    return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
   };
 
   // ==========================================================================================

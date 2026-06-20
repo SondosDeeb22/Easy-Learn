@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Modal } from 'antd';
 
 // interface
-import { OfferedCourses } from '../interfaces/courses.interface';
+import { CourseWithGrade } from '../interfaces/courses.interface';
 
 // ====================================================================
 
 interface EnrollButtonProps {
-    selectedCourse: OfferedCourses | null;
+    selectedCourse: CourseWithGrade | null;
     onConfirm: () => void;
 }
 

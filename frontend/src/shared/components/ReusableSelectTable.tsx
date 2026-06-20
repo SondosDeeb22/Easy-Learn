@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { ConfigProvider, Divider, Radio, Table, Empty } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
+
 import { colors } from '../../styles/colorPalette';
 // ====================================================================
 
@@ -48,7 +50,7 @@ function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey,
                 pagination={pagination ? {
                     ...pagination,
                     hideOnSinglePage: true,
-                    position: ['bottomCenter'],
+                    placement: ['bottomCenter'],
                 } : false}
             />
         </ConfigProvider>

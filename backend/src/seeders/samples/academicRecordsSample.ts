@@ -90,5 +90,41 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         semesterId: '20000009',
         grade: 'BA',
     },
+    {
+        id: '10000013',
+        studentId: '20261144',
+        courseId: '50000043',
+        semesterId: '20000007',
+        grade: 'BA',
+    },
+    {
+        id: '10000014',
+        studentId: '20261144',
+        courseId: '50000044',
+        semesterId: '20000007',
+        grade: 'AA',
+    },
+    {
+        id: '10000015',
+        studentId: '20261144',
+        courseId: '50000045',
+        semesterId: '20000007',
+        grade: 'BA',
+    },
+    {
+        id: '10000016',
+        studentId: '20261144',
+        courseId: '50000046',
+        semesterId: '20000007',
+        grade: 'BA',
+    },
+    {
+        id: '10000017',
+        studentId: '20261144',
+        courseId: '50000047',
+        semesterId: '20000007',
+        grade: 'BA',
+    },
+
 
 ];

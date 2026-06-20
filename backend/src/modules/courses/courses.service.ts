@@ -12,7 +12,7 @@ import { OfferedCoursesModel } from './offeredCourses.model';
 
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { Courses, CurrenseSemesterCoursesInterface, OfferedCoursesInterface } from './interfaces/courses.interface';
+import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses } from './interfaces/courses.interface';
 
 //error
 import { NotFoundError } from "../../common/errors";
@@ -37,10 +37,13 @@ export class CoursesService {
     // =========================================================================
     //? get all courses studnet is associated with
     // =========================================================================
-    async getAllStudentCourses(id: string, semester?: string): Promise<ServiceResult<Courses[] | []>> {
+    async getAllStudentCourses(id: string, page: number, limit: number, semester?: string): Promise<ServiceResult<AllStudentCourses>> {
         let customMessage: string;
 
-        const courses = await this.academicRecordsModel.findAll({
+        const offset = (page - 1) * limit;
+        const allStudentCourses = await this.academicRecordsModel.findAndCountAll({
+            offset,
+            limit,
             where: {
                 studentId: id,
             },
@@ -48,7 +51,7 @@ export class CoursesService {
                 {
                     model: CoursesModel,
                     as: "course",
-                    attributes: ["code", "title", "credit"],
+                    attributes: ["id", "code", "title", "credit"],
                 },
                 {
                     // filtering with semester model only occur when semesterId is provided as provided
@@ -63,10 +66,11 @@ export class CoursesService {
                     required: !!semester,
                 },
             ],
-            attributes: ["grade"],
+            attributes: ["id", "grade"],
         });
 
-        const formatted = courses.map((record) => ({
+        const formatted = allStudentCourses.rows.map((record) => ({
+            id: record.id,
             code: record.course?.code,
             title: record.course?.title,
             credit: record.course?.credit,
@@ -82,19 +86,22 @@ export class CoursesService {
         // =====================================================
         return {
             message: customMessage,
-            data: formatted,
+            data: { courses: formatted, totalRows: allStudentCourses.count },
         }
     }
 
     // =========================================================================
     //? fetch the student's current semester courses 
     // =========================================================================
-    async getStudentCurrentCourses(studentId: string): Promise<ServiceResult<CurrenseSemesterCoursesInterface[] | []>> {
+    async getCurrentStudentCourses(studentId: string, page: number, limit: number): Promise<ServiceResult<CurrentStudentCourses>> {
         let customMessage: string;
+        const offset = (page - 1) * limit;
 
         const today = new Date();
 
-        const courses = await this.semestersModel.findAll({
+        const result = await this.semestersModel.findAndCountAll({
+            offset,
+            limit,
             where: {
                 startDate: { [Op.lte]: today },
                 endDate: { [Op.gte]: today },
@@ -109,30 +116,35 @@ export class CoursesService {
                     model: CoursesModel,
                     as: "course",
 
-                    attributes: ["code", "title", "credit"]
+                    attributes: ["id", "code", "title", "credit"]
                 }],
                 attributes: ["grade"]
             }],
             attributes: ["title", "startDate", "endDate",]
         });
 
-        const formatted = courses.map(semester => {
+        const formatted = result.rows.map(semester => {
+
             const { title, startDate, endDate, academicRecords } = semester.toJSON();
 
             return {
                 semesterTitle: title,
                 startDate: new Date(startDate),
                 endDate,
+                totalRows: result.count,
                 courses: academicRecords.map(record => ({
+                    id: record.course?.id,
                     code: record.course?.code,
                     title: record.course?.title,
                     credit: record.course?.credit,
                     grade: record.grade,
-                }))
+                })),
+
             };
         });
+        console.log(`/courses.service.ts - (getCurrentSturdentCourse):\nresult= ${JSON.stringify(result, null, 2)} \nformatted= ${JSON.stringify(formatted, null, 2)}`)
 
-        if (formatted.length === 0) {
+        if (result.count === 0) {
             customMessage = "No courses found";
         } else {
             customMessage = "Courses found successfully";
@@ -141,8 +153,8 @@ export class CoursesService {
         // =====================================================
         return {
             message: customMessage,
-            data: formatted,
-        }
+            data: formatted[0],
+        };
     }
 
     // =========================================================================

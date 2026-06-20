@@ -6,7 +6,7 @@ import { getOfferedCourses } from '../services/courses.service';
 //? fetch offered(available) courses for this semester
 // api: /courses/offered 
 // ==============================================================
-export const useOfferedCourses = (page: number, limit: number = 8) => {
+export const useOfferedCourses = (page: number, limit: number) => {
     // page parameter to define which page the user is currently on 
 
     return useQuery({

@@ -1,12 +1,12 @@
 import { apiClient } from '../../shared/services/apiClient';
-import { Course, StudentCurrentCourses, OfferedCourses, OfferedCoursesWithCredits } from '../interfaces/courses.interface';
+import { CurrentStudentCourses, CourseWithGrade, OfferedCoursesWithCredits, AllStudentCourses } from '../interfaces/courses.interface';
 
 //=====================================================
 //? Get student courses for current semester
 //=====================================================
 
-export const getStudentCurrentCourses = async (): Promise<StudentCurrentCourses[]> => {
-    const response = await apiClient.get('/api/courses/current');
+export const getCurrentStudentCourses = async (page: number, limit: number): Promise<CurrentStudentCourses> => {
+    const response = await apiClient.get(`/api/courses/current?page=${page}&limit=${limit}`);
     console.log("this is response for /courses/current:", response.data);
     return response.data.data;
 };
@@ -15,8 +15,8 @@ export const getStudentCurrentCourses = async (): Promise<StudentCurrentCourses[
 //? Get all coruses for studnet
 //=====================================================
 
-export const getStudnetCourses = async (): Promise<Course[]> => {
-    const response = await apiClient.get('/api/courses/all');
+export const getAllStudnetCourses = async (page: number, limit: number): Promise<AllStudentCourses> => {
+    const response = await apiClient.get(`/api/courses/all?page=${page}&limit=${limit}`);
     console.log("this is response for /courses/all:", response.data);
     return response.data.data;
 }

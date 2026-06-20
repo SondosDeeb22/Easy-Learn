@@ -8,11 +8,11 @@ import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-t
 import { AcademicRecordsModel } from "../users/academicRecords.model";
 import { OfferedCoursesModel } from "./offeredCourses.model";
 
-import { CourseInterface } from "./interfaces/courses.interface";
+import { Course } from "./interfaces/courses.interface";
 
 // ========================================================================
 @Table({ tableName: "courses" })
-export class CoursesModel extends Model<CoursesModel> implements CourseInterface {
+export class CoursesModel extends Model<CoursesModel> implements Course {
 
     // Id =============================
     @PrimaryKey

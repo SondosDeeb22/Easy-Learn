@@ -2,10 +2,10 @@
 //? import
 // ====================================================================
 
-import { CourseInterface } from '../../modules/courses/interfaces/courses.interface';
+import { Course } from '../../modules/courses/interfaces/courses.interface';
 
 // ====================================================================
-export const sampleCourses: CourseInterface[] = [
+export const sampleCourses: Course[] = [
     {
         id: '50000001',
         code: 'CSE101',

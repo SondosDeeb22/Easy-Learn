@@ -7,7 +7,7 @@ import { notification } from "antd";
 import { enrollStudent } from "../services/courses.service";
 
 //hooks
-import { useStudentCurrentCourses } from '../hooks/StudnetCurrentCoursesHook';
+import { useCurrentStudentCourses } from '../hooks/useCurrentStudentCourses';
 import { useOfferedCourses } from '../hooks/useOfferedCourses';
 
 //componenets
@@ -15,29 +15,31 @@ import OfferedCoursesTable from "../components/OfferedCoursesTable";
 import EnrollButton from "../components/EnrollButton";
 
 // interfaces
-import { OfferedCourses } from "../interfaces/courses.interface";
+import { CourseWithGrade } from "../interfaces/courses.interface";
 
 // react query
 import { useQueryClient } from "@tanstack/react-query";
 
 // ====================================================================
 export default function AddCoursePage() {
-    const [selectedCourse, setSelectedCourse] = useState<OfferedCourses | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<CourseWithGrade | null>(null);
     const [page, setPage] = useState(1); // initial state of page
+
+    const rowsLimit = 8;
 
     // Ant Design notification hook
     const [api] = notification.useNotification();
 
     // get current semester title 
-    const { data } = useStudentCurrentCourses();
-    const semesterTitle = data?.[0]?.semesterTitle ?? "";
+    const { data: currentSemester } = useCurrentStudentCourses(page, rowsLimit);
+    const semesterTitle = currentSemester?.semesterTitle ?? "";
 
-    // update offerd courses
+    // update offerd course
     const {
         data: offeredCourses,
         isLoading,
         isError: offeredCoursesError,
-    } = useOfferedCourses(page);
+    } = useOfferedCourses(page, rowsLimit);
 
 
     // ----------------------------------------------------
