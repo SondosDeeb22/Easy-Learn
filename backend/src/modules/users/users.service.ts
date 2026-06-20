@@ -212,10 +212,7 @@ export class UsersService {
         }
 
         // ------------------------------------------------------------------
-        // Case 5: no filters — return all students
-        // return this.userModel.findAll({
-        //     where: { role: 'student' }
-        // });
+
         return {
             message: "Set parameters to find students",
             data: [],

@@ -1,4 +1,6 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
+
+//service
 import { getOfferedCourses } from '../services/courses.service';
 
 

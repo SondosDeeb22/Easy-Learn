@@ -23,6 +23,7 @@ interface OfferedCoursesTableProps {
     totalRows: number;
     setPage: (page: number) => void;
     onSelect: (course: CourseWithGrade) => void;
+    selectedCourseId: string | null;
 }
 
 
@@ -37,9 +38,8 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
     totalRows,
     setPage,
     onSelect,
+    selectedCourseId,
 }) => {
-
-    const [selectedCourse, setSelectedCourse] = useState<CourseWithGrade | null>(null);
 
     if (error) return (
         <Alert
@@ -59,11 +59,9 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
             columns={columns}
             loading={loading}
             rowKey="id"
-            onSelect={(course) => {
-                onSelect(course);
-                setSelectedCourse(course)
-            }}
+            onSelect={onSelect}
             emptyText="No Courses Available"
+            selectedRowKeys={selectedCourseId ? [selectedCourseId] : []}
             pagination={{
                 current: page,
                 total: totalRows,

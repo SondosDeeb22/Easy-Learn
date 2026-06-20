@@ -13,6 +13,7 @@ interface ReusableSelectTableInterface<T> {
     rowKey: keyof T & string;
     onSelect?: (selectedRow: T) => void; //callback when row is selected
     emptyText?: string;
+    selectedRowKeys?: React.Key[]; // Controlled selection keys
 
     // Pagination can be a simple boolean (default) or an object with settings
     pagination?: {
@@ -26,9 +27,10 @@ interface ReusableSelectTableInterface<T> {
 
 
 
-function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey, onSelect, emptyText, pagination }: ReusableSelectTableInterface<T>) {
+function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey, onSelect, emptyText, pagination, selectedRowKeys }: ReusableSelectTableInterface<T>) {
     // rowSelection object indicates the need for row selection
     const rowSelection: TableProps<T>['rowSelection'] = {
+        selectedRowKeys,
         onChange: (_: React.Key[], selectedRows: T[]) => {
             onSelect?.(selectedRows[0]);  // get the course data of selected row
         },

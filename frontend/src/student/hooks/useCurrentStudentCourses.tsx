@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 // services
 import { getCurrentStudentCourses } from '../services/courses.service';
 

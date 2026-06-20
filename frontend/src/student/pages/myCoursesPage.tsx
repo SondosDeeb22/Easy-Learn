@@ -4,7 +4,6 @@ import StudnetCoursesTable from '../components/StudnetCoursesTable';
 
 //hook
 import { useAllStudentCourses } from '../hooks/useAllStudnetCourses';
-import { useQueryClient } from '@tanstack/react-query';
 // ====================================================================
 export default function MyCoursesPage() {
     const rowsLimit = 8;

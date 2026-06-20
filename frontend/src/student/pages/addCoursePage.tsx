@@ -28,7 +28,7 @@ export default function AddCoursePage() {
     const rowsLimit = 8;
 
     // Ant Design notification hook
-    const [api] = notification.useNotification();
+    const [api, contextHolder] = notification.useNotification();
 
     // get current semester title 
     const { data: currentSemester } = useCurrentStudentCourses(page, rowsLimit);
@@ -57,11 +57,14 @@ export default function AddCoursePage() {
             queryClient.invalidateQueries({
                 queryKey: ['offeredCourses']
             });
+            //return user to first page
+            setPage(1);
 
         } catch (enrollmentError) {
             // show error message
             console.error("Enrollment failed:", enrollmentError);
             api.error({ title: "Failed to enroll", description: "Try again later" });
+            setSelectedCourse(null);
         }
     };
 
@@ -70,6 +73,7 @@ export default function AddCoursePage() {
     // =====================================================================
     return (
         <div className="p-6">
+            {contextHolder}
             {/* page title ------------------------------- */}
             <div className="flex items-center justify-between mt-5 mb-10">
                 <h1 className="text-2xl  font-bold text-gray-800">
@@ -101,6 +105,7 @@ export default function AddCoursePage() {
                 totalRows={offeredCourses?.totalRows ?? 0}
                 setPage={setPage}
                 onSelect={setSelectedCourse}
+                selectedCourseId={selectedCourse?.id ?? null}
             />
         </div>
     );
