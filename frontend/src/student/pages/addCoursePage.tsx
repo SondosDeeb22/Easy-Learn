@@ -5,9 +5,10 @@ import { notification } from "antd";
 
 //service
 import { enrollStudent } from "../services/courses.service";
+
 //hooks
 import { useStudentCurrentCourses } from '../hooks/StudnetCurrentCoursesHook';
-import { useOfferedCourses } from '../hooks/offeredCoursesHook';
+import { useOfferedCourses } from '../hooks/useOfferedCourses';
 
 //componenets
 import OfferedCoursesTable from "../components/OfferedCoursesTable";
@@ -15,33 +16,49 @@ import EnrollButton from "../components/EnrollButton";
 
 // interfaces
 import { OfferedCourses } from "../interfaces/courses.interface";
+
+// react query
+import { useQueryClient } from "@tanstack/react-query";
+
 // ====================================================================
 export default function AddCoursePage() {
     const [selectedCourse, setSelectedCourse] = useState<OfferedCourses | null>(null);
+    const [page, setPage] = useState(1); // initial state of page
+
     // Ant Design notification hook
-    const [api, contextHolder] = notification.useNotification();
+    const [api] = notification.useNotification();
 
     // get current semester title 
     const { data } = useStudentCurrentCourses();
     const semesterTitle = data?.[0]?.semesterTitle ?? "";
 
     // update offerd courses
-    const { data: offeredCourses, error, refetch } = useOfferedCourses();
+    const {
+        data: offeredCourses,
+        isLoading,
+        isError: offeredCoursesError,
+    } = useOfferedCourses(page);
 
 
     // ----------------------------------------------------
+    const queryClient = useQueryClient();
 
     const handleConfirm = async () => {
         if (!selectedCourse) return;
+
         try {
             await enrollStudent(selectedCourse.id);
             api.success({ title: "Enrolled successfully!", description: `You have been enrolled in  ${selectedCourse.code}` });
             setSelectedCourse(null);
 
-            refetch();
-        } catch (error) {
+            // mark the cache stale and automatically refetche offeredCourses
+            queryClient.invalidateQueries({
+                queryKey: ['offeredCourses']
+            });
+
+        } catch (enrollmentError) {
             // show error message
-            console.error("Enrollment failed:", error);
+            console.error("Enrollment failed:", enrollmentError);
             api.error({ title: "Failed to enroll", description: "Try again later" });
         }
     };
@@ -54,7 +71,7 @@ export default function AddCoursePage() {
             {/* page title ------------------------------- */}
             <div className="flex items-center justify-between mt-5 mb-10">
                 <h1 className="text-2xl  font-bold text-gray-800">
-                    {error ? "Available Courses" : `Available Courses - ${semesterTitle}`}
+                    {offeredCoursesError ? "Available Courses" : `Available Courses - ${semesterTitle}`}
                     <p className="text-sm text-gray-500 mt-2 ">Select a Course to Insert</p>
                 </h1>
                 <EnrollButton
@@ -73,7 +90,16 @@ export default function AddCoursePage() {
                 </div>
             }</>
             {/* table --------------------------------- */}
-            <OfferedCoursesTable data={offeredCourses} onSelect={setSelectedCourse} />
+            <OfferedCoursesTable
+                offeredCourses={offeredCourses?.courses ?? []}
+                loading={isLoading}
+                error={offeredCoursesError ? "Failed to load courses" : undefined}
+                page={page}
+                limit={8}
+                totalRows={offeredCourses?.totalRows ?? 0}
+                setPage={setPage}
+                onSelect={setSelectedCourse}
+            />
         </div>
     );
 }

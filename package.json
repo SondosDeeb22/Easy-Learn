@@ -2,11 +2,13 @@
     "name": "codebase",
     "private": true,
     "scripts": {
-        "dev": "dotenv -e .env -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:%BACKENDPORT% --timeout 60000 --interval 1000 && npm run dev --prefix frontend\""
+        "predev": "npx kill-port 3000",
+        "dev": "dotenv -e .env -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:localhost:3000 --timeout 60000 --interval 1000 && npm run dev --prefix frontend\""
     },
     "devDependencies": {
         "concurrently": "^9.2.1",
         "dotenv-cli": "^7.4.4",
+        "kill-port": "^1.6.0",
         "wait-on": "^7.2.0"
     }
 }

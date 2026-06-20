@@ -11,12 +11,20 @@ interface ReusableSelectTableInterface<T> {
     rowKey: keyof T & string;
     onSelect?: (selectedRow: T) => void; //callback when row is selected
     emptyText?: string;
+
+    // Pagination can be a simple boolean (default) or an object with settings
+    pagination?: {
+        current?: number;
+        pageSize?: number;
+        total?: number;
+        onChange?: (page: number, pageSize: number) => void;
+    };
 }
 // ====================================================================
 
 
 
-function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey, onSelect, emptyText }: ReusableSelectTableInterface<T>) {
+function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey, onSelect, emptyText, pagination }: ReusableSelectTableInterface<T>) {
     // rowSelection object indicates the need for row selection
     const rowSelection: TableProps<T>['rowSelection'] = {
         onChange: (_: React.Key[], selectedRows: T[]) => {
@@ -31,13 +39,17 @@ function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey,
 
             <Divider />
             <Table<T>
-                rowKey={rowKey}
                 loading={loading}
+                rowKey={rowKey}
                 rowSelection={{ type: "radio", ...rowSelection }}
                 columns={columns}
                 dataSource={data}
                 locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
-                pagination={data.length > 8 ? { pageSize: 8, position: ['bottomCenter'] } : false}
+                pagination={pagination ? {
+                    ...pagination,
+                    hideOnSinglePage: true,
+                    position: ['bottomCenter'],
+                } : false}
             />
         </ConfigProvider>
     );

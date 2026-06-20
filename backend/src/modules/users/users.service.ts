@@ -82,16 +82,6 @@ export class UsersService {
             maxCredits: semester?.maxCredits ?? 0,
         }
 
-
-        //! Exclude password --- 
-        // currently I'm using the shared interceptor to exclude the password
-
-        // const { password, createdAt, updatedAt, ...userWithoutPassword } = user.toJSON();
-
-        // const studentFinalData: StudnetData = {
-        //     ...userWithoutPassword,
-        //     maxCredits: semester?.maxCredits ?? 0,
-        // };
         console.log("this is student final data from function ", studentFinalData)
 
 

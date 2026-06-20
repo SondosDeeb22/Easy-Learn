@@ -201,7 +201,7 @@ export class CoursesService {
     // =========================================================================
     //? fetch offered courses (available courses for registeration)
     // =========================================================================
-    async getOfferedCourses(studentId: string): Promise<ServiceResult<OfferedCoursesInterface>> {
+    async getOfferedCourses(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCoursesInterface>> {
 
         // get current semester
         const today = new Date();
@@ -236,12 +236,14 @@ export class CoursesService {
         console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredit} remaining ${remainingCredits}`)
         if (remainingCredits <= 0) return {
             message: "You have reached the maximum number of credits for this semester",
-            data: { remainingCredits: 0, courses: [] },
+            data: { remainingCredits: 0, courses: [], totalRows: 0 },
         }
 
         // --------------------------------------------------------------------
-        // get offered courses excluding already enrolled ones
-        const offeredCourses = await this.offeredCoursesModel.findAll({
+        const offset = (page - 1) * limit;
+        const offeredCourses = await this.offeredCoursesModel.findAndCountAll({
+            limit,
+            offset,
             where: {
                 semesterId: currentSemester.id,
                 courseId: { [Op.notIn]: enrolledCourseIds.length ? enrolledCourseIds : [''] }
@@ -256,18 +258,21 @@ export class CoursesService {
             }],
             attributes: []
         });
+        console.log("backend/courses.service (getOfferedCourses function ) - offered courses count= \n", offeredCourses.count,
+            "\noffered courses = \n", offeredCourses.rows.map(record => (record.course?.toJSON())));
 
 
-        const formatted = offeredCourses.map(record => ({
+        const formatted = offeredCourses.rows.map(record => ({
             id: record.course?.id,
             code: record.course?.code,
             title: record.course?.title,
             credit: record.course?.credit,
         }));
 
+
         return {
             message: formatted.length === 0 ? "No courses available" : "Courses fetched successfully",
-            data: { remainingCredits, courses: formatted },
+            data: { remainingCredits, courses: formatted, totalRows: offeredCourses.count },
         }
     }
 

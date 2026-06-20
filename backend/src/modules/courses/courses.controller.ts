@@ -88,8 +88,16 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
   @ApiNotFoundResponse({ description: 'No active semester was found' })
-  async getOfferedCourses(@Request() req) {
-    const result = await this.coursesService.getOfferedCourses(req.user.id);
+
+  @ApiQuery({ name: "page", type: Number })
+  @ApiQuery({ name: "limit", type: Number })
+
+  async getOfferedCourses(
+    @Request() req,
+    @Query("page") page: number,
+    @Query("limit") limit: number,
+  ) {
+    const result = await this.coursesService.getOfferedCourses(req.user.id, page, limit);
     return result;
   }
 

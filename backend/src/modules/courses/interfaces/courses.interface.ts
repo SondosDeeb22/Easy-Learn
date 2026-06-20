@@ -26,4 +26,5 @@ export interface CurrenseSemesterCoursesInterface {
 export interface OfferedCoursesInterface {
     remainingCredits: number;
     courses: Courses[];
+    totalRows: number
 };

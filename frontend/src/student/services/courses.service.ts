@@ -25,15 +25,15 @@ export const getStudnetCourses = async (): Promise<Course[]> => {
 //? Get offered courses
 //=====================================================
 
-export const getOfferedCourses = async (): Promise<OfferedCoursesWithCredits> => {
-    const response = await apiClient.get('/api/courses/offered');
-    console.log("this is response for /courses/offered:", response.data.data);
+export const getOfferedCourses = async (page: number, limit: number): Promise<OfferedCoursesWithCredits> => {
+    const response = await apiClient.get(`/api/courses/offered?page=${page}&limit=${limit}`);
+    console.log(`this is response for /courses/offered?page=${page}&limit=${limit}`, response.data.data);
 
-    const { remainingCredits, courses } = response.data.data;
+    const { remainingCredits, courses, totalRows } = response.data.data;
     if (!Array.isArray(courses)) {
         throw new Error("Expected courses to be an array");
     }
-    return { remainingCredits, courses };
+    return { remainingCredits, courses, totalRows };
 }
 
 

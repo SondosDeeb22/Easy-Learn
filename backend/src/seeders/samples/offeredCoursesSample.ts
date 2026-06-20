@@ -232,6 +232,80 @@ export const sampleOfferedCourses: OfferedCoursesInterface[] = [
         courseId: '50000044',
         semesterId: '20000008',
     },
-
+    {
+        id: '30000045',
+        courseId: '50000045',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000046',
+        courseId: '50000046',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000047',
+        courseId: '50000047',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000048',
+        courseId: '50000048',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000049',
+        courseId: '50000049',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000050',
+        courseId: '50000050',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000051',
+        courseId: '50000051',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000052',
+        courseId: '50000052',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000053',
+        courseId: '50000053',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000054',
+        courseId: '50000054',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000055',
+        courseId: '50000055',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000056',
+        courseId: '50000056',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000057',
+        courseId: '50000057',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000058',
+        courseId: '50000058',
+        semesterId: '20000008',
+    },
+    {
+        id: '30000059',
+        courseId: '50000059',
+        semesterId: '20000008',
+    },
 
 ];
