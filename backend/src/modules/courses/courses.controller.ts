@@ -13,7 +13,7 @@ import { NotFoundError } from 'src/common/errors';
 // ======================================================
 
 @UseGuards(RolesGuard)
-@SetMetadata('roles', [Roles.STUDENT,])
+@SetMetadata('roles', [Roles.ADMIN])
 
 @Controller('courses')
 export class CoursesController {
@@ -23,7 +23,8 @@ export class CoursesController {
   // ==========================================================================================
   //? Get Studnet all courses 
   // ==========================================================================================
-  @Get("all")
+  @Get("student/all")
+  @SetMetadata('roles', [Roles.STUDENT])
 
   @ApiQuery({
     name: 'semester',
@@ -35,7 +36,7 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-  async getAllCourses(
+  async getAllStudentCourses(
     @Request() req,
     @Query("page") page: number,
     @Query("limit") limit: number,
@@ -50,6 +51,7 @@ export class CoursesController {
   //? Get Studnet courses for current semester
   // ==========================================================================================
   @Get("current")
+  @SetMetadata('roles', [Roles.STUDENT])
 
   @ApiQuery({
     name: 'semester',
@@ -73,6 +75,7 @@ export class CoursesController {
   //? Enroll student in a course
   // ==========================================================================================
   @Post(':courseId/enroll')
+  @SetMetadata('roles', [Roles.STUDENT])
 
   @ApiCreatedResponse({ description: 'Student enrolled in course successfully' })
   //error
@@ -91,6 +94,7 @@ export class CoursesController {
   //? fetch offered courses (available courses for registeration)
   // ==========================================================================================
   @Get('offered')
+  @SetMetadata('roles', [Roles.STUDENT])
 
   @HttpCode(200)
   @ApiOkResponse({ description: 'Offered courses fetched successfully' })
@@ -101,13 +105,46 @@ export class CoursesController {
   @ApiQuery({ name: "page", type: Number })
   @ApiQuery({ name: "limit", type: Number })
 
-  async getOfferedCourses(
+  async getAvailableCoursesForStudent(
     @Request() req,
     @Query("page") page: number,
     @Query("limit") limit: number,
   ) {
-    const result = await this.coursesService.getOfferedCourses(req.user.id, page, limit);
+    const result = await this.coursesService.getAvailableCoursesForStudent(req.user.id, page, limit);
     return result;
   }
+
+
+  // ==========================================================================================
+  //? Get all courses 
+  // ==========================================================================================
+  @Get('all')
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'All courses fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+
+  async getAllCourses(@Request() req,) {
+    const result = await this.coursesService.getAllCourses();
+    return result;
+  }
+
+
+  // ==========================================================================================
+  //? Get all semesters
+  // ==========================================================================================
+  @Get('semesters')
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Semesters fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+
+  async getAllSemesters(@Request() req,) {
+    const result = await this.coursesService.getAllSemesters();
+    return result;
+  }
+
 
 }

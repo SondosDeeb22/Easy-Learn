@@ -61,12 +61,12 @@ export class UsersModel extends Model<UsersModel> implements UserInterface {
     // credit ==============================================
     @Column(DataType.INTEGER)
 
-    declare currentSemesterCredit: number;
+    declare currentSemesterCredits: number;
 
     // total credit ==============================================
     @Column(DataType.INTEGER)
 
-    declare totalCredit: number;
+    declare totalCredits: number;
 
     // Associations ========================================
     @HasMany(() => AcademicRecordsModel)

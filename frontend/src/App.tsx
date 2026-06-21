@@ -20,7 +20,8 @@ import Login from './Login';
 import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 
 // Admin - protected pages ---------------------------------------
-import AdminDashboard from './admin/pages/adminDashboard';
+import AdminDashboard from './admin/pages/dashboard';
+import StudentsPage from './admin/pages/students';
 
 // Student - protected pages ---------------------------------------
 import StudentHomepage from './student/pages/studentHomepage';
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <AdminDashboard />
+      },
+      {
+        path: "students",
+        element: <StudentsPage />
       }
     ]
 
@@ -48,9 +53,7 @@ const router = createBrowserRouter([
   // studnet ----------------------------
   {
     path: "/student",
-    element: <ProtectedRoute targetRole="student">
-      <StudentLayout />
-    </ProtectedRoute>,
+    element: <ProtectedRoute targetRole="student"> <StudentLayout />  </ProtectedRoute>,
     children: [
       {
         path: "homepage",
@@ -75,16 +78,20 @@ const App = () => {
   // check if the user is authenticated or not
   useEffect(() => {
     const bootstrapAuth = async () => {
+      if (!localStorage.getItem('isLoggedIn')) { // check for 'isLoggedIn' flag in local storage, if found we skip the /api/auth/user API call entirely        dispatch(clearUser());
+        dispatch(stopLoading());
+        return;
+      }
+
       try {
         const response = await apiClient.get('/api/auth/user');
         const userData = response.data.data;
 
-
         dispatch(setUser(userData));
-
 
         // ============================================================
       } catch (error) {
+        localStorage.removeItem('isLoggedIn');
         dispatch(clearUser());
         // ============================================================
       } finally {

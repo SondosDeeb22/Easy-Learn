@@ -13,8 +13,8 @@ export interface UserInterface {
     email: string,
     gender: Gender,
     password: string,
-    currentSemesterCredit?: number,
-    totalCredit?: number,
+    currentSemesterCredits?: number,
+    totalCredits?: number,
 }
 
 // was used in exlucidng password from studnet data, now i use interceptor instead
@@ -25,8 +25,8 @@ export interface StudnetData {
     birthDate: Date,
     email: string,
     gender: Gender,
-    currentSemesterCredit: number,
-    totalCredit: number,
+    currentSemesterCredits: number,
+    totalCredits: number,
     maxCredits: number
 
 }
@@ -40,8 +40,8 @@ export interface filterdStudent {
     birthDate: Date,
     email: string,
     gender: Gender,
-    currentSemesterCredit: number,
-    totalCredit: number,
+    currentSemesterCredits: number,
+    totalCredits: number,
 }
 
 

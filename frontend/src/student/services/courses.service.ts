@@ -16,8 +16,8 @@ export const getCurrentStudentCourses = async (page: number, limit: number): Pro
 //=====================================================
 
 export const getAllStudnetCourses = async (page: number, limit: number): Promise<AllStudentCourses> => {
-    const response = await apiClient.get(`/api/courses/all?page=${page}&limit=${limit}`);
-    console.log("this is response for /courses/all:", response.data);
+    const response = await apiClient.get(`/api/courses/student/all?page=${page}&limit=${limit}`);
+    console.log("this is response for /courses/student/all:", response.data);
     return response.data.data;
 }
 
@@ -25,7 +25,7 @@ export const getAllStudnetCourses = async (page: number, limit: number): Promise
 //? Get offered courses
 //=====================================================
 
-export const getOfferedCourses = async (page: number, limit: number): Promise<OfferedCoursesWithCredits> => {
+export const getAvailableCoursesForStudent = async (page: number, limit: number): Promise<OfferedCoursesWithCredits> => {
     const response = await apiClient.get(`/api/courses/offered?page=${page}&limit=${limit}`);
     console.log(`this is response for /courses/offered?page=${page}&limit=${limit}`, response.data.data);
 

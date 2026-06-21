@@ -39,7 +39,7 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
 
                 <div className="bg-navbar/50 rounded-lg p-3">
                     <p className="text-[12px] text-black mb-1">Current Semester Credits</p>
-                    <p className="text-[14px] font-medium text-black">{user.currentSemesterCredit}</p>
+                    <p className="text-[14px] font-medium text-black">{user.currentSemesterCredits}</p>
                 </div>
 
                 <div className="bg-navbar/50 rounded-lg p-3">
@@ -49,7 +49,7 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
 
                 <div className="bg-navbar/50 rounded-lg p-3">
                     <p className="text-[12px] text-black mb-1">Cumulative Credits</p>
-                    <p className="text-[14px] font-medium text-black">{user.totalCredit}</p>
+                    <p className="text-[14px] font-medium text-black">{user.totalCredits}</p>
                 </div>
 
 

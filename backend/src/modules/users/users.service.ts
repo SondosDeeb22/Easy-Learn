@@ -128,13 +128,13 @@ export class UsersService {
                 limit,
                 offset,
                 where: { courseId, semesterId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredit', 'user.totalCredit'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
                 // used group which remove duplicated objects with same studentId, so we have only one entry per user in .rows
                 // side effect for user group is that .count changed from number to array of duplicated objects(GroupedCountResultItem[]), defining thier studentId and how many times they found
 
                 include: [{
                     model: UsersModel,
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredit", "totalCredit"]
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
                 }],
                 attributes: ['studentId']
             });
@@ -148,15 +148,20 @@ export class UsersService {
                 email: record.user?.email,
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
-                currentSemesterCredit: record.user?.currentSemesterCredit,
-                totalCredit: record.user?.totalCredit
+                currentSemesterCredits: record.user?.currentSemesterCredits,
+                totalCredits: record.user?.totalCredits
             })
             );
-            console.log(`/backend/users.service.ts \n students counts: ${academicRecords.rows.length} \n students: ${students} \n query result: ${academicRecords}`)
+            const totalRows = Array.isArray(academicRecords.count)
+                ? academicRecords.count.length   // if grouped query, count will be an array, its .length = unique rows(here sence we used group in the query it will always be array, we keep this condition to satisfy typescript, becasue .count is declared as number | GroupedCountResultItem[])
+                : academicRecords.count;
+
+            console.log(`/backend/users.service.ts \n students counts: ${totalRows} \n students: ${students} \n query result: ${academicRecords}`)
+
 
             return {
-                message: `${students.length} Students found successfully`,
-                data: { totalRows: students.length, students: students }
+                message: `${totalRows} Students found successfully`,
+                data: { totalRows: totalRows, students: students }
             };
         }
 
@@ -167,10 +172,10 @@ export class UsersService {
                 limit,
                 offset,
                 where: { semesterId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredit', 'user.totalCredit'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
                 include: [{
                     model: UsersModel,
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredit", "totalCredit"]
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
                 }],
                 attributes: ['studentId']
             });
@@ -185,15 +190,19 @@ export class UsersService {
                 email: record.user?.email,
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
-                currentSemesterCredit: record.user?.currentSemesterCredit,
-                totalCredit: record.user?.totalCredit
+                currentSemesterCredits: record.user?.currentSemesterCredits,
+                totalCredits: record.user?.totalCredits
             })
             );
-            console.log(`/backend/users.service.ts \n Found students count: ${academicRecords.rows.length} \n Found students: ${JSON.stringify(students, null, 2)}\n query result: ${JSON.stringify(academicRecords, null, 2)}`)
+            const totalRows = Array.isArray(academicRecords.count)
+                ? academicRecords.count.length
+                : academicRecords.count;
+
+            console.log(`/backend/users.service.ts \n Found students count: ${totalRows} \n Found students: ${JSON.stringify(students, null, 2)}\n query result: ${JSON.stringify(academicRecords, null, 2)}`)
 
             return {
-                message: `${students.length} Students found successfully`,
-                data: { totalRows: students.length, students: students }
+                message: `${totalRows} Students found successfully`,
+                data: { totalRows: totalRows, students: students }
             };
         }
 
@@ -204,11 +213,11 @@ export class UsersService {
                 limit,
                 offset,
                 where: { courseId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredit', 'user.totalCredit'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
                 include: [{
                     model: UsersModel,
                     as: "user",
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredit", "totalCredit"]
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
                 }],
                 attributes: ['studentId']
             });
@@ -223,15 +232,19 @@ export class UsersService {
                 email: record.user?.email,
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
-                currentSemesterCredit: record.user?.currentSemesterCredit,
-                totalCredit: record.user?.totalCredit
+                currentSemesterCredits: record.user?.currentSemesterCredits,
+                totalCredits: record.user?.totalCredits
             })
             );
+            const totalRows = Array.isArray(academicRecords.count)
+                ? academicRecords.count.length
+                : academicRecords.count;
+
 
             console.log("this is students data from get students service:", students)
             return {
-                message: `${students.length} Students found successfully`,
-                data: { totalRows: students.length, students: students }
+                message: `${totalRows} Students found successfully`,
+                data: { totalRows: totalRows, students: students }
             };
 
         }

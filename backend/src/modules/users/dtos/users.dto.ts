@@ -27,10 +27,10 @@ export class StudentDataDto {
     password: string;
 
     @ApiProperty()
-    currentSemesterCredit: number;
+    currentSemesterCredits: number;
 
     @ApiProperty()
-    totalCredit: number;
+    totalCredits: number;
 
     @ApiProperty()
     maxCredits: number;
@@ -51,4 +51,45 @@ export class StudentFilterParamsDto {
     @ApiPropertyOptional({ description: 'Semester ID' })
     semesterId?: string;
 
+}
+
+
+// =================================================
+// dto of student data we pass to admin 
+// =================================================
+export class StudentForAdmin {
+    @ApiProperty()
+    id: string;
+
+    @ApiProperty()
+    name: string;
+
+    @ApiProperty()
+    gender: string;
+
+    @ApiProperty()
+    currentSemesterCredits: number;
+
+    @ApiProperty()
+    totalCredits: number;
+
+    // --------------------
+    @ApiProperty()
+    @Exclude()
+    role: string;
+    @ApiProperty()
+    @Exclude()
+    birthDate: Date;
+    @ApiProperty()
+    @Exclude()
+    email: string;
+    @ApiProperty()
+    @Exclude()
+    password: string;
+    @ApiProperty()
+    @Exclude()
+    createdAt: Date;
+    @ApiProperty()
+    @Exclude()
+    updatedAt: Date;
 }

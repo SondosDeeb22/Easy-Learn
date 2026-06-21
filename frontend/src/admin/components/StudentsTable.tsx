@@ -1,22 +1,23 @@
 import React from 'react';
 import { TableColumnsType, Alert } from 'antd';
 
-// interface
-import { CourseWithGrade } from '../interfaces/courses.interface';
-
+//interface
+import { Student } from '../interfaces/users.interface';
 // reusable component
 import ReusableTable from "../../shared/components/ReusableTable";
 
 // ====================================================
-const columns: TableColumnsType<CourseWithGrade> = [
-    { title: 'Code', dataIndex: 'code', key: 'code', width: "20%" },
-    { title: 'Title', dataIndex: 'title', key: 'title', width: "40%" },
-    { title: 'Credit', dataIndex: 'credit', key: 'credit', width: "20%" },
-    { title: 'Grade', dataIndex: 'grade', key: 'grade', width: "20%" },
+
+const columns: TableColumnsType<Student> = [
+    { title: "Name", dataIndex: "name", key: "name", width: "20%" },
+    { title: "ID", dataIndex: "id", key: "id", width: "20%" },
+    { title: "Gender", dataIndex: "gender", key: "gender", width: "20%" },
+    { title: "Current Semester Credits", dataIndex: "currentSemesterCredits", key: "currentSemesterCredits", width: "20%" },
+    { title: "Total Credits", dataIndex: "totalCredits", key: "totalCredits", width: "20%" },
 ];
 
-interface AllStudentCourses {
-    allCourses: CourseWithGrade[];
+interface Students {
+    students: Student[];
     loading: boolean;
     error?: string;
     page: number;
@@ -24,9 +25,11 @@ interface AllStudentCourses {
     totalRows: number;
     setPage: (page: number) => void;
 }
+
 // ====================================================
-const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
-    allCourses,
+
+const StudentsTable: React.FC<Students> = ({
+    students,
     loading,
     error,
     page,
@@ -34,7 +37,6 @@ const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
     totalRows,
     setPage
 }) => {
-
     if (error) return (
         <Alert
             title={error}
@@ -43,17 +45,17 @@ const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
             style={{ margin: '16px 0', fontSize: '14px' }}
         />
     );
-    console.log(`/offeredCoursesTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nCourses:${JSON.stringify(allCourses, null, 0)}`);
+    console.log(`/StudentsTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nStudents:${JSON.stringify(students, null, 0)}`);
 
     // =======================================================================================================================
 
     return (
-        <ReusableTable<CourseWithGrade>
-            data={allCourses}
+        <ReusableTable<Student>
+            data={students}
             columns={columns}
             loading={loading}
             rowKey="id"
-            emptyText="You don't have any courses yet"
+            emptyText="No students found"
             pagination={{
                 current: page,
                 pageSize: limit,
@@ -62,6 +64,6 @@ const StudnetCoursesTable: React.FC<AllStudentCourses> = ({
             }}
         />
     );
-};
+}
 
-export default StudnetCoursesTable;
+export default StudentsTable;

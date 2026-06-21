@@ -8,11 +8,11 @@ import { StudentData } from '../interfaces/users.interface';
 
 export const getUserData = async (studentId: string): Promise<StudentData> => {
 
-    const response = await apiClient.get(`/api/users/${studentId}`);
+    const response = await apiClient.get(`/api/users/student/${studentId}`);
 
-    if (!response.data.data) throw new Error("No user data returned from /api/users/:studentId:");
-    const { id, name, role, birthDate, gender, email, currentSemesterCredit, totalCredit, maxCredits } = response.data.data;
+    if (!response.data.data) throw new Error("No user data returned from /api/users/student/:studentId:");
+    const { id, name, role, birthDate, gender, email, currentSemesterCredits, totalCredits, maxCredits } = response.data.data;
 
-    console.log("this is response for /users/:studentId:", response.data.data);
-    return { id, name, role, birthDate, gender, email, currentSemesterCredit, totalCredit, maxCredits };
+    console.log("this is response for /users/student/:studentId:", response.data.data);
+    return { id, name, role, birthDate, gender, email, currentSemesterCredits, totalCredits, maxCredits };
 }

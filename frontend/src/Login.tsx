@@ -12,7 +12,6 @@ import { getApiErrorMessage } from './shared/services/apiError';
 // redux
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 
-import { RootState } from './redux/reduxConfig'; // 
 
 import { login } from './redux/actions/authAction';
 import { startLoading, stopLoading, setError, clearError, clearSpecificError } from './redux/slices/authSlice';

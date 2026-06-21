@@ -5,8 +5,8 @@ export interface StudentData {
     birthDate: string;
     gender: string;
     email: string;
-    currentSemesterCredit: number;
-    totalCredit: number;
+    currentSemesterCredits: number;
+    totalCredits: number;
     maxCredits: number
 }
 

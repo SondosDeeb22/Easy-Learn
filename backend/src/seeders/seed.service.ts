@@ -34,17 +34,17 @@ export class SeedService {
     ) { }
 
     async seed() {
-        // Clear existing data
-        await this.userModel.destroy({ where: {} });
+        // Clear existing data- children then parents
+        await this.academicRecordsModel.destroy({ where: {} });
+        await this.offeredCoursesModel.destroy({ where: {} });
         await this.coursesModel.destroy({ where: {} });
         await this.semestersModel.destroy({ where: {} });
-        await this.offeredCoursesModel.destroy({ where: {} });
-        await this.academicRecordsModel.destroy({ where: {} });
+        await this.userModel.destroy({ where: {} });
 
-        //seed data
+        //seed data - parents then children
         await this.userModel.bulkCreate(sampleUsers as any);
-        await this.coursesModel.bulkCreate(sampleCourses as any);
         await this.semestersModel.bulkCreate(sampleSemesters as any);
+        await this.coursesModel.bulkCreate(sampleCourses as any);
         await this.offeredCoursesModel.bulkCreate(sampleOfferedCourses as any);
         await this.academicRecordsModel.bulkCreate(sampleAcademicRecords as any);
     }

@@ -25,6 +25,11 @@ export const login = ({ id, password }: LoginCredentials) => async (dispatch: Di
         dispatch(setUser(userData));
         dispatch(setError(""));
 
+
+
+        localStorage.setItem('isLoggedIn', 'true');// localStorage: is a built-in browser API that stores key-value pairs (It survives page refreshes and browser restarts)
+        // track if user has logged in before, and only then calls /api/auth/user to restore the session, to avoiding a 401 error in the console
+
         return userData;
         // ==============================================================
     } catch (error: any) {

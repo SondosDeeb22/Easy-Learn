@@ -12,7 +12,7 @@ import { OfferedCoursesModel } from './offeredCourses.model';
 
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses } from './interfaces/courses.interface';
+import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses, Course, Semester } from './interfaces/courses.interface';
 
 //error
 import { NotFoundError } from "../../common/errors";
@@ -198,8 +198,8 @@ export class CoursesService {
 
         // update student's credit
         await this.usersModel.update({
-            currentSemesterCredit: student.currentSemesterCredit + course.credit,
-            totalCredit: student.totalCredit + course.credit
+            currentSemesterCredits: student.currentSemesterCredits + course.credit,
+            totalCredits: student.totalCredits + course.credit
         }, {
             where: { id: studentId }
         });
@@ -211,9 +211,9 @@ export class CoursesService {
     }
 
     // =========================================================================
-    //? fetch offered courses (available courses for registeration)
+    //? fetch offered courses (available courses for registeration) that studetn can pick from according to his credits 
     // =========================================================================
-    async getOfferedCourses(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCoursesInterface>> {
+    async getAvailableCoursesForStudent(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCoursesInterface>> {
 
         // get current semester
         const today = new Date();
@@ -237,15 +237,15 @@ export class CoursesService {
 
         // calculate how many credit student can enroll in this semester 
         const enrolledCredits = await this.usersModel.findByPk(studentId, {
-            attributes: ["currentSemesterCredit"]
+            attributes: ["currentSemesterCredits"]
         });
         if (!enrolledCredits) throw new NotFoundError("Student not found");
 
         // according to remaining credits view course, if no credit left view no courses
-        const remainingCredits = currentSemester.maxCredits - enrolledCredits.currentSemesterCredit;
+        const remainingCredits = currentSemester.maxCredits - enrolledCredits.currentSemesterCredits;
 
 
-        console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredit} remaining ${remainingCredits}`)
+        console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredits} remaining ${remainingCredits}`)
         if (remainingCredits <= 0) return {
             message: "You have reached the maximum number of credits for this semester",
             data: { remainingCredits: 0, courses: [], totalRows: 0 },
@@ -270,7 +270,7 @@ export class CoursesService {
             }],
             attributes: []
         });
-        console.log("backend/courses.service (getOfferedCourses function ) - offered courses count= \n", offeredCourses.count,
+        console.log("backend/courses.service (getAvailableCoursesForStudent function ) - offered courses count= \n", offeredCourses.count,
             "\noffered courses = \n", offeredCourses.rows.map(record => (record.course?.toJSON())));
 
 
@@ -286,6 +286,56 @@ export class CoursesService {
             message: formatted.length === 0 ? "No courses available" : "Courses fetched successfully",
             data: { remainingCredits, courses: formatted, totalRows: offeredCourses.count },
         }
+    }
+
+    // =========================================================================
+    // =========================================================================
+
+
+    // =========================================================================
+    //? get all courses from courses table
+    // =========================================================================
+
+    async getAllCourses(): Promise<ServiceResult<Course[] | []>> {
+
+        const result = await this.coursesModel.findAll();
+        if (!result) return { message: "No courses found", data: [] };
+
+        const formatted = result.map((course) => ({
+            id: course.id,
+            code: course.code,
+            title: course.title,
+            credit: course.credit,
+        }));
+        return {
+            message: `${formatted.length} Courses fetched successfully`,
+            data: formatted,
+        }
+
+
+    }
+
+
+
+    // =========================================================================
+    //? get all semesters
+    // =========================================================================
+
+    async getAllSemesters(): Promise<ServiceResult<Semester[] | []>> {
+
+        const result = await this.semestersModel.findAll();
+        if (!result) return { message: "No Semesters found", data: [] };
+
+        const formatted = result.map((semester) => ({
+            id: semester.id,
+            title: semester.title,
+        }));
+        return {
+            message: `${formatted.length} Semesters fetched successfully`,
+            data: formatted,
+        }
+
+
     }
 
 }

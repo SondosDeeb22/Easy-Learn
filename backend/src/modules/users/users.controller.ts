@@ -12,7 +12,7 @@ import { RolesGuard } from '../auth/guards/auth.guard';
 import { TransformInterceptor } from '../../common/interceptors/Transform.interceptor';
 import { UseInterceptors } from '@nestjs/common';
 
-import { StudentDataDto } from './dtos/users.dto';
+import { StudentDataDto, StudentForAdmin } from './dtos/users.dto';
 // ============================================================
 
 @UseGuards(RolesGuard)
@@ -36,19 +36,19 @@ export class UsersController {
   @ApiQuery({ name: 'courseId', required: false })
   @ApiQuery({ name: 'semesterId', required: false })
   async getStudents(
-    // @Query('page') page: number,
-    // @Query('limit') limit: number,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
 
     @Query('studentId') studentId?: string,
     @Query('courseId') courseId?: string,
     @Query('semesterId') semesterId?: string,
 
   ) {
-    return this.usersService.getStudents({ studentId, courseId, semesterId }, 1, 10);
+    return this.usersService.getStudents({ studentId, courseId, semesterId }, page, limit);
   }
   /// ============================================================
 
-  @Get('/:id')
+  @Get('/student/:id')
   @UseInterceptors(new TransformInterceptor(StudentDataDto))
 
   @HttpCode(200)
@@ -61,9 +61,24 @@ export class UsersController {
     const result = await this.usersService.getStudentData(id);
     if (!result) throw new NotFoundError("User was not found");
     console.log("this is userData:\n", result)
-    return result
+    return result;
   }
-  /// ============================================================
+
+
+  //============================================================
+  //? fetch basic Students data for Admin page
+  //============================================================
+  @Get('/admin/student/:id')
+  @UseInterceptors(new TransformInterceptor(StudentForAdmin))
+
+  async getStudentForAdmin(@Param('id') id: string) {
+
+    const result = await this.usersService.findById(id);
+    return result;
+  }
+
+
+
 
 
 

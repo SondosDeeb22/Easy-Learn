@@ -1,7 +1,7 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 //service
-import { getOfferedCourses } from '../services/courses.service';
+import { getAvailableCoursesForStudent } from '../services/courses.service';
 
 
 // =======================================================================
@@ -13,7 +13,7 @@ export const useOfferedCourses = (page: number, limit: number) => {
 
     return useQuery({
         queryKey: ['offeredCourses', page],
-        queryFn: () => getOfferedCourses(page, limit),
+        queryFn: () => getAvailableCoursesForStudent(page, limit),
         placeholderData: keepPreviousData,
         staleTime: 1000 * 60,
     });

@@ -8,13 +8,38 @@ export interface StudentFilterParams {
     semesterId?: string;
 
 }
-export interface filterdStudentInterface {
+export interface FilterdStudentInterface {
     id: string,
     name: string,
     birthDate: Date,
     email: string,
     gender: Gender,
-    currentSemesterCredit: number,
-    totalCredit: number,
+    currentSemesterCredits: number,
+    totalCredits: number,
 }
 
+// ------------------------------------------------------
+export interface Student {
+    id: string,
+    name: string,
+    gender: Gender,
+    currentSemesterCredits: number,
+    totalCredits: number,
+
+}
+
+export interface Students {
+    totalRows: number,
+    students: Student[]
+}
+
+// // =============================================================
+// // student data we pass to admin page
+// // =============================================================
+// export interface StudentForAdmin {
+//     id: string;
+//     name: string;
+//     gender: string;
+//     currentSemesterCredits: number;
+//     totalCredits: number;
+// }
