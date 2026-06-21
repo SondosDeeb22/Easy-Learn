@@ -36,11 +36,15 @@ export class UsersController {
   @ApiQuery({ name: 'courseId', required: false })
   @ApiQuery({ name: 'semesterId', required: false })
   async getStudents(
+    // @Query('page') page: number,
+    // @Query('limit') limit: number,
+
     @Query('studentId') studentId?: string,
     @Query('courseId') courseId?: string,
     @Query('semesterId') semesterId?: string,
+
   ) {
-    return this.usersService.getStudents({ studentId, courseId, semesterId });
+    return this.usersService.getStudents({ studentId, courseId, semesterId }, 1, 10);
   }
   /// ============================================================
 

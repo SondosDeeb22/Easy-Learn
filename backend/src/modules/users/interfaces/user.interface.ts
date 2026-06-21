@@ -34,7 +34,7 @@ export interface StudnetData {
 
 // ============================================
 
-export interface filterdStudentInterface {
+export interface filterdStudent {
     id: string,
     name: string,
     birthDate: Date,
@@ -42,5 +42,11 @@ export interface filterdStudentInterface {
     gender: Gender,
     currentSemesterCredit: number,
     totalCredit: number,
+}
+
+
+export interface studentData {
+    totalRows: number
+    students: filterdStudent[],
 }
 
