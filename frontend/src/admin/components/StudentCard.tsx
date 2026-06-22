@@ -28,16 +28,28 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
     return (
         <>
             {student ? (
+                // view student data card and courses if student was found with this id -------------------------------------------------
                 <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy } }}>
                     <Card style={{ borderRadius: 12, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', maxWidth: '100%' }}>
                         {/* Header - name, id, gender */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid #f0f0f0' }}>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 14,
+                            marginBottom: 16,
+                            padding: '16px',
+                            margin: '-24px -24px 16px -24px',
+                            background: colors.burgundy,
+                            borderRadius: '12px 12px 0 0'
+                        }}>
                             <div>
-                                <p style={{ margin: 0, fontSize: 15, fontWeight: 500 }}>{student.name}</p>
-                                <p style={{ margin: 0, fontSize: 13, color: '#6b7280' }}>ID: {student.id}</p>
+                                <p style={{ margin: 0, fontSize: 15, fontWeight: 500, color: 'white' }}>{student.name}</p>
+                                <p style={{ margin: 0, fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>ID: {student.id}</p>
                             </div>
                             <div style={{ marginLeft: 'auto' }}>
-                                <Tag>{student.gender}</Tag>
+                                <Tag style={{ borderColor: 'rgba(255,255,255,0.4)', color: 'white', background: 'rgba(255,255,255,0.15)' }}>
+                                    {student.gender}
+                                </Tag>
                             </div>
                         </div>
 
@@ -63,7 +75,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                     </Card>
                 </ConfigProvider>
             ) : (
-                // display this if no record found for this studentId --------------------------------------------------------------
+                // Not Found state - display this if no record found for this studentId --------------------------------------------------------------
 
                 <Card style={{ borderRadius: 12, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', maxWidth: "100%" }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '24px 0' }}>

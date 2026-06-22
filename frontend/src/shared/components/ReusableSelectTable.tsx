@@ -49,6 +49,8 @@ function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey,
                 columns={columns}
                 dataSource={data}
                 locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
+                style={{ width: '100%' }}
+                scroll={{ x: true }}
                 pagination={pagination ? {
                     ...pagination,
                     hideOnSinglePage: true,

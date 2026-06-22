@@ -117,7 +117,7 @@ export class CoursesService {
                     as: "course",
                     attributes: ["id", "code", "title", "credit"]
                 }],
-                attributes: ["grade"]
+                attributes: ["id", "grade"]
             }],
             attributes: ["title", "startDate", "endDate"]
         });
@@ -135,17 +135,19 @@ export class CoursesService {
             return { message: customMessage, data: emptyData };
         }
 
-        // Assuming only one active semester; take the first row
         const semester = result.rows[0];
         const { title, startDate, endDate, academicRecords } = (semester as any).toJSON();
 
         const courses = academicRecords.map((record: any) => ({
+            academicRecordId: record.id,
             id: record.course?.id,
             code: record.course?.code,
             title: record.course?.title,
             credit: record.course?.credit,
             grade: record.grade,
         }));
+        console.log("--------------------\n ", courses[0].academicRecordId)
+        console.log(`Student Current Courses:\n${JSON.stringify(courses, null, 9)}`);
 
         const data = {
             semesterTitle: title,

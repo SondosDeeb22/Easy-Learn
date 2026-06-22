@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { queryClient } from '../../lib/react-query/queryClient';
 // component 
 import StudentsTable from '../components/StudentsTable';
 import StudentFilter from '../components/FiltersPanel';
@@ -27,12 +27,14 @@ export default function StudentsPage() {
     const handleApplyFilters = (newFilters: StudentFilterParams) => {
         setFilters(newFilters);
         setPage(1);
+        queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+
     };
 
     // ------------------------------------------------
     return (
         <div className="p-6">
-            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Find Students</h1>
+            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Students Management</h1>
 
             <StudentFilter onApply={handleApplyFilters} />
 

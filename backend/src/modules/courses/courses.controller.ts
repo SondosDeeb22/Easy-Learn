@@ -53,7 +53,7 @@ export class CoursesController {
   @Get("current")
   @SetMetadata('roles', [Roles.STUDENT])
 
-    @ApiQuery({
+  @ApiQuery({
     name: 'semester',
     required: false,
     type: String,
@@ -65,13 +65,13 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-    async getStudentCurrentCourses(
-      @Request() req,
-      @Query('page') page?: number,
-      @Query('limit') limit?: number,
-    ) {
-      return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
-    };
+  async getStudentCurrentCourses(
+    @Request() req,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+  ) {
+    return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
+  };
 
   // ==========================================================================================
   //? Get Studnet courses for current semester - by admin

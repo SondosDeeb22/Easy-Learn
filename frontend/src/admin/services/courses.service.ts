@@ -16,7 +16,7 @@ export const getStudentCurrentCoursesForAdmin = async (
   const response = await apiClient.get(
     `/api/courses/current/${studentId}`
   );
-  console.log("admin getStudentCurrentCourses response", response.data);
+  console.log(`Response for /api/courses/current/${studentId}`, response.data);
   return response.data.data;
 }
 

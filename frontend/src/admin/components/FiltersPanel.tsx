@@ -7,7 +7,7 @@ import { useState } from 'react';
 // hooks
 import { useAllCourses } from '../hooks/useAllCourses';
 import { useAllSemesters } from '../hooks/useAllSemesters';
-
+import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
 // interfaces
 import { StudentFilterParams } from '../interfaces/users.interface';
 
@@ -30,12 +30,14 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
     const { data: courses, loading: coursesLoading, error: coursesError } = useAllCourses();
     const { data: semesters, loading: semestersLoading, error: semestersError } = useAllSemesters();
 
+
     // ------------------------------------------------
     const handleApply = () => {
         onApply({
             studentId: studentId || undefined,
             courseId: courseId || undefined,
             semesterId: semesterId || undefined,
+
         });
     };
 
@@ -80,7 +82,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                                     setSemesterId(null);
                                 }
                             }}
-                            allowClear
+                            allowClear // 
                         />
                     </div>
 

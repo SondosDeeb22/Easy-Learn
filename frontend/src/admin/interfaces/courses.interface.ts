@@ -15,6 +15,7 @@ export interface Semester {
 // interface for the current semester courses
 // ==============================================================================================
 export interface CourseWithGrade {
+    academicRecordId: string
     id: string
     code: string;
     title: string;

@@ -35,6 +35,8 @@ function ReusableTable<T extends object>({ data, columns, loading, rowKey, empty
                 rowKey={rowKey}
                 loading={loading}
                 locale={{ emptyText: <Empty description={emptyText ?? 'No Data'} image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
+                style={{ width: '100%' }}
+                scroll={{ x: true }}
                 // pagination={data.length > 8 ? { pageSize: 8, position: ['bottomCenter'] } : false}
                 pagination={pagination ? {
                     ...pagination,
