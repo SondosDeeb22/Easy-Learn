@@ -13,6 +13,7 @@ import { getSequelizeConfig } from './database/sequelize.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { AcademicRecordsModule } from './modules/academicRecords/academicRecords.module';
 
 // modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -37,6 +38,7 @@ import { SeedService } from './seeders/seed.service';
     UsersModule,
     CoursesModule,
     AuthModule,
+    AcademicRecordsModule
   ],
 
 })

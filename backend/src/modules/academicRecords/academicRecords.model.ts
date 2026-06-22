@@ -3,7 +3,7 @@
 // =============================================================
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo, AllowNull } from "sequelize-typescript";
 
-import { UsersModel } from "./users.model";
+import { UsersModel } from "../users/users.model";
 import { CoursesModel } from "../courses/courses.model";
 import { SemestersModel } from "../courses/semesters.model";
 

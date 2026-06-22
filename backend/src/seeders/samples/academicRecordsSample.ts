@@ -2,7 +2,7 @@
 //? import
 // ====================================================================
 
-import { AcademicRecordInterface } from '../../modules/users/interfaces/academicRecord.interface';
+import { AcademicRecordInterface } from '../../modules/academicRecords/interfaces/academicRecord.interface';
 
 // ====================================================================
 export const sampleAcademicRecords: AcademicRecordInterface[] = [

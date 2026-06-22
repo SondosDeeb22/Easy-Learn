@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 //models
 import { CoursesModel } from './courses.model';
-import { AcademicRecordsModel } from '../users/academicRecords.model';
+import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 import { SemestersModel } from './semesters.model';
 import { UsersModel } from '../users/users.model';
 import { OfferedCoursesModel } from './offeredCourses.model';
@@ -16,6 +16,7 @@ import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses, Cour
 
 //error
 import { NotFoundError } from "../../common/errors";
+
 // =========================================================================
 @Injectable()
 export class CoursesService {

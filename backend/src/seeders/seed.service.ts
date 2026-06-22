@@ -6,7 +6,7 @@ import { UsersModel } from '../modules/users/users.model';
 import { CoursesModel } from 'src/modules/courses/courses.model';
 import { SemestersModel } from 'src/modules/courses/semesters.model';
 import { OfferedCoursesModel } from 'src/modules/courses/offeredCourses.model';
-import { AcademicRecordsModel } from 'src/modules/users/academicRecords.model';
+import { AcademicRecordsModel } from 'src/modules/academicRecords/academicRecords.model';
 
 // samples
 import { sampleUsers } from './samples/usersSample';

@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 import { UsersModel } from './users.model';
 import { SemestersModel } from '../courses/semesters.model';
-import { AcademicRecordsModel } from './academicRecords.model';
+import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 
 //dto
 import { StudentDataDto, StudentFilterParamsDto } from './dtos/users.dto';

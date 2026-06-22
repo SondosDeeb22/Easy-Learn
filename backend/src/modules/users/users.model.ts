@@ -3,7 +3,7 @@
 // =============================================================
 import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-typescript";
 import { Exclude } from "class-transformer";
-import { AcademicRecordsModel } from "./academicRecords.model";
+import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
 
 
 import { UserInterface } from "./interfaces/user.interface";

@@ -4,7 +4,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-typescript";
 
 // models
-import { AcademicRecordsModel } from "../users/academicRecords.model";
+import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
 import { OfferedCoursesModel } from "./offeredCourses.model";
 
 import { SemestersInterface } from "./interfaces/semesters.interface";
