@@ -93,15 +93,16 @@ export class CoursesService {
     // =========================================================================
     //? fetch the student's current semester courses 
     // =========================================================================
-    async getCurrentStudentCourses(studentId: string, page: number, limit: number): Promise<ServiceResult<CurrentStudentCourses>> {
+    async getCurrentStudentCourses(
+        studentId: string,
+        page: number = 1,
+        limit: number = 10,
+    ): Promise<ServiceResult<CurrentStudentCourses>> {
         let customMessage: string;
-        const offset = (page - 1) * limit;
-
         const today = new Date();
 
+        // Find the current active semester(s) and include academic records for the student
         const result = await this.semestersModel.findAndCountAll({
-            offset,
-            limit,
             where: {
                 startDate: { [Op.lte]: today },
                 endDate: { [Op.gte]: today },
@@ -109,52 +110,53 @@ export class CoursesService {
             include: [{
                 model: AcademicRecordsModel,
                 as: "academicRecords",
-                where: {
-                    studentId: studentId,
-                },
+                where: { studentId },
                 include: [{
                     model: CoursesModel,
                     as: "course",
-
                     attributes: ["id", "code", "title", "credit"]
                 }],
                 attributes: ["grade"]
             }],
-            attributes: ["title", "startDate", "endDate",]
+            attributes: ["title", "startDate", "endDate"]
         });
-
-        const formatted = result.rows.map(semester => {
-
-            const { title, startDate, endDate, academicRecords } = semester.toJSON();
-
-            return {
-                semesterTitle: title,
-                startDate: new Date(startDate),
-                endDate,
-                totalRows: result.count,
-                courses: academicRecords.map(record => ({
-                    id: record.course?.id,
-                    code: record.course?.code,
-                    title: record.course?.title,
-                    credit: record.course?.credit,
-                    grade: record.grade,
-                })),
-
-            };
-        });
-        console.log(`/courses.service.ts - (getCurrentSturdentCourse):\nresult= ${JSON.stringify(result, null, 2)} \nformatted= ${JSON.stringify(formatted, null, 2)}`)
 
         if (result.count === 0) {
             customMessage = "No courses found";
-        } else {
-            customMessage = "Courses found successfully";
+
+            const emptyData = {
+                semesterTitle: "",
+                startDate: new Date(),
+                endDate: new Date(),
+                totalRows: 0,
+                courses: [],
+            };
+            return { message: customMessage, data: emptyData };
         }
 
-        // =====================================================
-        return {
-            message: customMessage,
-            data: formatted[0],
+        // Assuming only one active semester; take the first row
+        const semester = result.rows[0];
+        const { title, startDate, endDate, academicRecords } = (semester as any).toJSON();
+
+        const courses = academicRecords.map((record: any) => ({
+            id: record.course?.id,
+            code: record.course?.code,
+            title: record.course?.title,
+            credit: record.course?.credit,
+            grade: record.grade,
+        }));
+
+        const data = {
+            semesterTitle: title,
+            startDate: new Date(startDate),
+            endDate,
+            totalRows: result.count,
+            courses,
         };
+
+        customMessage = data.courses.length === 0 ? "No courses found" : "Courses found successfully";
+        console.log(`/courses.service.ts - (getCurrentStudentCourses):\nsemester= ${JSON.stringify(semester?.toJSON(), null, 2)} \ndata= ${JSON.stringify(data, null, 2)}`);
+        return { message: customMessage, data };
     }
 
     // =========================================================================

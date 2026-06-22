@@ -16,7 +16,7 @@ import { StudentFilterParams } from '../interfaces/users.interface';
 // ====================================================================
 
 export default function StudentsPage() {
-    const rowsLimit = 3;
+    const rowsLimit = 5;
     const [page, setPage] = useState(1);
     const [filters, setFilters] = useState<StudentFilterParams>({});
 
@@ -32,7 +32,7 @@ export default function StudentsPage() {
     // ------------------------------------------------
     return (
         <div className="p-6">
-            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Students</h1>
+            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Find Students</h1>
 
             <StudentFilter onApply={handleApplyFilters} />
 

@@ -48,10 +48,36 @@ export class CoursesController {
 
 
   // ==========================================================================================
-  //? Get Studnet courses for current semester
+  //? Get Studnet courses for current semester - by student
   // ==========================================================================================
   @Get("current")
   @SetMetadata('roles', [Roles.STUDENT])
+
+    @ApiQuery({
+    name: 'semester',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Current Courses fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: "You are not authorized to access" })
+
+    async getStudentCurrentCourses(
+      @Request() req,
+      @Query('page') page?: number,
+      @Query('limit') limit?: number,
+    ) {
+      return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
+    };
+
+  // ==========================================================================================
+  //? Get Studnet courses for current semester - by admin
+  // ==========================================================================================
+  @Get("current/:studentId")
+  @SetMetadata('roles', [Roles.ADMIN])
 
   @ApiQuery({
     name: 'semester',
@@ -63,13 +89,13 @@ export class CoursesController {
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-  async getStudentCurrentCourses(
+  async getStudentCurrentCoursesForAdmin(
     @Request() req,
-    @Query("page") page: number,
-    @Query("limit") limit: number,
+    @Param('studentId') studentId: string,
   ) {
-    return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
+    return this.coursesService.getCurrentStudentCourses(studentId);
   };
+
 
   // ==========================================================================================
   //? Enroll student in a course

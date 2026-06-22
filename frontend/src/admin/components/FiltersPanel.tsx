@@ -56,7 +56,13 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                     boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
                 }}
             >
+                <label style={{ margin: '0 0 16px', fontWeight: 500, fontSize: 15, color: '#181818ff' }}>
+                    Filter students by ID, course, or semester
+                </label>
+                <br /><br />
+
                 <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+
 
                     {/* get specific student by Student Id ------------------------------------------------------------------------ */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
@@ -66,7 +72,14 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             size="large"
                             style={{ width: '100%' }}
                             value={studentId ?? ''}
-                            onChange={(e) => setStudentId(e.target.value || null)}
+                            onChange={(e) => {
+                                const val = e.target.value || null;
+                                setStudentId(val);
+                                if (val) {
+                                    setCourseId(null);
+                                    setSemesterId(null);
+                                }
+                            }}
                             allowClear
                         />
                     </div>
@@ -87,6 +100,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             options={courses.map(c => ({ value: c.id, label: `${c.code} - ${c.title}` }))}
                             onChange={(value) => setCourseId(value ?? null)}
                             allowClear
+                            disabled={!!studentId}
                         />
                     </div>
 
@@ -102,11 +116,12 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             options={semesters.map(s => ({ value: s.id, label: s.title }))}
                             onChange={(value) => setSemesterId(value ?? null)}
                             allowClear
+                            disabled={!!studentId}
                         />
                     </div>
 
                     {/* Action Buttons -------------------------------------------------------------------------- */}
-                    <div style={{ display: 'flex', gap: 10, paddingBottom: 1 }}>
+                    <div style={{ display: 'flex', gap: 10, paddingBottom: 1, marginLeft: 'auto', }}>
 
                         {/* Apply Button ------------------------------------------------------------ */}
                         <Button

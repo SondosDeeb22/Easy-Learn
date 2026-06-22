@@ -24,6 +24,8 @@ export interface CurrentStudentCourses {
     startDate: Date,
     endDate: Date,
     totalRows: number,
+    page?: number,
+    limit?: number,
     courses: CourseWithGrade[],
 }
 

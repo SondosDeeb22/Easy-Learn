@@ -11,8 +11,8 @@ interface ReusableTableInterface<T> {
     rowKey: keyof T & string;
     emptyText?: string;
 
-    // Pagination can be a simple boolean (default) or an object with settings
-    pagination?: {
+    // Pagination can be disabled with false or configured with an object
+    pagination?: false | {
         current?: number;
         pageSize?: number;
         total?: number;
