@@ -112,28 +112,7 @@ export class CoursesController {
     return result;
   }
 
-  // ==========================================================================================
-  //? fetch offered courses (available courses for registeration)
-  // ==========================================================================================
-  @Get('offered')
-  @SetMetadata('roles', [Roles.STUDENT])
-  @ApiOperation({ summary: 'Get Available Offered Courses', description: 'Fetch offered courses for the current semester that the authenticated student can enroll in based on remaining credit limits.' })
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 8, description: 'Number of items per page' })
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'Offered courses fetched successfully' })
-  //error
-  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
-  @ApiNotFoundResponse({ description: 'No active semester was found' })
 
-  async getAvailableCoursesForStudent(
-    @Request() req,
-    @Query("page") page: number,
-    @Query("limit") limit: number,
-  ) {
-    const result = await this.coursesService.getAvailableCoursesForStudent(req.user.id, page, limit);
-    return result;
-  }
 
 
   // ==========================================================================================
@@ -149,23 +128,6 @@ export class CoursesController {
 
   async getAllCourses(@Request() req,) {
     const result = await this.coursesService.getAllCourses();
-    return result;
-  }
-
-
-  // ==========================================================================================
-  //? Get all semesters
-  // ==========================================================================================
-  @Get('semesters')
-  @ApiOperation({ summary: 'Get All Semesters', description: 'Fetch list of all semesters configured in the database system.' })
-
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'Semesters fetched successfully' })
-  //error
-  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
-
-  async getAllSemesters(@Request() req,) {
-    const result = await this.coursesService.getAllSemesters();
     return result;
   }
 

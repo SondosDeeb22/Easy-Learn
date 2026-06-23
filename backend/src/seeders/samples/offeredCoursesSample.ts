@@ -2,10 +2,10 @@
 //? import
 // ====================================================================
 
-import { OfferedCoursesInterface } from "../../modules/courses/interfaces/offeredCourses.interface";
+import { OfferedCourse } from "../../modules/offered-courses/interfaces/offeredCourses.interface";
 
 // ====================================================================
-export const sampleOfferedCourses: OfferedCoursesInterface[] = [
+export const sampleOfferedCourses: OfferedCourse[] = [
     {
         id: '30000001',
         courseId: '50000001',   // Intro to CS

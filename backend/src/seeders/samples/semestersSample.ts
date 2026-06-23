@@ -2,10 +2,10 @@
 //? import
 // ====================================================================
 
-import { SemestersInterface } from "../../modules/courses/interfaces/semesters.interface";
+import { Semester } from "../../modules/semesters/interfaces/semesters.interface";
 
 // ====================================================================
-export const sampleSemesters: SemestersInterface[] = [
+export const sampleSemesters: Semester[] = [
     {
         id: '20000001',
         title: 'Fall 2023-2024',

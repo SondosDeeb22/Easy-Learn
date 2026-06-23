@@ -6,11 +6,14 @@ export interface Course {
     credit: number;
 }
 
+// =========================================================== 
+
 // interface for retrieved courses
 export interface CourseWithGrade extends Course {
     grade?: string | null,
 
 }
+// =========================================================== 
 
 export interface AllStudentCourses {
     courses: CourseWithGrade[],
@@ -29,13 +32,6 @@ export interface CurrentStudentCourses {
     courses: CourseWithGrade[],
 }
 
-// =========================================================== 
-
-export interface OfferedCoursesInterface {
-    remainingCredits: number;
-    courses: CourseWithGrade[];
-    totalRows: number
-};
 
 // =========================================================== 
 export interface Course {
@@ -43,11 +39,4 @@ export interface Course {
     code: string,
     title: string,
 }
-// =========================================================== 
-
-export interface Semester {
-    id: string,
-    title: string,
-}
-
 // ========================================================

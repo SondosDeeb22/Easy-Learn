@@ -5,12 +5,12 @@ import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-t
 
 // models
 import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
-import { OfferedCoursesModel } from "./offeredCourses.model";
+import { OfferedCoursesModel } from "../offered-courses/offered-courses.model";
 
-import { SemestersInterface } from "./interfaces/semesters.interface";
+import { Semester } from "./interfaces/semesters.interface";
 // ========================================================================
 @Table({ tableName: "semester" })
-export class SemestersModel extends Model<SemestersModel> implements SemestersInterface {
+export class SemestersModel extends Model<SemestersModel> implements Semester {
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))

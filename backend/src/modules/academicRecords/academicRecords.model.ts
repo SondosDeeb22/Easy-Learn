@@ -5,7 +5,7 @@ import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo, Allo
 
 import { UsersModel } from "../users/users.model";
 import { CoursesModel } from "../courses/courses.model";
-import { SemestersModel } from "../courses/semesters.model";
+import { SemestersModel } from "../semesters/semesters.model";
 
 import { AcademicRecordInterface } from "./interfaces/academicRecord.interface";
 

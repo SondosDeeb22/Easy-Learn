@@ -14,13 +14,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { AcademicRecordsModule } from './modules/academicRecords/academicRecords.module';
-
+import { OfferedCoursesModule } from './modules/offered-courses/offered-courses.module';
 // modules
 import { AuthModule } from './modules/auth/auth.module';
 
 
 // seeder
 import { SeedService } from './seeders/seed.service';
+import { SemestersModule } from './modules/semesters/semesters.module';
 
 
 // ===============================================================
@@ -38,7 +39,9 @@ import { SeedService } from './seeders/seed.service';
     UsersModule,
     CoursesModule,
     AuthModule,
-    AcademicRecordsModule
+    AcademicRecordsModule,
+    SemestersModule,
+    OfferedCoursesModule
   ],
 
 })

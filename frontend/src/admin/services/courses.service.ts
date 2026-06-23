@@ -33,13 +33,3 @@ export const getAllCourses = async (): Promise<Course[]> => {
 }
 
 
-//=====================================================
-//? get all semesters
-//=====================================================
-
-export const getAllSemesters = async (): Promise<Semester[]> => {
-  const response = await apiClient.get(`/api/courses/semesters`);
-  console.log("this is response for /courses/semesters", response.data);
-  return response.data.data;
-};
-

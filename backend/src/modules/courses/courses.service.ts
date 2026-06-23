@@ -6,13 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 //models
 import { CoursesModel } from './courses.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
-import { SemestersModel } from './semesters.model';
+import { SemestersModel } from '../semesters/semesters.model';
 import { UsersModel } from '../users/users.model';
-import { OfferedCoursesModel } from './offeredCourses.model';
+import { OfferedCoursesModel } from '../offered-courses/offered-courses.model';
 
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses, Course, Semester } from './interfaces/courses.interface';
+import { AllStudentCourses, CurrentStudentCourses, Course } from './interfaces/courses.interface';
 
 //error
 import { NotFoundError } from "../../common/errors";
@@ -37,6 +37,28 @@ export class CoursesService {
         private readonly offeredCoursesModel: typeof OfferedCoursesModel,
     ) { }
 
+    // =========================================================================
+    //? get all courses from courses table
+    // =========================================================================
+
+    async getAllCourses(): Promise<ServiceResult<Course[] | []>> {
+
+        const result = await this.coursesModel.findAll();
+        if (!result) return { message: "No courses found", data: [] };
+
+        const formatted = result.map((course) => ({
+            id: course.id,
+            code: course.code,
+            title: course.title,
+            credit: course.credit,
+        }));
+        return {
+            message: `${formatted.length} Courses fetched successfully`,
+            data: formatted,
+        }
+
+
+    }
 
     // =========================================================================
     //? get all courses studnet is associated with
@@ -234,133 +256,6 @@ export class CoursesService {
         }
     }
 
-    // =========================================================================
-    //? fetch offered courses (available courses for registeration) that studetn can pick from according to his credits 
-    // =========================================================================
-    async getAvailableCoursesForStudent(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCoursesInterface>> {
-
-        // get current semester
-        const today = new Date();
-        const currentSemester = await this.semestersModel.findOne({
-            where: {
-                startDate: { [Op.lte]: today },
-                endDate: { [Op.gte]: today },
-            }
-        });
-        if (!currentSemester) throw new NotFoundError("No active semester found");
-        // -----------------------------------------------------------------------------------
-
-        // get courses that student is already enrolled in this semester
-        const enrolledCourses = await this.academicRecordsModel.findAll({
-            where: { studentId },
-            attributes: ["courseId"]
-        });
-        const enrolledCourseIds = enrolledCourses.map(record => record.courseId);
-
-        // -----------------------------------------------------------------------------------
-
-        // calculate how many credit student can enroll in this semester 
-        const enrolledCredits = await this.usersModel.findByPk(studentId, {
-            attributes: ["currentSemesterCredits"]
-        });
-        if (!enrolledCredits) throw new NotFoundError("Student not found");
-
-        // according to remaining credits view course, if no credit left view no courses
-        const remainingCredits = currentSemester.maxCredits - (enrolledCredits.currentSemesterCredits ?? 0);
-
-
-        console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredits} remaining ${remainingCredits}`)
-        if (remainingCredits <= 0) return {
-            message: "You have reached the maximum number of credits for this semester",
-            data: { remainingCredits: 0, courses: [], totalRows: 0 },
-        }
-
-        // --------------------------------------------------------------------
-        const offset = (page - 1) * limit;
-        const offeredCourses = await this.offeredCoursesModel.findAndCountAll({
-            limit,
-            offset,
-            where: {
-                semesterId: currentSemester.id,
-                courseId: { [Op.notIn]: enrolledCourseIds.length ? enrolledCourseIds : [''] }
-            },
-            include: [{
-                model: CoursesModel,
-                as: "course",
-                where: {
-                    credit: { [Op.lte]: remainingCredits },
-                },
-                attributes: ["code", "title", "credit", "id"]
-            }],
-            attributes: []
-        });
-        console.log("backend/courses.service (getAvailableCoursesForStudent function ) - offered courses count= \n", offeredCourses.count,
-            "\noffered courses = \n", offeredCourses.rows.map(record => (record.course?.toJSON())));
-
-
-        const formatted = offeredCourses.rows.map(record => ({
-            id: record.course?.id,
-            code: record.course?.code,
-            title: record.course?.title,
-            credit: record.course?.credit,
-        }));
-
-
-        return {
-            message: formatted.length === 0 ? "No courses available" : "Courses fetched successfully",
-            data: { remainingCredits, courses: formatted, totalRows: offeredCourses.count },
-        }
-    }
-
-    // =========================================================================
-    // =========================================================================
-
-
-    // =========================================================================
-    //? get all courses from courses table
-    // =========================================================================
-
-    async getAllCourses(): Promise<ServiceResult<Course[] | []>> {
-
-        const result = await this.coursesModel.findAll();
-        if (!result) return { message: "No courses found", data: [] };
-
-        const formatted = result.map((course) => ({
-            id: course.id,
-            code: course.code,
-            title: course.title,
-            credit: course.credit,
-        }));
-        return {
-            message: `${formatted.length} Courses fetched successfully`,
-            data: formatted,
-        }
-
-
-    }
-
-
-
-    // =========================================================================
-    //? get all semesters
-    // =========================================================================
-
-    async getAllSemesters(): Promise<ServiceResult<Semester[] | []>> {
-
-        const result = await this.semestersModel.findAll();
-        if (!result) return { message: "No Semesters found", data: [] };
-
-        const formatted = result.map((semester) => ({
-            id: semester.id,
-            title: semester.title,
-        }));
-        return {
-            message: `${formatted.length} Semesters fetched successfully`,
-            data: formatted,
-        }
-
-
-    }
 
 }
 

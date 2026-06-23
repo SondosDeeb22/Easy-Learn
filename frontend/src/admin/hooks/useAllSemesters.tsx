@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { getAllSemesters } from "../services/courses.service";
-import { Semester } from "../interfaces/courses.interface";
+import { getAllSemesters } from "../services/semesters.service";
+import { Semester } from "../interfaces/semesters.interface";
 
 // =======================================================================
 //? fetch semesters data

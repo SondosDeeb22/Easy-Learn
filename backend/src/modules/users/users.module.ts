@@ -9,7 +9,7 @@ import { UsersController } from './users.controller';
 // model 
 import { UsersModel } from './users.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
-import { SemestersModel } from '../courses/semesters.model';
+import { SemestersModel } from '../semesters/semesters.model';
 import { CoursesModule } from '../courses/courses.module';
 // sequelize 
 import { SequelizeModule } from '@nestjs/sequelize';

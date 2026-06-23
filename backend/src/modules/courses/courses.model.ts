@@ -6,7 +6,7 @@ import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-t
 
 // models
 import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
-import { OfferedCoursesModel } from "./offeredCourses.model";
+import { OfferedCoursesModel } from "../offered-courses/offered-courses.model";
 
 import { Course } from "./interfaces/courses.interface";
 

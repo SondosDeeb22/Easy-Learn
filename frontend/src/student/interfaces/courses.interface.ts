@@ -23,10 +23,3 @@ export interface AllStudentCourses extends CourseWithGrade {
     totalRows: number;
 }
 //===================================================
-
-
-export interface OfferedCoursesWithCredits {
-    remainingCredits: number;
-    courses: CourseWithGrade[];
-    totalRows: number;
-};

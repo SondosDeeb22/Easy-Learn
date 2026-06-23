@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { UsersModel } from './users.model';
-import { SemestersModel } from '../courses/semesters.model';
+import { SemestersModel } from '../semesters/semesters.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 
 //dto

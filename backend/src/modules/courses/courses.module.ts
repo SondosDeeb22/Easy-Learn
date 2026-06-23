@@ -14,8 +14,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 // models
 import { CoursesModel } from './courses.model';
-import { SemestersModel } from './semesters.model';
-import { OfferedCoursesModel } from './offeredCourses.model';
+import { SemestersModel } from '../semesters/semesters.model';
+import { OfferedCoursesModel } from '../offered-courses/offered-courses.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';

@@ -4,8 +4,8 @@ import { InjectModel } from '@nestjs/sequelize';
 // models
 import { UsersModel } from '../modules/users/users.model';
 import { CoursesModel } from 'src/modules/courses/courses.model';
-import { SemestersModel } from 'src/modules/courses/semesters.model';
-import { OfferedCoursesModel } from 'src/modules/courses/offeredCourses.model';
+import { SemestersModel } from 'src/modules/semesters/semesters.model';
+import { OfferedCoursesModel } from 'src/modules/offered-courses/offered-courses.model';
 import { AcademicRecordsModel } from 'src/modules/academicRecords/academicRecords.model';
 
 // samples

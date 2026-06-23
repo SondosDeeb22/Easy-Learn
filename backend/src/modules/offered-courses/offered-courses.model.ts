@@ -4,13 +4,13 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo } from "sequelize-typescript";
 
 // models
-import { CoursesModel } from "./courses.model";
-import { SemestersModel } from "./semesters.model";
+import { CoursesModel } from "../courses/courses.model";
+import { SemestersModel } from "../semesters/semesters.model";
 
-import { OfferedCoursesInterface } from "./interfaces/offeredCourses.interface";
+import { OfferedCourse } from "./interfaces/offeredCourses.interface";
 // ========================================================================
 @Table({ tableName: "offered_courses" })
-export class OfferedCoursesModel extends Model<OfferedCoursesModel> implements OfferedCoursesInterface {
+export class OfferedCoursesModel extends Model<OfferedCoursesModel> implements OfferedCourse {
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))

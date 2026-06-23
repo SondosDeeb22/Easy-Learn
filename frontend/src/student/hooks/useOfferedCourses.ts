@@ -1,8 +1,7 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 //service
-import { getAvailableCoursesForStudent } from '../services/courses.service';
-
+import { getAvailableCoursesForStudent } from '../services/offeredCourses.service';
 
 // =======================================================================
 //? fetch offered(available) courses for this semester
