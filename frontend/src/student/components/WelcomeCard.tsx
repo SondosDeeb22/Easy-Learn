@@ -16,10 +16,10 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
     });
 
     return (
-        <div className={`bg-[white] rounded-xl border border-gray-200 px-6 py-5 mb-10 mt-5`}>
+        <div className={`bg-[white] rounded-xl border border-gray-200  mb-10 mt-5`}>
 
             {/* Header ---------------------------------------*/}
-            <div className="flex items-center gap-4 mb-5 bg-burgundy/100  rounded-2xl p-3 pl-5">
+            <div className="flex items-center gap-4 mb-1 bg-burgundy/100  rounded-2xl rounded-b-none p-3 pl-5">
 
                 <div>
                     <p className="text-[12px] text-white uppercase tracking-widest m-0">Welcome back</p>
@@ -30,24 +30,24 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
             </div>
 
             {/* Stats -------------------------------------*/}
-            <div className="border-t border-gray-200 pt-4 grid grid-cols-4 gap-3">
+            <div className=" grid grid-cols-4 gap-3">
 
-                <div className="bg-navbar/50 rounded-lg p-3">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4">
                     <p className="text-[12px] text-black mb-1">Birth date</p>
                     <p className="text-[14px] font-medium text-black">{formattedBirthDate}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4">
                     <p className="text-[12px] text-black mb-1">Current Semester Credits</p>
                     <p className="text-[14px] font-medium text-black">{user.currentSemesterCredits}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4">
                     <p className="text-[12px] text-black mb-1">Credit Limit (Per Semester)</p>
                     <p className="text-[14px] font-medium text-black">{user.maxCredits}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4">
                     <p className="text-[12px] text-black mb-1">Cumulative Credits</p>
                     <p className="text-[14px] font-medium text-black">{user.totalCredits}</p>
                 </div>

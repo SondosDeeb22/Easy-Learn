@@ -14,13 +14,13 @@ export class LoginCredDto {
     @IsString()
     @IsNotEmpty()
 
-    @ApiProperty()
+    @ApiProperty({ description: 'userId', example: '20261144' })
     id: string;
 
     // password =====================================
     @IsNotEmpty()
     @IsString()
 
-    @ApiProperty()
+    @ApiProperty({ description: 'password', example: 'secure_password123' })
     password: string;
 }

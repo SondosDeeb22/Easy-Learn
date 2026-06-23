@@ -51,12 +51,19 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
                 grade,
             },
             {
-                onSuccess: () => {
+                onSuccess: (res) => {
                     setIsModalOpen(false);
-                    api.success({
-                        title: "Grade updated successfully",
-                        placement: "topRight",
-                    });
+                    if (res && (res.data === false || res.message === 'common.crud.noChanges')) {
+                        api.info({
+                            title: "No changes were made",
+                            placement: "topRight",
+                        });
+                    } else {
+                        api.success({
+                            title: "Grade updated successfully",
+                            placement: "topRight",
+                        });
+                    }
                 },
                 onError: () => {
                     setIsModalOpen(false);

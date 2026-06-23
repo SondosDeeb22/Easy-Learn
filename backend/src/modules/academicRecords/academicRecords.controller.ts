@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Get, Param, SetMetadata, HttpCode, Query, Patch, Body } from '@nestjs/common';
-import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQuery, ApiOperation } from '@nestjs/swagger';
 
 import { NotFoundError } from 'src/common/errors';
 
@@ -25,6 +25,7 @@ export class AcademicRecordsController {
 
 
     @Patch('/student/update-grade')
+    @ApiOperation({ summary: 'Update Student Grade', description: 'Allows an administrator to update a grade for a student in a specific academic record.' })
 
     @HttpCode(200)
     @ApiOkResponse({ description: "User fetched successfully" })

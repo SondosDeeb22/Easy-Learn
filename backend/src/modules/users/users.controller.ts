@@ -1,5 +1,5 @@
 import { Controller, UseGuards, Get, Param, SetMetadata, HttpCode, Query } from '@nestjs/common';
-import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQuery } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQuery, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { NotFoundError } from 'src/common/errors';
 
@@ -12,7 +12,7 @@ import { RolesGuard } from '../auth/guards/auth.guard';
 import { TransformInterceptor } from '../../common/interceptors/Transform.interceptor';
 import { UseInterceptors } from '@nestjs/common';
 
-import { StudentDataDto, StudentForAdmin } from './dtos/users.dto';
+import { StudentDataDto, UserCardDataDto, GetStudentsQueryDto } from './dtos/users.dto';
 // ============================================================
 
 @UseGuards(RolesGuard)
@@ -26,29 +26,23 @@ export class UsersController {
 
 
   @Get('/students')
+  @ApiOperation({ summary: 'Get List of Filtered Students', description: 'Fetch a list of students with pagination. Filter by courseId, or semesterId.' })
 
   @HttpCode(200)
   @ApiOkResponse({ description: "User fetched successfully" })
 
   //error
   @ApiForbiddenResponse({ description: "Forbidden access" })
-  @ApiQuery({ name: 'studentId', required: false })
-  @ApiQuery({ name: 'courseId', required: false })
-  @ApiQuery({ name: 'semesterId', required: false })
   async getStudents(
-    @Query('page') page: number,
-    @Query('limit') limit: number,
-
-    @Query('studentId') studentId?: string,
-    @Query('courseId') courseId?: string,
-    @Query('semesterId') semesterId?: string,
-
+    @Query() query: GetStudentsQueryDto,
   ) {
-    return this.usersService.getStudents({ studentId, courseId, semesterId }, page, limit);
+    return this.usersService.getStudents(query);
   }
   /// ============================================================
 
   @Get('/student/:id')
+  @ApiParam({ name: 'id', example: '20261144', })
+  @ApiOperation({ summary: 'Get Student Detailed Data', description: 'Retrieve detailed data for a specific student, basic info from users table and the semester maxCredits.' })
   @UseInterceptors(new TransformInterceptor(StudentDataDto))
 
   @HttpCode(200)
@@ -68,10 +62,12 @@ export class UsersController {
   //============================================================
   //? fetch basic Students data for Admin page
   //============================================================
-  @Get('/admin/student/:id')
-  @UseInterceptors(new TransformInterceptor(StudentForAdmin))
+  @Get('/:id')
+  @ApiParam({ name: 'id', example: '10001234', })
+  @ApiOperation({ summary: 'Get User Basic Card Data', description: 'Retrieve generic public card information for any user by their identifier (excluding sensitive attributes like password).' })
+  @UseInterceptors(new TransformInterceptor(UserCardDataDto))
 
-  async getStudentForAdmin(@Param('id') id: string) {
+  async getUserCardData(@Param('id') id: string) {
 
     const result = await this.usersService.findById(id);
     return result;

@@ -1,7 +1,7 @@
 // =============================================================
 //? Importing
 // =============================================================
-import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, HasMany, AllowNull } from "sequelize-typescript";
 import { Exclude } from "class-transformer";
 import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
 
@@ -11,6 +11,7 @@ import { UserInterface } from "./interfaces/user.interface";
 //enum 
 import { Roles } from "./enums/roles.enum";
 import { Gender } from "./enums/gender.enum";
+import { Optional } from "@nestjs/common";
 // =============================================================
 @Table({ tableName: "users" })
 export class UsersModel extends Model<UsersModel> implements UserInterface {
@@ -59,14 +60,16 @@ export class UsersModel extends Model<UsersModel> implements UserInterface {
     declare password: string;
 
     // credit ==============================================
+    @AllowNull(true)
     @Column(DataType.INTEGER)
 
-    declare currentSemesterCredits: number;
+    declare currentSemesterCredits: number | null;
 
     // total credit ==============================================
+    @AllowNull(true)
     @Column(DataType.INTEGER)
 
-    declare totalCredits: number;
+    declare totalCredits: number | null;
 
     // Associations ========================================
     @HasMany(() => AcademicRecordsModel)

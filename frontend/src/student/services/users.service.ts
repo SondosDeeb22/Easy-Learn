@@ -6,7 +6,7 @@ import { StudentData } from '../interfaces/users.interface';
 //? Get student data
 // ==================================================================
 
-export const getUserData = async (studentId: string): Promise<StudentData> => {
+export const getStudentData = async (studentId: string): Promise<StudentData> => {
 
     const response = await apiClient.get(`/api/users/student/${studentId}`);
 

@@ -1,5 +1,5 @@
 import { Gender } from "../../shared/enums/gender.enum"
-
+import { Roles } from "../../shared/enums/roles.enum"
 
 
 export interface StudentFilterParams {
@@ -19,6 +19,16 @@ export interface FilterdStudentInterface {
 }
 
 // ------------------------------------------------------
+export interface User {
+    id: string,
+    name: string,
+    gender: Gender,
+    role: Roles,
+    email: string,
+    currentSemesterCredits: number,
+    totalCredits: number,
+
+}
 export interface Student {
     id: string,
     name: string,
@@ -32,14 +42,3 @@ export interface Students {
     totalRows: number,
     students: Student[]
 }
-
-// // =============================================================
-// // student data we pass to admin page
-// // =============================================================
-// export interface StudentForAdmin {
-//     id: string;
-//     name: string;
-//     gender: string;
-//     currentSemesterCredits: number;
-//     totalCredits: number;
-// }

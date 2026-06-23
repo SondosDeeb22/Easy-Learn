@@ -17,6 +17,9 @@ import { OfferedCoursesInterface, AllStudentCourses, CurrentStudentCourses, Cour
 //error
 import { NotFoundError } from "../../common/errors";
 
+
+// enums
+import { Roles } from "../users/enums/roles.enum";
 // =========================================================================
 @Injectable()
 export class CoursesService {
@@ -171,9 +174,18 @@ export class CoursesService {
         const student = await this.usersModel.findByPk(studentId);
         if (!student) throw new NotFoundError("Student not found");
 
+        // if user is not student we stop the enrollment process --------
+        if (student.role !== Roles.STUDENT) {
+            throw new ConflictException(
+                "Only students can enroll in courses"
+            );
+        }
+
         // verify course exists
         const course = await this.coursesModel.findByPk(courseId);
         if (!course) throw new NotFoundError("Course not found");
+
+
 
         // check if student is already enrolled
         const alreadyEnrolled = await this.academicRecordsModel.findOne({
@@ -181,7 +193,7 @@ export class CoursesService {
         });
         if (alreadyEnrolled) throw new ConflictException("Already enrolled in this course");
 
-        // get current semester
+        // get current semesterv
         const today = new Date();
         const currentSemester = await this.semestersModel.findOne({
             where: {
@@ -190,9 +202,15 @@ export class CoursesService {
             }
         });
         if (!currentSemester) throw new NotFoundError("No active semester found");
+        // verify course is offered in the current semester
+        const isOffered = await this.offeredCoursesModel.findOne({
+            where: { courseId, semesterId: currentSemester.id }
+        });
+        if (!isOffered) {
+            throw new ConflictException("This course is not offered in the current semester");
+        }
 
-
-        // enroll studen ----------------------------------------------t
+        // enroll student - add reocrd in academic records table  ----------------------------------------------
         await this.academicRecordsModel.create({
             id: uuidv4(),
             studentId,
@@ -201,10 +219,11 @@ export class CoursesService {
             grade: null
         });
 
+
         // update student's credit
         await this.usersModel.update({
-            currentSemesterCredits: student.currentSemesterCredits + course.credit,
-            totalCredits: student.totalCredits + course.credit
+            currentSemesterCredits: (student.currentSemesterCredits ?? 0) + course.credit,
+            totalCredits: (student.totalCredits ?? 0) + course.credit
         }, {
             where: { id: studentId }
         });
@@ -247,7 +266,7 @@ export class CoursesService {
         if (!enrolledCredits) throw new NotFoundError("Student not found");
 
         // according to remaining credits view course, if no credit left view no courses
-        const remainingCredits = currentSemester.maxCredits - enrolledCredits.currentSemesterCredits;
+        const remainingCredits = currentSemester.maxCredits - (enrolledCredits.currentSemesterCredits ?? 0);
 
 
         console.log(`current semester max credit ${currentSemester.maxCredits} enrolled ${enrolledCredits.currentSemesterCredits} remaining ${remainingCredits}`)

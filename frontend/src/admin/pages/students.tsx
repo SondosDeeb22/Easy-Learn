@@ -20,7 +20,7 @@ export default function StudentsPage() {
     const [page, setPage] = useState(1);
     const [filters, setFilters] = useState<StudentFilterParams>({});
 
-    const { data, isLoading, isError } = useStudents(page, rowsLimit, filters);
+    const { data, isLoading, isError } = useStudents({ page, limit: rowsLimit, ...filters });
     const { data: studentData, loading: studentLoading, error: studentError } = useStudentDetails(filters.studentId || "");
 
     // when filters change, reset to page 1
@@ -34,7 +34,7 @@ export default function StudentsPage() {
     // ------------------------------------------------
     return (
         <div className="p-6">
-            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Students Management</h1>
+            <h1 className="text-2xl mt-5 mb-10 font-bold text-gray-800">Student Management</h1>
 
             <StudentFilter onApply={handleApplyFilters} />
 

@@ -50,21 +50,26 @@ export default function AddCoursePage() {
 
         try {
             await enrollStudent(selectedCourse.id);
-            api.success({ title: "Enrolled successfully!", description: `You have been enrolled in  ${selectedCourse.code}` });
+            api.success({ title: "Enrolled successfully!", description: `You have been enrolled in ${selectedCourse.code}` });
             setSelectedCourse(null);
 
-            // mark the cache stale and automatically refetche offeredCourses
+            // mark the cache stale and automatically refetch offeredCourses
             queryClient.invalidateQueries({
                 queryKey: ['offeredCourses']
             });
             //return user to first page
             setPage(1);
 
-        } catch (enrollmentError) {
-            // show error message
+        } catch (enrollmentError: any) {
             console.error("Enrollment failed:", enrollmentError);
-            api.error({ title: "Failed to enroll", description: "Try again later" });
+            const errorMessage = enrollmentError.response?.data?.message || "Try again later";
+            api.error({ title: "Failed to enroll", description: errorMessage });
             setSelectedCourse(null);
+            
+            // Refetch offered courses immediately to sync list if it changed
+            queryClient.invalidateQueries({
+                queryKey: ['offeredCourses']
+            });
         }
     };
 

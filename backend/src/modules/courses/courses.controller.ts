@@ -1,5 +1,5 @@
 import { Controller, Get, Request, Param, Query, Post, HttpCode } from '@nestjs/common';
-import { ApiQuery, ApiForbiddenResponse, ApiOkResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiConflictResponse } from '@nestjs/swagger';
+import { ApiQuery, ApiForbiddenResponse, ApiOkResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiConflictResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 
 //service
 import { CoursesService } from './courses.service';
@@ -25,11 +25,15 @@ export class CoursesController {
   // ==========================================================================================
   @Get("student/all")
   @SetMetadata('roles', [Roles.STUDENT])
-
+  @ApiOperation({ summary: 'Get Student All Registered Courses', description: 'Retrieve history of all courses the authenticated student is or has been registered in.' })
+  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
   @ApiQuery({
     name: 'semester',
     required: false,
     type: String,
+    example: '20000008',
+    description: 'Filter by specific Semester ID'
   })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Courses fetched successfully' })
@@ -52,14 +56,9 @@ export class CoursesController {
   // ==========================================================================================
   @Get("current")
   @SetMetadata('roles', [Roles.STUDENT])
-
-  @ApiQuery({
-    name: 'semester',
-    required: false,
-    type: String,
-  })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiOperation({ summary: 'Get Current Semester Courses for Student', description: 'Fetch courses the authenticated student is registered in for the active academic semester.' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10, description: 'Number of items per page' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Current Courses fetched successfully' })
   //error
@@ -78,12 +77,8 @@ export class CoursesController {
   // ==========================================================================================
   @Get("current/:studentId")
   @SetMetadata('roles', [Roles.ADMIN])
-
-  @ApiQuery({
-    name: 'semester',
-    required: false,
-    type: String,
-  })
+  @ApiOperation({ summary: 'Get Current Semester Courses for Student (Admin)', description: 'Allows admins to view any student\'s courses for the current semester.' })
+  @ApiParam({ name: 'studentId', required: true, type: String, example: '20261144', description: 'The unique student identifier' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Current Courses fetched successfully' })
   //error
@@ -102,7 +97,8 @@ export class CoursesController {
   // ==========================================================================================
   @Post(':courseId/enroll')
   @SetMetadata('roles', [Roles.STUDENT])
-
+  @ApiOperation({ summary: 'Enroll Student in Course', description: 'Enrolls the authenticated student in the specified course ID for the current semester.' })
+  @ApiParam({ name: 'courseId', required: true, type: String, example: '50000004', description: 'The unique course identifier' })
   @ApiCreatedResponse({ description: 'Student enrolled in course successfully' })
   //error
   @ApiNotFoundResponse()
@@ -121,15 +117,14 @@ export class CoursesController {
   // ==========================================================================================
   @Get('offered')
   @SetMetadata('roles', [Roles.STUDENT])
-
+  @ApiOperation({ summary: 'Get Available Offered Courses', description: 'Fetch offered courses for the current semester that the authenticated student can enroll in based on remaining credit limits.' })
+  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: true, type: Number, example: 8, description: 'Number of items per page' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Offered courses fetched successfully' })
   //error
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
   @ApiNotFoundResponse({ description: 'No active semester was found' })
-
-  @ApiQuery({ name: "page", type: Number })
-  @ApiQuery({ name: "limit", type: Number })
 
   async getAvailableCoursesForStudent(
     @Request() req,
@@ -145,6 +140,7 @@ export class CoursesController {
   //? Get all courses 
   // ==========================================================================================
   @Get('all')
+  @ApiOperation({ summary: 'Get All Database Courses', description: 'Fetch list of all courses present in the system database records.' })
 
   @HttpCode(200)
   @ApiOkResponse({ description: 'All courses fetched successfully' })
@@ -161,6 +157,7 @@ export class CoursesController {
   //? Get all semesters
   // ==========================================================================================
   @Get('semesters')
+  @ApiOperation({ summary: 'Get All Semesters', description: 'Fetch list of all semesters configured in the database system.' })
 
   @HttpCode(200)
   @ApiOkResponse({ description: 'Semesters fetched successfully' })

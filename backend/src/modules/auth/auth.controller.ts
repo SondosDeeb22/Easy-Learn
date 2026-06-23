@@ -54,6 +54,7 @@ export class AuthController {
   // ===============================================
 
   @Post('logout')
+  @ApiOperation({ summary: 'User logout', description: 'Invalidates user session and removes authentication cookies.' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Logout successful' })
   async Logout(
@@ -71,6 +72,7 @@ export class AuthController {
   // ===============================================
 
   @Get('user')
+  @ApiOperation({ summary: 'Get current user session data', description: 'Validates jwt login cookie and extracts current user identity metadata.' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'User data fetched successfully' })
   // error

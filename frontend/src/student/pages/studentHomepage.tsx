@@ -7,7 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 
 //hooks
 import { useCurrentStudentCourses } from '../hooks/useCurrentStudentCourses';
-import { useUserData } from "../hooks/userDataHook";
+import { useStudentData } from "../hooks/useStudentData";
 
 // componente 
 import WelcomeCard from "../components/WelcomeCard";
@@ -23,7 +23,7 @@ export default function StudentHomepage() {
     const { data: currentSemesterCourses, isLoading, isError } = useCurrentStudentCourses(page, rowsLimit);
     // ------------------------------------------------------
 
-    const { data: userData, loading, error: userDataError } = useUserData(user?.userId);
+    const { data: userData, loading, error: userDataError } = useStudentData(user?.userId);
 
     // ------------------------------------------------------
     // update current semester courses if new course was added 

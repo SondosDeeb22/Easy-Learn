@@ -9,10 +9,10 @@ import { SemestersModel } from '../courses/semesters.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 
 //dto
-import { StudentDataDto, StudentFilterParamsDto } from './dtos/users.dto';
+import { StudentDataDto, GetStudentsQueryDto } from './dtos/users.dto';
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { filterdStudent, studentData } from './interfaces/user.interface';
+import { FilterdStudent, FilteredStudentData } from './interfaces/user.interface';
 // ==================================================
 @Injectable()
 export class UsersService {
@@ -98,8 +98,8 @@ export class UsersService {
     //? function to fetch students by course/semester , or id for specifc student
     // ==================================================
 
-    async getStudents(filters: StudentFilterParamsDto, page: number, limit: number): Promise<ServiceResult<filterdStudent | studentData | [] | null>> {
-        const { studentId, courseId, semesterId } = filters;
+    async getStudents(query: GetStudentsQueryDto): Promise<ServiceResult<FilterdStudent | FilteredStudentData | [] | null>> {
+        const { studentId, courseId, semesterId, page, limit } = query;
 
         const offset = (page - 1) * limit;
 
@@ -113,7 +113,7 @@ export class UsersService {
 
             const { password, createdAt, updatedAt, ...studentWithoutPassword } = student.toJSON();
 
-            const filteredStudent: filterdStudent = {
+            const filteredStudent: FilterdStudent = {
                 ...studentWithoutPassword,
             }
 

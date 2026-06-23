@@ -13,40 +13,37 @@ export interface UserInterface {
     email: string,
     gender: Gender,
     password: string,
-    currentSemesterCredits?: number,
-    totalCredits?: number,
+    currentSemesterCredits: number | null,
+    totalCredits: number | null,
 }
 
-// was used in exlucidng password from studnet data, now i use interceptor instead
-export interface StudnetData {
+
+// ============================================
+
+export interface FilterdStudent {
     id: string,
     name: string,
-    role: Roles,
     birthDate: Date,
     email: string,
     gender: Gender,
-    currentSemesterCredits: number,
-    totalCredits: number,
-    maxCredits: number
+    currentSemesterCredits: number | null,
+    totalCredits: number | null,
+    // we don't fetch the password
+}
+
+// ============================================
+
+// was used in exlucidng password from studnet data, now i use interceptor instead
+export interface StudnetData extends FilterdStudent {
+    maxCredits: number | null  // additional field
 
 }
 
 
 // ============================================
 
-export interface filterdStudent {
-    id: string,
-    name: string,
-    birthDate: Date,
-    email: string,
-    gender: Gender,
-    currentSemesterCredits: number,
-    totalCredits: number,
-}
-
-
-export interface studentData {
+export interface FilteredStudentData {
     totalRows: number
-    students: filterdStudent[],
+    students: FilterdStudent[],
 }
 
