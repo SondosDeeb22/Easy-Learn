@@ -11,119 +11,136 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261234',  // Sara
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 85,
+        letterGrade: 'BA',
     },
     {
         id: '10000002',
         studentId: '20261155',  // Ahmad
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000003',
         studentId: '20261144',  // Tiana
         courseId: '50000015',   // AI Basics
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 87,
+        letterGrade: 'BA',
     },
     {
         id: '10000004',
         studentId: '20261133',  // Omar
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 89,
+        letterGrade: 'BA',
     },
     {
         id: '10000005',
         studentId: '20261122',  // Maya
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000006',
         studentId: '20261234',  // Sara
         courseId: '50000006',   // Operating Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 86,
+        letterGrade: 'BA',
     },
     {
         id: '10000007',
         studentId: '20261155',  // Ahmad
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 85,
+        letterGrade: 'BA',
     },
     {
         id: '10000008',
         studentId: '20261144',  // Tiana
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CC',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000009',
         studentId: '20261144',  // Tiana
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 72,
+        letterGrade: 'CB',
     },
     {
         id: '10000010',
         studentId: '20261144',  // Tiana
         courseId: '50000003',   // Data Structures
         semesterId: '20000008', // Spring 2025-2026
-        grade: '',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000011',
         studentId: '20261144',  // Tiana
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'AA',
+        numericGrade: 94,
+        letterGrade: 'AA',
     },
     {
         id: '10000012',
         studentId: '20261144',  // Tiana
         courseId: '50000008',   // Software Engineering
         semesterId: '20000009', // Summer 2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000013',
         studentId: '20261144',  // Tiana
         courseId: '50000043',   // Computer Vision
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 88,
+        letterGrade: 'BA',
     },
     {
         id: '10000014',
         studentId: '20261144',  // Tiana
         courseId: '50000044',   // Blockchain Technology
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 97,
+        letterGrade: 'AA',
     },
     {
         id: '10000015',
         studentId: '20261144',  // Tiana
         courseId: '50000045',   // Internet of Things
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000016',
         studentId: '20261144',  // Tiana
         courseId: '50000046',   // Embedded Systems
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 83,
+        letterGrade: 'BA',
     },
     {
         id: '10000017',
         studentId: '20261144',  // Tiana
         courseId: '50000047',   // Parallel Computing
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 85,
+        letterGrade: 'BA',
     },
 
     // --- Additional records for semester 20000007 (Fall 2025-2026) ---
@@ -132,56 +149,64 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261234',  // Sara
         courseId: '50000003',   // Data Structures
         semesterId: '20000007',
-        grade: 'CB',
+        numericGrade: 74,
+        letterGrade: 'CB',
     },
     {
         id: '10000019',
         studentId: '20261234',  // Sara
         courseId: '50000009',   // Calculus I
         semesterId: '20000007',
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000020',
         studentId: '20261155',  // Ahmad
         courseId: '50000004',   // Algorithms
         semesterId: '20000007',
-        grade: 'BB',
+        numericGrade: 78,
+        letterGrade: 'BB',
     },
     {
         id: '10000021',
         studentId: '20261155',  // Ahmad
         courseId: '50000010',   // Linear Algebra
         semesterId: '20000007',
-        grade: 'CB',
+        numericGrade: 71,
+        letterGrade: 'CB',
     },
     {
         id: '10000022',
         studentId: '20261133',  // Omar
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007',
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000023',
         studentId: '20261133',  // Omar
         courseId: '50000005',   // Database Systems
         semesterId: '20000007',
-        grade: 'BA',
+        numericGrade: 86,
+        letterGrade: 'BA',
     },
     {
         id: '10000024',
         studentId: '20261122',  // Maya
         courseId: '50000006',   // Operating Systems
         semesterId: '20000007',
-        grade: 'CC',
+        numericGrade: 67,
+        letterGrade: 'CC',
     },
     {
         id: '10000025',
         studentId: '20261122',  // Maya
         courseId: '50000013',   // Academic English
         semesterId: '20000007',
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Additional records for semester 20000008 (Spring 2025-2026) ---
@@ -190,84 +215,96 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261234',  // Sara
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000008',
-        grade: 'BB',
+        numericGrade: 79,
+        letterGrade: 'BB',
     },
     {
         id: '10000027',
         studentId: '20261234',  // Sara
         courseId: '50000010',   // Linear Algebra
         semesterId: '20000008',
-        grade: 'CB',
+        numericGrade: 70,
+        letterGrade: 'CB',
     },
     {
         id: '10000028',
         studentId: '20261155',  // Ahmad
         courseId: '50000003',   // Data Structures
         semesterId: '20000008',
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000029',
         studentId: '20261155',  // Ahmad
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007',
-        grade: 'BA',
+        numericGrade: 85,
+        letterGrade: 'BA',
     },
     {
         id: '10000030',
         studentId: '20261133',  // Omar
         courseId: '50000003',   // Data Structures
         semesterId: '20000008',
-        grade: 'CB',
+        numericGrade: 72,
+        letterGrade: 'CB',
     },
     {
         id: '10000031',
         studentId: '20261133',  // Omar
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008',
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000032',
         studentId: '20261122',  // Maya
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007',
-        grade: 'BA',
+        numericGrade: 83,
+        letterGrade: 'BA',
     },
     {
         id: '10000033',
         studentId: '20261122',  // Maya
         courseId: '50000004',   // Algorithms
         semesterId: '20000008',
-        grade: '',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000034',
         studentId: '20261144',  // Tiana
         courseId: '50000001',   // Intro to CS (shared with Omar in 20000007)
         semesterId: '20000007',
-        grade: 'BB',
+        numericGrade: 78,
+        letterGrade: 'BB',
     },
     {
         id: '10000035',
         studentId: '20261144',  // Tiana
         courseId: '50000004',   // Algorithms (shared with Ahmad in 20000007)
         semesterId: '20000007',
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000036',
         studentId: '20261144',  // Tiana
         courseId: '50000005',   // Database Systems
         semesterId: '20000008',
-        grade: 'BA',
+        numericGrade: 82,
+        letterGrade: 'BA',
     },
     {
         id: '10000037',
         studentId: '20261144',  // Tiana
         courseId: '50000004',   // Algorithms (shared with Maya in 20000008)
         semesterId: '20000008',
-        grade: 'AA',
+        numericGrade: 93,
+        letterGrade: 'AA',
     },
 
     // --- Records for Lina (20261111) ---
@@ -276,28 +313,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261111',  // Lina
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000039',
         studentId: '20261111',  // Lina
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 95,
+        letterGrade: 'AA',
     },
     {
         id: '10000040',
         studentId: '20261111',  // Lina
         courseId: '50000009',   // Calculus I
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 72,
+        letterGrade: 'CB',
     },
     {
         id: '10000041',
         studentId: '20261111',  // Lina
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Khaled (20261100) ---
@@ -306,28 +347,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261100',  // Khaled
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CB',
+        numericGrade: 74,
+        letterGrade: 'CB',
     },
     {
         id: '10000043',
         studentId: '20261100',  // Khaled
         courseId: '50000003',   // Data Structures
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000044',
         studentId: '20261100',  // Khaled
         courseId: '50000006',   // Operating Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'AA',
+        numericGrade: 99,
+        letterGrade: 'AA',
     },
     {
         id: '10000045',
         studentId: '20261100',  // Khaled
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 83,
+        letterGrade: 'BA',
     },
 
     // --- Records for Nour (20261099) ---
@@ -336,28 +381,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261099',  // Nour
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000047',
         studentId: '20261099',  // Nour
         courseId: '50000013',   // Academic English
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 96,
+        letterGrade: 'AA',
     },
     {
         id: '10000048',
         studentId: '20261099',  // Nour
         courseId: '50000003',   // Data Structures
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 71,
+        letterGrade: 'CB',
     },
     {
         id: '10000049',
         studentId: '20261099',  // Nour
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Rami (20261088) ---
@@ -366,28 +415,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261088',  // Rami
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 93,
+        letterGrade: 'AA',
     },
     {
         id: '10000051',
         studentId: '20261088',  // Rami
         courseId: '50000003',   // Data Structures
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000052',
         studentId: '20261088',  // Rami
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 72,
+        letterGrade: 'CB',
     },
     {
         id: '10000053',
         studentId: '20261088',  // Rami
         courseId: '50000006',   // Operating Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Dana (20261077) ---
@@ -396,28 +449,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261077',  // Dana
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 88,
+        letterGrade: 'BA',
     },
     {
         id: '10000055',
         studentId: '20261077',  // Dana
         courseId: '50000009',   // Calculus I
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000056',
         studentId: '20261077',  // Dana
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 86,
+        letterGrade: 'BA',
     },
     {
         id: '10000057',
         studentId: '20261077',  // Dana
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Fadi (20261066) ---
@@ -426,28 +483,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261066',  // Fadi
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CB',
+        numericGrade: 71,
+        letterGrade: 'CB',
     },
     {
         id: '10000059',
         studentId: '20261066',  // Fadi
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000060',
         studentId: '20261066',  // Fadi
         courseId: '50000013',   // Academic English
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 93,
+        letterGrade: 'AA',
     },
     {
         id: '10000061',
         studentId: '20261066',  // Fadi
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Hana (20261055) ---
@@ -456,28 +517,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261055',  // Hana
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: 77,
+        letterGrade: 'BB',
     },
     {
         id: '10000063',
         studentId: '20261055',  // Hana
         courseId: '50000010',   // Linear Algebra
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000064',
         studentId: '20261055',  // Hana
         courseId: '50000003',   // Data Structures
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 88,
+        letterGrade: 'BA',
     },
     {
         id: '10000065',
         studentId: '20261055',  // Hana
         courseId: '50000006',   // Operating Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CC',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Yazan (20261044) ---
@@ -486,28 +551,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261044',  // Yazan
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 98,
+        letterGrade: 'AA',
     },
     {
         id: '10000067',
         studentId: '20261044',  // Yazan
         courseId: '50000004',   // Algorithms
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000068',
         studentId: '20261044',  // Yazan
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BB',
+        numericGrade: 79,
+        letterGrade: 'BB',
     },
     {
         id: '10000069',
         studentId: '20261044',  // Yazan
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Layla (20261033) ---
@@ -516,28 +585,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261033',  // Layla
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 83,
+        letterGrade: 'BA',
     },
     {
         id: '10000071',
         studentId: '20261033',  // Layla
         courseId: '50000013',   // Academic English
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000072',
         studentId: '20261033',  // Layla
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 70,
+        letterGrade: 'CB',
     },
     {
         id: '10000073',
         studentId: '20261033',  // Layla
         courseId: '50000003',   // Data Structures
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Tariq (20261022) ---
@@ -546,28 +619,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261022',  // Tariq
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CB',
+        numericGrade: 74,
+        letterGrade: 'CB',
     },
     {
         id: '10000075',
         studentId: '20261022',  // Tariq
         courseId: '50000003',   // Data Structures
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000076',
         studentId: '20261022',  // Tariq
         courseId: '50000006',   // Operating Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: 81,
+        letterGrade: 'BA',
     },
     {
         id: '10000077',
         studentId: '20261022',  // Tariq
         courseId: '50000009',   // Calculus I
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BB',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Reem (20261011) ---
@@ -576,28 +653,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261011',  // Reem
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'AA',
+        numericGrade: 96,
+        letterGrade: 'AA',
     },
     {
         id: '10000079',
         studentId: '20261011',  // Reem
         courseId: '50000010',   // Linear Algebra
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000080',
         studentId: '20261011',  // Reem
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: 72,
+        letterGrade: 'CB',
     },
     {
         id: '10000081',
         studentId: '20261011',  // Reem
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Sami (20261000) ---
@@ -606,28 +687,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261000',  // Sami
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BB',
+        numericGrade: 77,
+        letterGrade: 'BB',
     },
     {
         id: '10000083',
         studentId: '20261000',  // Sami
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000084',
         studentId: '20261000',  // Sami
         courseId: '50000007',   // Computer Networks
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'AA',
+        numericGrade: 98,
+        letterGrade: 'AA',
     },
     {
         id: '10000085',
         studentId: '20261000',  // Sami
         courseId: '50000003',   // Data Structures
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
 
     // --- Records for Dina (20260999) ---
@@ -636,28 +721,32 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20260999',  // Dina
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'BA',
+        numericGrade: 85,
+        letterGrade: 'BA',
     },
     {
         id: '10000087',
         studentId: '20260999',  // Dina
         courseId: '50000009',   // Calculus I
         semesterId: '20000007', // Fall 2025-2026
-        grade: 'CB',
+        numericGrade: null,
+        letterGrade: null,
     },
     {
         id: '10000088',
         studentId: '20260999',  // Dina
         courseId: '50000002',   // Programming Fundamentals
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'BB',
+        numericGrade: 79,
+        letterGrade: 'BB',
     },
     {
         id: '10000089',
         studentId: '20260999',  // Dina
         courseId: '50000004',   // Algorithms
         semesterId: '20000008', // Spring 2025-2026
-        grade: 'AA',
+        numericGrade: null,
+        letterGrade: null,
     },
 
 ];

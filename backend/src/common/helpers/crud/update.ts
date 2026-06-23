@@ -93,6 +93,7 @@ export const update = async (
 
         const finalUpdates = options?.transform ? await options.transform(values) : values;
 
+        // get current values of the record to be updated 
         const current = (await model.findOne({
             where: { [uniqueField]: uniqueValue } as unknown as Record<string, unknown>,
             attributes: Object.keys(finalUpdates),
@@ -100,14 +101,28 @@ export const update = async (
 
         const keys = Object.keys(finalUpdates);
 
-        const changedKeys = keys.filter((k) => {
+        // filter out unchanged values 
+        const changedKeys = keys.filter((fieldName) => {
             const currVal = (current as unknown as { get?: (key: string) => unknown })?.get
-                ? (current as unknown as { get: (key: string) => unknown }).get(k)
-                : (current as unknown as Record<string, unknown>)?.[k];
+                ? (current as unknown as { get: (key: string) => unknown }).get(fieldName)
+                : (current as unknown as Record<string, unknown>)?.[fieldName];
 
-            const newVal = finalUpdates[k];
-            return currVal !== newVal;
+            const newValue = finalUpdates[fieldName];
+
+            if (currVal === newValue) return false;
+            if (currVal == null || newValue == null) return currVal !== newValue;
+
+            //handle cases where database stores value as string but payload provides a number
+            if (typeof currVal === "string" && typeof newValue === "number") {
+                return currVal !== String(newValue);
+            }
+            if (typeof currVal === "number" && typeof newValue === "string") {
+                return String(currVal) !== newValue;
+            }
+
+            return currVal !== newValue;
         });
+        // ------------------------------------
 
         if (changedKeys.length === 0) {
             return { updated: false, updatedCount: 0 };

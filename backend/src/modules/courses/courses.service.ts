@@ -92,7 +92,7 @@ export class CoursesService {
                     required: !!semester,
                 },
             ],
-            attributes: ["id", "grade"],
+            attributes: ["id", "numericGrade", "letterGrade"],
         });
 
         const formatted = allStudentCourses.rows.map((record) => ({
@@ -100,7 +100,8 @@ export class CoursesService {
             code: record.course?.code,
             title: record.course?.title,
             credit: record.course?.credit,
-            grade: record.grade,
+            numericGrade: record.numericGrade,
+            letterGrade: record.letterGrade,
         }));
 
         if (formatted.length === 0) {
@@ -238,7 +239,8 @@ export class CoursesService {
             studentId,
             courseId,
             semesterId: currentSemester.id,
-            grade: null
+            numericGrade: null,
+            letterGrade: null
         });
 
 

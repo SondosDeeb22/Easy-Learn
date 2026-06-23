@@ -8,6 +8,7 @@ import { CoursesModel } from "../courses/courses.model";
 import { SemestersModel } from "../semesters/semesters.model";
 
 import { AcademicRecordInterface } from "./interfaces/academicRecord.interface";
+import { GradeScaleModel } from "../grades/grades.model";
 
 // =============================================================
 @Table({ tableName: "academic_records" })
@@ -39,10 +40,18 @@ export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRe
     declare semesterId: string;
 
 
-    // grade =============================================
+    // letterGrade =============================================
     @AllowNull(true)
-    @Column(DataType.STRING(3))
-    declare grade: string | null;
+    @ForeignKey(() => GradeScaleModel)
+    @Column(DataType.STRING(2))
+    declare letterGrade: string | null;
+
+    // numericGrade =============================================
+    @AllowNull(true)
+    @ForeignKey(() => GradeScaleModel)
+    @Column(DataType.DECIMAL(4, 2))
+
+    declare numericGrade: number;
 
 
     // relation ----------------------------
@@ -54,6 +63,9 @@ export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRe
 
     @BelongsTo(() => UsersModel)
     declare user: UsersModel;
+
+    @BelongsTo(() => GradeScaleModel)
+    declare gradeScale: GradeScaleModel;
 
 }
 

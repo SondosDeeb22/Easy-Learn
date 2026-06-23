@@ -11,6 +11,12 @@ import { CrudHelper } from "src/common/helpers/crud.helper";
 import { ConflictError, NotFoundError, ValidationError, InternalServerError, UnauthorizedError } from "src/common/errors";
 
 
+// type
+type UpdateGradeData = {
+    id: string;
+    numericGrade: number;
+    letterGrade: string;
+};
 //===================================================================================================
 //? function to Update Driver
 //===================================================================================================
@@ -18,7 +24,7 @@ const crudHelper = new CrudHelper();
 
 export async function updateStudentGrade(
     academicRecordsModel: typeof AcademicRecordsModel,
-    payload: UpdateGradeDto
+    payload: UpdateGradeData
 ): Promise<{ updated: boolean; messageKey: string }> {
     try {
         const result = await crudHelper.update(academicRecordsModel, payload, {});

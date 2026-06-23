@@ -11,6 +11,7 @@ import { UsersModel } from '../users/users.model';
 import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { CoursesModel } from '../courses/courses.model';
+import { GradeScaleModel } from '../grades/grades.model';
 // sequelize 
 import { SequelizeModule } from '@nestjs/sequelize';
 
@@ -22,7 +23,7 @@ import { AuthHelper } from '../auth/helpers/auth.helper';
     providers: [AcademicRecordsService, AuthHelper],
 
     imports: [
-        SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel, CoursesModel]),
+        SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel, CoursesModel, GradeScaleModel]),
     ],
     exports: [SequelizeModule, AcademicRecordsService]
 })

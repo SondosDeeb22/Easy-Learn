@@ -7,7 +7,8 @@ import { AppService } from './app.service';
 
 
 
-// db
+// modules
+import { AuthModule } from './modules/auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { getSequelizeConfig } from './database/sequelize.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -15,14 +16,14 @@ import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
 import { AcademicRecordsModule } from './modules/academicRecords/academicRecords.module';
 import { OfferedCoursesModule } from './modules/offered-courses/offered-courses.module';
-// modules
-import { AuthModule } from './modules/auth/auth.module';
+import { SemestersModule } from './modules/semesters/semesters.module';
+import { GradesModule } from './modules/grades/grades.module';
+
+
 
 
 // seeder
 import { SeedService } from './seeders/seed.service';
-import { SemestersModule } from './modules/semesters/semesters.module';
-
 
 // ===============================================================
 
@@ -41,7 +42,8 @@ import { SemestersModule } from './modules/semesters/semesters.module';
     AuthModule,
     AcademicRecordsModule,
     SemestersModule,
-    OfferedCoursesModule
+    OfferedCoursesModule,
+    GradesModule
   ],
 
 })

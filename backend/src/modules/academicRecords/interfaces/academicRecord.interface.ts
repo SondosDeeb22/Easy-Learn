@@ -4,5 +4,8 @@ export interface AcademicRecordInterface {
     studentId: string;
     courseId: string;
     semesterId: string;
-    grade?: string | null;
+    numericGrade: number | null;
+    letterGrade: string | null;
+
+
 }
