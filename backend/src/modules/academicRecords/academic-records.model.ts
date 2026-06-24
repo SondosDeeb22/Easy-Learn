@@ -48,8 +48,7 @@ export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRe
 
     // numericGrade =============================================
     @AllowNull(true)
-    @ForeignKey(() => GradeScaleModel)
-    @Column(DataType.DECIMAL(4, 2))
+    @Column(DataType.DOUBLE(5, 2))
 
     declare numericGrade: number;
 

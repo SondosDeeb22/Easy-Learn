@@ -19,6 +19,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 0,
         totalCredits: 0,
+        cgpa: 3.75
     },
     {
         id: '20261155',
@@ -30,6 +31,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 12,
         totalCredits: 60,
+        cgpa: null
     },
     {
         id: '20261144',
@@ -41,6 +43,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 5,
         totalCredits: 75,
+        cgpa: 2.84
     },
     {
         id: '20261133',
@@ -52,6 +55,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 18,
         totalCredits: 90,
+        cgpa: 3.12
     },
     {
         id: '20261122',
@@ -63,6 +67,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 9,
         totalCredits: 45,
+        cgpa: null
     },
     {
         id: '20261111',
@@ -74,6 +79,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 15,
         totalCredits: 30,
+        cgpa: 4.05
     },
     {
         id: '20261100',
@@ -85,6 +91,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 10,
         totalCredits: 55,
+        cgpa: 2.67
     },
     {
         id: '20261099',
@@ -96,6 +103,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 6,
         totalCredits: 40,
+        cgpa: 3.90
     },
     {
         id: '20261088',
@@ -107,6 +115,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 12,
         totalCredits: 50,
+        cgpa: null
     },
     {
         id: '20261077',
@@ -118,6 +127,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 9,
         totalCredits: 35,
+        cgpa: 3.33
     },
     {
         id: '20261066',
@@ -129,6 +139,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 18,
         totalCredits: 80,
+        cgpa: 2.10
     },
     {
         id: '20261055',
@@ -137,9 +148,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2003-10-14'),
         email: 'hana@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 6,
         totalCredits: 25,
+        cgpa: null
     },
     {
         id: '20261044',
@@ -148,9 +160,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2004-01-30'),
         email: 'yazan@gmail.com',
         gender: Gender.MALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 14,
         totalCredits: 65,
+        cgpa: 3.58
     },
     {
         id: '20261033',
@@ -159,9 +172,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2003-04-08'),
         email: 'layla@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 11,
         totalCredits: 42,
+        cgpa: 4.22
     },
     {
         id: '20261022',
@@ -170,9 +184,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2002-08-19'),
         email: 'tariq@gmail.com',
         gender: Gender.MALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 16,
         totalCredits: 70,
+        cgpa: 2.95
     },
     {
         id: '20261011',
@@ -181,9 +196,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2004-05-02'),
         email: 'reem@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 8,
         totalCredits: 20,
+        cgpa: null
     },
     {
         id: '20261000',
@@ -192,9 +208,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2003-11-27'),
         email: 'sami@gmail.com',
         gender: Gender.MALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 13,
         totalCredits: 58,
+        cgpa: 3.01
     },
     {
         id: '20260999',
@@ -203,9 +220,10 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('2004-09-11'),
         email: 'dina@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 7,
         totalCredits: 15,
+        cgpa: 2.76
     },
     {
         id: '10001234',
@@ -214,8 +232,9 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('1990-01-01'),
         email: 'admin@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
-        currentSemesterCredits: 0,
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
+        currentSemesterCredits: null,
         totalCredits: 0,
+        cgpa: null
     },
 ];

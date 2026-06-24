@@ -10,7 +10,7 @@ import { OfferedCoursesController } from './offered-courses.controller';
 // model
 import { OfferedCoursesModel } from './offered-courses.model';
 import { CoursesModel } from '../courses/courses.model';
-import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
+import { AcademicRecordsModel } from '../academicRecords/academic-records.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { UsersModel } from '../users/users.model';
 import { AuthModule } from '../auth/auth.module';

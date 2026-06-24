@@ -4,7 +4,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 
 // models
-import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
+import { AcademicRecordsModel } from "../academicRecords/academic-records.model";
 
 //interfaces
 import { Grade } from "./interfaces/grades.interface";
@@ -16,9 +16,9 @@ export class GradeScaleModel extends Model<GradeScaleModel> implements Grade {
     @Column(DataType.STRING(2))
     declare letterGrade: string;
 
-    // coefficient =============================================
-    @Column(DataType.DECIMAL(2, 1))
-    declare coefficient: number;
+    // gradePoint =============================================
+    @Column(DataType.DOUBLE(2, 1))
+    declare gradePoint: number;
 
     // max Score =============================================
     @Column(DataType.INTEGER())

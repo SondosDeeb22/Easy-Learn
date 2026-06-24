@@ -4,8 +4,9 @@
 import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-typescript";
 
 // models
-import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
+import { AcademicRecordsModel } from "../academicRecords/academic-records.model";
 import { OfferedCoursesModel } from "../offered-courses/offered-courses.model";
+import { GPARecordsModel } from "../grades/gpa-records.model";
 
 import { Semester } from "./interfaces/semesters.interface";
 // ========================================================================
@@ -46,4 +47,7 @@ export class SemestersModel extends Model<SemestersModel> implements Semester {
 
     @HasMany(() => OfferedCoursesModel)
     declare offeredCourses: OfferedCoursesModel[];
+
+    @HasMany(() => GPARecordsModel)
+    declare gpaRecords: GPARecordsModel[];
 }

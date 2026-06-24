@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 //models
 import { CoursesModel } from '../courses/courses.model';
-import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
+import { AcademicRecordsModel } from '../academicRecords/academic-records.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { UsersModel } from '../users/users.model';
 import { OfferedCoursesModel } from './offered-courses.model';

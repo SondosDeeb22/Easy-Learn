@@ -15,6 +15,7 @@ export interface UserInterface {
     password: string,
     currentSemesterCredits: number | null,
     totalCredits: number | null,
+    cgpa: number | null
 }
 
 

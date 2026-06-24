@@ -5,7 +5,7 @@ import { Op } from "sequelize";
 //dtos
 import { UpdateGradeDto } from './dtos/academicRecords.dto';
 // models
-import { AcademicRecordsModel } from "./academicRecords.model";
+import { AcademicRecordsModel } from "./academic-records.model";
 import { CoursesModel } from "../courses/courses.model";
 import { GradeScaleModel } from "../grades/grades.model";
 // helper

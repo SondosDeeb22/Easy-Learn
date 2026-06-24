@@ -313,8 +313,8 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261111',  // Lina
         courseId: '50000001',   // Intro to CS
         semesterId: '20000007', // Fall 2025-2026
-        numericGrade: null,
-        letterGrade: null,
+        numericGrade: 99,
+        letterGrade: 'AA',
     },
     {
         id: '10000039',
@@ -337,8 +337,8 @@ export const sampleAcademicRecords: AcademicRecordInterface[] = [
         studentId: '20261111',  // Lina
         courseId: '50000005',   // Database Systems
         semesterId: '20000008', // Spring 2025-2026
-        numericGrade: null,
-        letterGrade: null,
+        numericGrade: 100,
+        letterGrade: 'AA',
     },
 
     // --- Records for Khaled (20261100) ---

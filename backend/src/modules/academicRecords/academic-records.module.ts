@@ -3,12 +3,12 @@
 //============================================================
 
 import { Module, forwardRef } from '@nestjs/common';
-import { AcademicRecordsService } from './academicRecords.service';
-import { AcademicRecordsController } from './academicRecords.controller';
+import { AcademicRecordsService } from './academic-records.service';
+import { AcademicRecordsController } from './academic-records.controller';
 
 // model 
 import { UsersModel } from '../users/users.model';
-import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
+import { AcademicRecordsModel } from './academic-records.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { CoursesModel } from '../courses/courses.model';
 import { GradeScaleModel } from '../grades/grades.model';

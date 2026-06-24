@@ -1,6 +1,6 @@
 export interface Grade {
     letterGrade: string,
-    coefficient: number,
+    gradePoint: number,
     minScore: number,
     maxScore: number
 }

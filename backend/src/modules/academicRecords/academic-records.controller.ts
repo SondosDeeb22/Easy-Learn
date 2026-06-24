@@ -8,7 +8,7 @@ import { Roles } from '../users/enums/roles.enum';
 import { RolesGuard } from '../auth/guards/auth.guard';
 
 //service
-import { AcademicRecordsService } from './academicRecords.service';
+import { AcademicRecordsService } from './academic-records.service';
 
 // dto
 import { UpdateGradeDto } from './dtos/academicRecords.dto';

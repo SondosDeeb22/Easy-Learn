@@ -3,11 +3,12 @@
 // =============================================================
 import { Table, Column, Model, DataType, PrimaryKey, HasMany, AllowNull } from "sequelize-typescript";
 import { Exclude } from "class-transformer";
-import { AcademicRecordsModel } from "../academicRecords/academicRecords.model";
+import { AcademicRecordsModel } from "../academicRecords/academic-records.model";
 
 
 import { UserInterface } from "./interfaces/user.interface";
 
+import { GPARecordsModel } from "../grades/gpa-records.model";
 //enum 
 import { Roles } from "./enums/roles.enum";
 import { Gender } from "./enums/gender.enum";
@@ -71,9 +72,17 @@ export class UsersModel extends Model<UsersModel> implements UserInterface {
 
     declare totalCredits: number | null;
 
+    // CGPA ==============================================
+    @AllowNull(true)
+    @Column(DataType.DOUBLE(4, 2))
+
+    declare cgpa: number | null;
+
     // Associations ========================================
     @HasMany(() => AcademicRecordsModel)
     declare academicRecords: AcademicRecordsModel[];
 
 
+    @HasMany(() => GPARecordsModel)
+    declare gpaRecords: GPARecordsModel[];
 }

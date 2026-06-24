@@ -8,9 +8,10 @@ import { UsersController } from './users.controller';
 
 // model 
 import { UsersModel } from './users.model';
-import { AcademicRecordsModel } from '../academicRecords/academicRecords.model';
+import { AcademicRecordsModel } from '../academicRecords/academic-records.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { CoursesModule } from '../courses/courses.module';
+import { GPARecordsModel } from '../grades/gpa-records.model';
 // sequelize 
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthHelper } from '../auth/helpers/auth.helper';
@@ -21,7 +22,7 @@ import { AuthHelper } from '../auth/helpers/auth.helper';
   providers: [UsersService, AuthHelper],
 
   imports: [
-    SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel]),
+    SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel, GPARecordsModel]),
   ],
   exports: [SequelizeModule, UsersService]
 })

@@ -1,5 +1,5 @@
 import { CoursesModel } from "../../courses/courses.model";
-import { AcademicRecordsModel } from "../academicRecords.model";
+import { AcademicRecordsModel } from "../academic-records.model";
 
 //dto
 import { UpdateGradeDto } from "../dtos/academicRecords.dto";
@@ -18,7 +18,7 @@ type UpdateGradeData = {
     letterGrade: string;
 };
 //===================================================================================================
-//? function to Update Driver
+//? function to Update Student Grade
 //===================================================================================================
 const crudHelper = new CrudHelper();
 

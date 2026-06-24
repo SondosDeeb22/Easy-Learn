@@ -14,7 +14,7 @@ import { getSequelizeConfig } from './database/sequelize.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { CoursesModule } from './modules/courses/courses.module';
-import { AcademicRecordsModule } from './modules/academicRecords/academicRecords.module';
+import { AcademicRecordsModule } from './modules/academicRecords/academic-records.module';
 import { OfferedCoursesModule } from './modules/offered-courses/offered-courses.module';
 import { SemestersModule } from './modules/semesters/semesters.module';
 import { GradesModule } from './modules/grades/grades.module';
