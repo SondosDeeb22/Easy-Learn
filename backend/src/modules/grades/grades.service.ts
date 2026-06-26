@@ -44,6 +44,7 @@ export class GradesService {
 
     async upsertGPAAndUpdateCGPA(
         studentId: string,
+        semesterId: string
     ): Promise<ServiceResult<null>> {
 
         // Verify student exists
@@ -56,24 +57,24 @@ export class GradesService {
         }
         // -------------------------
 
-        // automatically determine current semester
-        const today = new Date();
-        let semester = await this.semestersModel.findOne({
-            where: {
-                startDate: { [Op.lte]: today },
-                endDate: { [Op.gte]: today },
-            },
-        });
+        // // automatically determine current semester
+        // const today = new Date();
+        // let semester = await this.semestersModel.findOne({
+        //     where: {
+        //         startDate: { [Op.lte]: today },
+        //         endDate: { [Op.gte]: today },
+        //     },
+        // });
 
 
-        if (!semester) {
-            return {
-                message: 'No semesters found in the database.',
-                data: null,
-            };
-        }
+        // if (!semester) {
+        //     return {
+        //         message: 'No semesters found in the database.',
+        //         data: null,
+        //     };
+        // }
 
-        const semesterId = semester.id;
+        // const semesterId = semester.id;
         // -------------------------
 
         const currentSemesterCourses = await this.academicRecordsModel.findAll({

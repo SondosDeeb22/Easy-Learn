@@ -25,12 +25,13 @@ const crudHelper = new CrudHelper();
 export async function updateStudentGrade(
     academicRecordsModel: typeof AcademicRecordsModel,
     payload: UpdateGradeData
-): Promise<{ updated: boolean; messageKey: string }> {
+): Promise<{ updated: boolean, updatedRecord: AcademicRecordsModel[], messageKey: string }> {
     try {
         const result = await crudHelper.update(academicRecordsModel, payload, {});
 
         return {
             updated: result.updated,
+            updatedRecord: (result.updatedRows as AcademicRecordsModel[]) ?? [],
             messageKey: result.updated ? 'common.crud.updated' : 'common.crud.noChanges'
         };
 

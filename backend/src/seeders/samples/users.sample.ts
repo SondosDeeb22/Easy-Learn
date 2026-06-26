@@ -232,7 +232,7 @@ export const sampleUsers: UserInterface[] = [
         birthDate: new Date('1990-01-01'),
         email: 'admin@gmail.com',
         gender: Gender.FEMALE,
-        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
+        password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: null,
         totalCredits: 0,
         cgpa: null

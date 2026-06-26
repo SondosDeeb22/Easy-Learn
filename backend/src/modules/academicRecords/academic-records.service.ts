@@ -16,6 +16,8 @@ import { ServiceResult } from "src/common/interfaces/service-result.interface";
 
 //error
 import { NotFoundError } from "src/common/errors";
+
+import { GradeProducer } from "../background-jobs/producers/grade.producer";
 // ==================================================================================
 @Injectable()
 export class AcademicRecordsService {
@@ -28,6 +30,8 @@ export class AcademicRecordsService {
 
         @InjectModel(GradeScaleModel)
         private readonly gradeScaleModel: typeof GradeScaleModel,
+
+        private readonly gradeProducer: GradeProducer,
 
     ) { }
 
@@ -64,9 +68,27 @@ export class AcademicRecordsService {
             letterGrade,
         })
 
+        const record = Array.isArray(result.updatedRecord)
+            ? result.updatedRecord[0]
+            : result.updatedRecord;
+        if (result.updated && record?.studentId && record?.semesterId) {
+            // pass the remaining work(calculating and updating GPA and CGPA) to the background worker
+            await this.gradeProducer.updateGPAAndCGPAJob({
+                studentId: record.studentId,
+                semesterId: record.semesterId
+            })
+
+
+        }
+
+        console.log(`[/academic-records.service.ts]\nUpdated Record: ${JSON.stringify(result, null, 2)},\nType of: ${typeof result.updatedRecord}`)
+
+
+
         return {
             data: result.updated,
             message: result.messageKey,
         }
     }
 }
+

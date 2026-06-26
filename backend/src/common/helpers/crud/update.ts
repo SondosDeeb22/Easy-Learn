@@ -19,24 +19,37 @@ export const update = async (
     model: UserHelperModel,
     values: Record<string, unknown>,
     options?: UserHelperUpdateOptions
-): Promise<{ updated: boolean; updatedCount: number }> => {
+): Promise<{ updated: boolean, updatedCount: number, updatedRows?: Model[] }> => {
     //get the name of the model
     const modelClassName = model.name;
-    const dataName = (modelClassName?.replace(/Model$/, "") || "").toLowerCase();
+    const dataName = (modelClassName?.replace(/Model$/, "") || "").toLowerCase(); // get the entity name, example: userModel -> user
 
     try {
-        const attrsForPk = model.getAttributes();
-        const pkEntry = Object.entries(attrsForPk).find(([_, a]) => (a as unknown as { primaryKey?: boolean }).primaryKey === true);
-        const uniqueField = pkEntry ? (pkEntry[0] as string) : "id";
-        const uniqueValue = values?.[uniqueField];
+        // Check Provided data matches model structure ======================================================================================================
 
-        // check that uniqueValue is not empty --------------------------------------------------
-        if (uniqueValue === undefined || uniqueValue === null || uniqueValue === "") {
-            console.log(`missing values ${uniqueField} : ${uniqueValue}`)
+        // get the primary key of the model
+        const attrsForPk = model.getAttributes();
+        const pkEntry = Object.entries(attrsForPk).find(
+            ([_, attributeValue]) => (
+                attributeValue as unknown as { primaryKey?: boolean }).primaryKey === true
+        );
+
+        if (!pkEntry) {
+            throw new ValidationError(
+                `can't update ${dataName} : model does not have a primary key defined.`,
+            );
+        }
+
+        const [pkField] = pkEntry;
+        const pkValue = values?.[pkField];
+
+        // check that pkValue is not empty --------------------------------------------------
+        if (pkValue === undefined || pkValue === null || pkValue === "") {
+            console.log(`missing values ${pkField} : ${pkValue}`)
             throw new ValidationError("common.errors.validation.fillAllFields");
         }
 
-        //check that updated values exists
+        //check that updated values is provided
         if (!values || Object.keys(values).length === 0) {
             console.log(`updated values not provided ${Object.keys(values).length}`)
             throw new ValidationError("common.errors.validation.fillAllFields");
@@ -76,15 +89,16 @@ export const update = async (
             }
         }
 
+        // Start the updating process ======================================================================================================
+
         //check reocred exists --------------------------------------------------------------------
-        const record = await model.findOne({
+        const existedRecord = await model.findOne({
             where: {
-                [uniqueField]: uniqueValue,
+                [pkField]: pkValue,
             } as unknown as Record<string, unknown>,
-            attributes: [uniqueField],
         });
 
-        if (!record) {
+        if (!existedRecord) {
             throw new NotFoundError("common.errors.notFound");
         }
 
@@ -94,42 +108,37 @@ export const update = async (
         const finalUpdates = options?.transform ? await options.transform(values) : values;
 
         // get current values of the record to be updated 
-        const current = (await model.findOne({
-            where: { [uniqueField]: uniqueValue } as unknown as Record<string, unknown>,
-            attributes: Object.keys(finalUpdates),
-        })) as Model | null;
+        const currentValues = existedRecord?.get({ plain: true }) as Record<string, unknown>;
 
         const keys = Object.keys(finalUpdates);
 
         // filter out unchanged values 
         const changedKeys = keys.filter((fieldName) => {
-            const currVal = (current as unknown as { get?: (key: string) => unknown })?.get
-                ? (current as unknown as { get: (key: string) => unknown }).get(fieldName)
-                : (current as unknown as Record<string, unknown>)?.[fieldName];
 
-            const newValue = finalUpdates[fieldName];
+            const currentValue = currentValues[fieldName];
+            const newValue = finalUpdates[fieldName]
 
-            if (currVal === newValue) return false;
-            if (currVal == null || newValue == null) return currVal !== newValue;
+            if (currentValue === newValue) return false;
+            if (currentValue == null || newValue == null) return currentValue !== newValue;
 
             //handle cases where database stores value as string but payload provides a number
-            if (typeof currVal === "string" && typeof newValue === "number") {
-                return currVal !== String(newValue);
+            if (typeof currentValue === "string" && typeof newValue === "number") {
+                return currentValue !== String(newValue);
             }
-            if (typeof currVal === "number" && typeof newValue === "string") {
-                return String(currVal) !== newValue;
+            if (typeof currentValue === "number" && typeof newValue === "string") {
+                return String(currentValue) !== newValue;
             }
 
-            return currVal !== newValue;
+            return currentValue !== newValue;
         });
         // ------------------------------------
 
         if (changedKeys.length === 0) {
-            return { updated: false, updatedCount: 0 };
+            return { updated: false, updatedCount: 0, updatedRows: [] };
         }
 
         //------------------------------------------------------------------------------------------
-        // non-duplicate checks (only for provided + changed fields)
+        // if one of the changed fields is unique column, ensure that the new value doesn't exist in other records 
 
         if (options?.nonDuplicateFields && options.nonDuplicateFields.length > 0) {
             for (const field of options.nonDuplicateFields) {
@@ -141,9 +150,9 @@ export const update = async (
                 const duplicate = await model.findOne({
                     where: {
                         [field]: value,
-                        [uniqueField]: { [Op.ne]: uniqueValue },
+                        [pkField]: { [Op.ne]: pkValue },
                     } as unknown as Record<string, unknown>,
-                    attributes: [uniqueField],
+                    attributes: [pkField],
                 });
 
                 if (duplicate) {
@@ -159,17 +168,18 @@ export const update = async (
 
         for (const key of changedKeys) updatesToApply[key] = finalUpdates[key];
 
-        const [updatedCount] = await model.update(updatesToApply as never, {
+        const [updatedCount, updatedRows] = (await model.update(updatesToApply as Record<string, unknown>, {
             where: {
-                [uniqueField]: uniqueValue,
-            } as unknown as Record<string, unknown>,
-        });
+                [pkField]: pkValue,
+            } as Record<string, unknown>,
+            returning: true,
+        })) as [number, Model[]?];
 
         if (updatedCount === 0) {
-            return { updated: false, updatedCount: 0 };
+            return { updated: false, updatedCount: 0, updatedRows: [] };
         }
 
-        return { updated: true, updatedCount };
+        return { updated: true, updatedCount, updatedRows };
 
         //===================================================================================
     } catch (error: unknown) {

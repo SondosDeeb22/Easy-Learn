@@ -17,8 +17,15 @@ import { UsersModel } from '../users/users.model';
   controllers: [GradesController],
   providers: [GradesService],
 
-  imports: [SequelizeModule.forFeature([GradeScaleModel, GPARecordsModel, AcademicRecordsModel, CoursesModel, SemestersModel, UsersModel])],
+  imports: [SequelizeModule.forFeature([
+    GradeScaleModel,
+    GPARecordsModel,
+    AcademicRecordsModel,
+    CoursesModel,
+    SemestersModel,
+    UsersModel
+  ])],
 
-  exports: [SequelizeModule]
+  exports: [SequelizeModule, GradesService]
 })
 export class GradesModule { }

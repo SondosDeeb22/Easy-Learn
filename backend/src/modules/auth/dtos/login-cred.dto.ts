@@ -21,6 +21,6 @@ export class LoginCredDto {
     @IsNotEmpty()
     @IsString()
 
-    @ApiProperty({ description: 'password', example: 'secure_password123' })
+    @ApiProperty({ description: 'password', example: '123' })
     password: string;
 }

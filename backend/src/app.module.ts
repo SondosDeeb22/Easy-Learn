@@ -19,8 +19,7 @@ import { OfferedCoursesModule } from './modules/offered-courses/offered-courses.
 import { SemestersModule } from './modules/semesters/semesters.module';
 import { GradesModule } from './modules/grades/grades.module';
 
-
-
+import { backgroundJobsModule } from './modules/background-jobs/background-jobs.module';
 
 // seeder
 import { SeedService } from './seeders/seed.service';
@@ -43,7 +42,9 @@ import { SeedService } from './seeders/seed.service';
     AcademicRecordsModule,
     SemestersModule,
     OfferedCoursesModule,
-    GradesModule
+    GradesModule,
+
+    backgroundJobsModule
   ],
 
 })

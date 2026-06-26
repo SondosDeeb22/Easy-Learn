@@ -11,5 +11,9 @@
         "dotenv-cli": "^7.4.4",
         "kill-port": "^1.6.0",
         "wait-on": "^7.2.0"
+    },
+    "dependencies": {
+        "bullmq": "^5.79.1",
+        "ioredis": "^5.11.1"
     }
 }

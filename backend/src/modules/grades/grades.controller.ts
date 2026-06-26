@@ -24,8 +24,9 @@ export class GradesController {
 
   @ApiOperation({ summary: 'Update Student GPA', description: 'Calculate and update a specific student GPA and CGPA.' })
   async upsertGPAAndUpdateCGPA(
-    @Param('studentId') studentId: string) {
-    return this.gradesService.upsertGPAAndUpdateCGPA(studentId);
+    @Param('studentId') studentId: string,
+    @Param('semesterId') semesterId: string) {
+    // return this.gradesService.upsertGPAAndUpdateCGPA(studentId,);
   }
 
 }

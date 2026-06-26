@@ -16,7 +16,7 @@ export class CrudHelper {
             disallowFields?: string[];
             transform?: (vals: any) => Promise<any> | any;
         }
-    ): Promise<{ updated: boolean; updatedCount: number }> {
+    ): Promise<{ updated: boolean, updatedCount: number, updatedRows?: Model[] }> {
 
         const mappedOptions: {
             nonDuplicateFields?: string[];
