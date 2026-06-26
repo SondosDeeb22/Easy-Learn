@@ -20,7 +20,7 @@ export interface CourseWithGrade {
     code: string;
     title: string;
     credit: number;
-    grade?: string | null;
+    numericGrade?: number | null;
 }
 
 export interface CurrentStudentCourses {

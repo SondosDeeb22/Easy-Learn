@@ -57,26 +57,6 @@ export class GradesService {
         }
         // -------------------------
 
-        // // automatically determine current semester
-        // const today = new Date();
-        // let semester = await this.semestersModel.findOne({
-        //     where: {
-        //         startDate: { [Op.lte]: today },
-        //         endDate: { [Op.gte]: today },
-        //     },
-        // });
-
-
-        // if (!semester) {
-        //     return {
-        //         message: 'No semesters found in the database.',
-        //         data: null,
-        //     };
-        // }
-
-        // const semesterId = semester.id;
-        // -------------------------
-
         const currentSemesterCourses = await this.academicRecordsModel.findAll({
             where: {
                 studentId,

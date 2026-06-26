@@ -10,7 +10,8 @@ export interface Course {
 
 // interface for retrieved courses
 export interface CourseWithGrade extends Course {
-    grade?: string | null,
+    numericGrade?: number | null,
+    letterGrade?: string | null,
 
 }
 // =========================================================== 

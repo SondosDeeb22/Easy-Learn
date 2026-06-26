@@ -41,14 +41,14 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
         setIsModalOpen(true);
     };
 
-    const handleSubmitGrade = (grade: string) => {
+    const handleSubmitGrade = (numericGrade: number) => {
         if (!selectedCourse) return;
-        console.log("selected course :", selectedCourse, "updated grade :", grade)
+        console.log("selected course :", selectedCourse, "updated grade :", numericGrade)
 
         updateGrade(
             {
                 academicRecordId: selectedCourse.academicRecordId,
-                grade,
+                numericGrade: Number(numericGrade),
             },
             {
                 onSuccess: (res) => {
@@ -78,17 +78,18 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
 
     // -------------------------------------------------------------
     const columns: TableColumnsType<CourseWithGrade> = [
-        { title: 'Code', dataIndex: 'code', key: 'code', width: "20%" },
+        { title: 'Code', dataIndex: 'code', key: 'code', width: "15%" },
         { title: 'Title', dataIndex: 'title', key: 'title', width: "40%" },
-        { title: 'Credit', dataIndex: 'credit', key: 'credit', width: "20%" },
-        { title: 'Grade', dataIndex: 'grade', key: 'grade', width: "20%" },
+        { title: 'Credit', dataIndex: 'credit', key: 'credit', width: "15%" },
+        { title: 'Numeric Grade', dataIndex: 'numericGrade', key: 'numericGrade', width: "15%" },
+        { title: 'Letter Grade', dataIndex: 'letterGrade', key: 'letterGrade', width: "15%" },
         {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
                 <Button
-                    // type="link"
                     onClick={() => handleOpenModal(record)}
+                    onMouseDown={(e) => e.preventDefault()}// Prevents focus ring from persisting after mouse click
                     style={{
                         color: colors.burgundy,
                         padding: 5,

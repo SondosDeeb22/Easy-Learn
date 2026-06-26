@@ -12,7 +12,7 @@ const columns: TableColumnsType<CourseWithGrade> = [
     { title: 'Code', dataIndex: 'code', key: 'code', width: "20%" },
     { title: 'Title', dataIndex: 'title', key: 'title', width: "40%" },
     { title: 'Credit', dataIndex: 'credit', key: 'credit', width: "20%" },
-    { title: 'Grade', dataIndex: 'grade', key: 'grade', width: "20%" },
+    { title: 'Grade', dataIndex: 'letterGrade', key: 'letterGrade', width: "20%" },
 ];
 
 interface AllStudentCourses {

@@ -3,7 +3,8 @@ export interface CourseWithGrade {
     code: string;
     title: string;
     credit: number;
-    grade?: string | null;
+    numericGrade?: number | null;
+    letterGrade?: string | null;
 }
 //===================================================
 // get current semester (title, start date, end date, courses)

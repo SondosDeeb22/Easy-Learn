@@ -143,7 +143,7 @@ export class CoursesService {
                     as: "course",
                     attributes: ["id", "code", "title", "credit"]
                 }],
-                attributes: ["id", "grade"]
+                attributes: ["id", "numericGrade", "letterGrade"]
             }],
             attributes: ["title", "startDate", "endDate"]
         });
@@ -170,7 +170,8 @@ export class CoursesService {
             code: record.course?.code,
             title: record.course?.title,
             credit: record.course?.credit,
-            grade: record.grade,
+            numericGrade: record.numericGrade,
+            letterGrade: record.letterGrade,
         }));
         console.log("--------------------\n ", courses[0].academicRecordId)
         console.log(`Student Current Courses:\n${JSON.stringify(courses, null, 9)}`);
