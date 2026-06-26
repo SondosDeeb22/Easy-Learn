@@ -11,6 +11,7 @@ export interface CourseWithGrade {
 // view courses to user on homepage
 
 export interface CurrentStudentCourses {
+    semesterId: string,
     semesterTitle: string,
     startDate: Date,
     endDate: Date,

@@ -145,7 +145,7 @@ export class CoursesService {
                 }],
                 attributes: ["id", "numericGrade", "letterGrade"]
             }],
-            attributes: ["title", "startDate", "endDate"]
+            attributes: ["title", "id", "startDate", "endDate"]
         });
 
         if (result.count === 0) {
@@ -153,6 +153,7 @@ export class CoursesService {
 
             const emptyData = {
                 semesterTitle: "",
+                semesterId: "",
                 startDate: new Date(),
                 endDate: new Date(),
                 totalRows: 0,
@@ -162,7 +163,7 @@ export class CoursesService {
         }
 
         const semester = result.rows[0];
-        const { title, startDate, endDate, academicRecords } = (semester as any).toJSON();
+        const { title, id, startDate, endDate, academicRecords } = (semester as any).toJSON();
 
         const courses = academicRecords.map((record: any) => ({
             academicRecordId: record.id,
@@ -177,6 +178,7 @@ export class CoursesService {
         console.log(`Student Current Courses:\n${JSON.stringify(courses, null, 9)}`);
 
         const data = {
+            semesterId: id,
             semesterTitle: title,
             startDate: new Date(startDate),
             endDate,

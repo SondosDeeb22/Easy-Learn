@@ -24,6 +24,7 @@ export interface AllStudentCourses {
 // =========================================================== 
 
 export interface CurrentStudentCourses {
+    semesterId: string,
     semesterTitle: string,
     startDate: Date,
     endDate: Date,

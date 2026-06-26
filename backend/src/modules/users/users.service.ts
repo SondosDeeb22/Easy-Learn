@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { UsersModel } from './users.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { AcademicRecordsModel } from '../academicRecords/academic-records.model';
-
+import { GPARecordsModel } from '../grades/gpa-records.model';
 //dto
 import { StudentDataDto, GetStudentsQueryDto } from './dtos/users.dto';
 //interface
@@ -24,7 +24,10 @@ export class UsersService {
         private readonly semestersModel: typeof SemestersModel,
 
         @InjectModel(AcademicRecordsModel)
-        private readonly academicRecordsModel: typeof AcademicRecordsModel
+        private readonly academicRecordsModel: typeof AcademicRecordsModel,
+
+        @InjectModel(GPARecordsModel)
+        private readonly gpaRecordsModel: typeof GPARecordsModel
     ) { }
 
 
@@ -257,6 +260,30 @@ export class UsersService {
         }
     }
 
+
+    // ==================================================
+    //? get student GPA(for current semetesr)
+    // ==================================================
+
+    async getCurrentStudentGPA(studentId: string, semesterId: string): Promise<ServiceResult<number | null>> {
+        const gpa_record = await this.gpaRecordsModel.findOne({
+            where: {
+                studentId,
+                semesterId
+            },
+            attributes: ['gpa']
+        });
+
+        if (!gpa_record) {
+            return { message: "GPA record not found", data: null };
+        }
+
+        return {
+            message: "GPA record found successfully",
+            data: gpa_record.gpa,
+        }
+
+    }
 
 
 }

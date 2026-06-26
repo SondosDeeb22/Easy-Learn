@@ -76,7 +76,6 @@ export class CoursesController {
   //? Get Studnet courses for current semester - by admin
   // ==========================================================================================
   @Get("current/:studentId")
-  @SetMetadata('roles', [Roles.ADMIN])
   @ApiOperation({ summary: 'Get Current Semester Courses for Student (Admin)', description: 'Allows admins to view any student\'s courses for the current semester.' })
   @ApiParam({ name: 'studentId', required: true, type: String, example: '20261144', description: 'The unique student identifier' })
   @HttpCode(200)

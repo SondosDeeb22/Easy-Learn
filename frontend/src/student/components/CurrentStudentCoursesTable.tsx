@@ -7,7 +7,6 @@ import { CourseWithGrade } from '../interfaces/courses.interface';
 // component
 import Reusable from "../../shared/components/ReusableTable";
 
-
 // ====================================================
 const columns: TableColumnsType<CourseWithGrade> = [
     { title: 'Code', dataIndex: 'code', key: 'code', width: "20%" },
@@ -25,7 +24,9 @@ interface CurrentStudentCourses {
     totalRows: number,
     setPage: (page: number) => void,
 }
-// ====================================================
+// ===========================================================================
+// ===========================================================================
+
 const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
     currentCourses,
     loading,
@@ -46,6 +47,7 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
     );
 
     console.log(`/offeredCoursesTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nCourses:${JSON.stringify(currentCourses, null, 0)}`);
+
 
     // =======================================================================================================================
 

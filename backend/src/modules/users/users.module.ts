@@ -16,6 +16,7 @@ import { GPARecordsModel } from '../grades/gpa-records.model';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthHelper } from '../auth/helpers/auth.helper';
 
+import { GradesModule } from '../grades/grades.module';
 //============================================================
 @Module({
   controllers: [UsersController],
@@ -23,6 +24,7 @@ import { AuthHelper } from '../auth/helpers/auth.helper';
 
   imports: [
     SequelizeModule.forFeature([UsersModel, AcademicRecordsModel, SemestersModel, GPARecordsModel]),
+    GradesModule
   ],
   exports: [SequelizeModule, UsersService]
 })

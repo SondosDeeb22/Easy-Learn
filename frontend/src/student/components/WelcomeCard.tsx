@@ -4,9 +4,10 @@ import { colors } from '../../styles/colorPalette';
 
 interface WelcomeCardProps {
     user: StudentData;
+    semesterId: string
 }
 
-const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
+const WelcomeCard: React.FC<WelcomeCardProps> = ({ user, semesterId }) => {
 
     const firstName = user.name.split(' ')[0];
     const formattedBirthDate = new Date(user.birthDate).toLocaleDateString('en-US', {
@@ -30,26 +31,31 @@ const WelcomeCard: React.FC<WelcomeCardProps> = ({ user }) => {
             </div>
 
             {/* Stats -------------------------------------*/}
-            <div className=" grid grid-cols-4 gap-3">
+            <div className=" grid grid-cols-5 gap-3">
 
                 <div className="bg-navbar/50 rounded-lg p-3 m-4">
                     <p className="text-[12px] text-black mb-1">Birth date</p>
                     <p className="text-[14px] font-medium text-black">{formattedBirthDate}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3 m-4">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
                     <p className="text-[12px] text-black mb-1">Current Semester Credits</p>
                     <p className="text-[14px] font-medium text-black">{user.currentSemesterCredits}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3 m-4">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
                     <p className="text-[12px] text-black mb-1">Credit Limit (Per Semester)</p>
                     <p className="text-[14px] font-medium text-black">{user.maxCredits}</p>
                 </div>
 
-                <div className="bg-navbar/50 rounded-lg p-3 m-4">
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
                     <p className="text-[12px] text-black mb-1">Cumulative Credits</p>
                     <p className="text-[14px] font-medium text-black">{user.totalCredits}</p>
+                </div>
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
+                    <p className="text-[12px] text-black mb-1">CGPA</p>
+                    <p className="text-[14px] font-medium text-black">{user.cgpa}</p>
                 </div>
 
 

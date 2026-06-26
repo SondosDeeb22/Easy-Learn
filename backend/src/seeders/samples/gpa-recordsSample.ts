@@ -57,4 +57,12 @@ export const sampleGPARecords: GPARecord[] = [
         qualityPoints: 30,
         totalCredits: 18,
     },
+    {
+        id: '30000005-0000-0000-0000-000000000008',
+        studentId: '20261111',
+        semesterId: '20000008',
+        gpa: 1.5,
+        qualityPoints: 30,
+        totalCredits: 18,
+    },
 ];

@@ -73,6 +73,21 @@ export class UsersController {
     return result;
   }
 
+  // ===========================================================
+  //? fetch student current gpa
+  // =============================================================
+  @Get('/gpa/:studentId/:semesterId')
+  @ApiParam({ name: 'studentId', example: '20261144', })
+  @ApiParam({ name: 'semesterId', example: 'semester-1', })
+
+  async getStudentCurrentGPA(
+    @Param('studentId') studentId: string,
+    @Param('semesterId') semesterId: string
+  ) {
+    const result = await this.usersService.getCurrentStudentGPA(studentId, semesterId);
+    if (!result) throw new NotFoundError("User was not found");
+    return result;
+  }
 
 
 
