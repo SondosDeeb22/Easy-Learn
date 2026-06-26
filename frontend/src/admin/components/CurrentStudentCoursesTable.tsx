@@ -12,7 +12,6 @@ import UpdateGradeModal from './UpdateGradeModal';
 import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
 
 import { colors } from '../../styles/colorPalette'
-import { Color } from 'antd/es/color-picker';
 // ====================================================
 
 
@@ -23,7 +22,7 @@ interface CurrentStudentCourses {
 }
 
 // ====================================================
-const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
+const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
     currentCourses,
     loading,
     error,
@@ -141,4 +140,4 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
     );
 };
 
-export default StudentCurrentCoursesTable;
+export default CurrentStudentCoursesTable;

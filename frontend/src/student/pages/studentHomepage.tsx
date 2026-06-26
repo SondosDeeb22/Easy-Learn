@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Alert } from "antd";
 
-import StudentCurrentCoursesTable from "../components/CurrentStudentCoursesTable";
+import CurrentStudentCoursesTable from "../components/CurrentStudentCoursesTable";
 
 import { useAppSelector } from "../../redux/hooks";
 
@@ -90,14 +90,10 @@ export default function StudentHomepage() {
             }
 
 
-            <StudentCurrentCoursesTable
+            <CurrentStudentCoursesTable
                 currentCourses={currentSemesterCourses?.courses ?? []}
                 loading={isLoading}
                 error={isError && !currentSemesterCourses ? "Failed to Load Courses" : undefined}
-                page={page}
-                limit={rowsLimit}
-                totalRows={currentSemesterCourses?.totalRows ?? 0}
-                setPage={setPage}
             />
         </div>
     );

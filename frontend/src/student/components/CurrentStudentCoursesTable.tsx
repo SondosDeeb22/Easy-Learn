@@ -19,22 +19,14 @@ interface CurrentStudentCourses {
     currentCourses: CourseWithGrade[],
     loading: boolean,
     error?: string,
-    page: number,
-    limit: number,
-    totalRows: number,
-    setPage: (page: number) => void,
 }
 // ===========================================================================
 // ===========================================================================
 
-const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
+const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
     currentCourses,
     loading,
     error,
-    page,
-    limit,
-    totalRows,
-    setPage
 }) => {
 
     if (error) return (
@@ -46,9 +38,6 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
         />
     );
 
-    console.log(`/offeredCoursesTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nCourses:${JSON.stringify(currentCourses, null, 0)}`);
-
-
     // =======================================================================================================================
 
     return (
@@ -58,14 +47,9 @@ const StudentCurrentCoursesTable: React.FC<CurrentStudentCourses> = ({
             loading={loading}
             rowKey="id"
             emptyText="You haven't enrolled in any courses this semester"
-            pagination={{
-                current: page,
-                total: totalRows,
-                pageSize: limit,
-                onChange: (page) => setPage(page),
-            }}
+            pagination={false}
         />
     );
 };
 
-export default StudentCurrentCoursesTable;
+export default CurrentStudentCoursesTable;
