@@ -20,15 +20,18 @@ import { AcademicRecordsModel } from '../academicRecords/academic-records.model'
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 
+//helper
+import { CrudHelper } from 'src/common/helpers/crud.helper';
 // ========================================================================
 @Module({
   imports: [
     SequelizeModule.forFeature([CoursesModel, SemestersModel, OfferedCoursesModel, AcademicRecordsModel]),
     AuthModule,
     UsersModule,
+
   ],
   controllers: [CoursesController],
-  providers: [CoursesService],
+  providers: [CoursesService, CrudHelper],
   exports: [SequelizeModule, CoursesService]
 })
 export class CoursesModule { }

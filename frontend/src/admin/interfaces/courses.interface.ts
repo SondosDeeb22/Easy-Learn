@@ -30,3 +30,9 @@ export interface CurrentStudentCourses {
     totalRows: number,
     courses: CourseWithGrade[],
 }
+
+// ==========================================================
+export interface WithdrawStudentCourse {
+    studentId: string;
+    courseId: string;
+}

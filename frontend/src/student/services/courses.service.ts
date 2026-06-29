@@ -5,8 +5,8 @@ import { CurrentStudentCourses, AllStudentCourses } from '../interfaces/courses.
 //? Get student courses for current semester
 //=====================================================
 
-export const getCurrentStudentCourses = async (page: number, limit: number): Promise<CurrentStudentCourses> => {
-    const response = await apiClient.get(`/api/courses/current?page=${page}&limit=${limit}`);
+export const getCurrentStudentCourses = async (): Promise<CurrentStudentCourses> => {
+    const response = await apiClient.get(`/api/courses/current`);
     // console.log("this is response for /courses/current:", response.data);
     return response.data.data;
 };

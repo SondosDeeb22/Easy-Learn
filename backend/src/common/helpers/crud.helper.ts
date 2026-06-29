@@ -1,10 +1,12 @@
-import { ModelStatic, Model } from "sequelize";
+import { Injectable } from "@nestjs/common";
+import { ModelStatic, Model, WhereOptions } from "sequelize";
 
 import { update } from './crud/update';
 import { add } from './crud/add';
+import { remove } from './crud/remove';
 
 
-
+@Injectable()
 export class CrudHelper {
     //==========================================================================================================
     //? function to UPDATE data
@@ -72,4 +74,16 @@ export class CrudHelper {
             options ? mappedOptions : undefined
         );
     }
+
+    //==========================================================================================================
+    //? function to Remove data
+    //========================================================================================================
+
+
+    async remove(model: ModelStatic<Model<any, any>>,
+        where: WhereOptions): Promise<number> {
+
+        return remove(model, where)
+    }
+
 }

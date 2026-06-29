@@ -1,5 +1,5 @@
-import { Controller, Get, Request, Param, Query, Post, HttpCode } from '@nestjs/common';
-import { ApiQuery, ApiForbiddenResponse, ApiOkResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiConflictResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { Controller, Get, Request, Param, Query, Post, HttpCode, BadRequestException, Delete } from '@nestjs/common';
+import { ApiQuery, ApiForbiddenResponse, ApiBadRequestResponse, ApiOkResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiConflictResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 
 //service
 import { CoursesService } from './courses.service';
@@ -18,6 +18,23 @@ import { NotFoundError } from 'src/common/errors';
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) { }
+
+
+  // ==========================================================================================
+  //? Get all courses 
+  // ==========================================================================================
+  @Get('all')
+  @ApiOperation({ summary: 'Get All Database Courses', description: 'Fetch list of all courses present in the system database records.' })
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'All courses fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+
+  async getAllCourses(@Request() req,) {
+    const result = await this.coursesService.getAllCourses();
+    return result;
+  }
 
 
   // ==========================================================================================
@@ -51,44 +68,78 @@ export class CoursesController {
   };
 
 
-  // ==========================================================================================
-  //? Get Studnet courses for current semester - by student
-  // ==========================================================================================
-  @Get("current")
-  @SetMetadata('roles', [Roles.STUDENT])
-  @ApiOperation({ summary: 'Get Current Semester Courses for Student', description: 'Fetch courses the authenticated student is registered in for the active academic semester.' })
-  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10, description: 'Number of items per page' })
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'Current Courses fetched successfully' })
-  //error
-  @ApiForbiddenResponse({ description: "You are not authorized to access" })
+  // // ==========================================================================================
+  // //? Get Studnet courses for current semester - by student
+  // // ==========================================================================================
+  // @Get("current")
+  // @SetMetadata('roles', [Roles.STUDENT])
+  // @ApiOperation({ summary: 'Get Current Semester Courses for Student', description: 'Fetch courses the authenticated student is registered in for the active academic semester.' })
+  // @HttpCode(200)
+  // @ApiOkResponse({ description: 'Current Courses fetched successfully' })
+  // //error
+  // @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-  async getStudentCurrentCourses(
-    @Request() req,
-    @Query('page') page?: number,
-    @Query('limit') limit?: number,
-  ) {
-    return this.coursesService.getCurrentStudentCourses(req.user.id, page, limit);
-  };
+  // async getStudentCurrentCourses(
+  //   @Request() req,
+
+  // ) {
+  //   return this.coursesService.getCurrentStudentCourses(req.user.id);
+  // };
+
+  // // ==========================================================================================
+  // //? Get Studnet courses for current semester - by admin
+  // // ==========================================================================================
+  // @Get("current/:studentId")
+  // @ApiOperation({ summary: 'Get Current Semester Courses for Student (Admin)', description: 'Allows admins to view any student\'s courses for the current semester.' })
+  // @ApiParam({ name: 'studentId', required: true, type: String, example: '20261144', description: 'The unique student identifier' })
+  // @HttpCode(200)
+  // @ApiOkResponse({ description: 'Current Courses fetched successfully' })
+  // //error
+  // @ApiForbiddenResponse({ description: "You are not authorized to access" })
+
+  // async getStudentCurrentCoursesForAdmin(
+  //   @Request() req,
+  //   @Param('studentId') studentId: string,
+  // ) {
+  //   return this.coursesService.getCurrentStudentCourses(studentId);
+  // };
+
 
   // ==========================================================================================
   //? Get Studnet courses for current semester - by admin
   // ==========================================================================================
-  @Get("current/:studentId")
-  @ApiOperation({ summary: 'Get Current Semester Courses for Student (Admin)', description: 'Allows admins to view any student\'s courses for the current semester.' })
-  @ApiParam({ name: 'studentId', required: true, type: String, example: '20261144', description: 'The unique student identifier' })
+  @Get("current")
+  @SetMetadata('roles', [Roles.STUDENT, Roles.ADMIN])
+  @ApiOperation({ summary: 'Get Student Current Semester Courses', description: 'Allows admins to view any student\'s courses for the current semester.' })
+  @ApiQuery({ required: false, name: "studentId", type: String })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Current Courses fetched successfully' })
   //error
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
-
+  @ApiBadRequestResponse({ description: "studentId is required for administrators" })
   async getStudentCurrentCoursesForAdmin(
     @Request() req,
-    @Param('studentId') studentId: string,
+    @Query('studentId') studentId: string,
   ) {
-    return this.coursesService.getCurrentStudentCourses(studentId);
+    // admin can see details for all student by providing studentId
+    // students can only access their own courses
+    if (req.user.role === Roles.ADMIN && !studentId) throw new BadRequestException("studentId is required for administrators.");
+
+    const targetStudentId =
+      req.user.role === Roles.ADMIN
+        ? studentId
+        : req.user.id;
+
+    return this.coursesService.getCurrentStudentCourses(targetStudentId);
+
   };
+
+
+
+
+
+
+
 
 
   // ==========================================================================================
@@ -115,20 +166,24 @@ export class CoursesController {
 
 
   // ==========================================================================================
-  //? Get all courses 
+  //? withdraw a student from a course
   // ==========================================================================================
-  @Get('all')
-  @ApiOperation({ summary: 'Get All Database Courses', description: 'Fetch list of all courses present in the system database records.' })
-
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'All courses fetched successfully' })
+  @Delete('withdraw/:studentId/:courseId')
+  @SetMetadata('roles', [Roles.ADMIN])
+  @ApiOperation({ summary: 'Withdraw Student from Course', description: 'Withdraws the authenticated student from the specified course for the current semester.' })
+  @ApiParam({ name: 'courseId', required: true, type: String, example: '50000004', description: 'The unique course identifier' })
+  @ApiCreatedResponse({ description: 'Student withdrawn from course successfully' })
   //error
+  @ApiNotFoundResponse()
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
-
-  async getAllCourses(@Request() req,) {
-    const result = await this.coursesService.getAllCourses();
+  @ApiConflictResponse({ description: 'You are not registered for this course' })
+  async withdrawStudent(
+    @Param('studentId') studentId: string,
+    @Param('courseId') courseId: string,
+    @Request() req
+  ) {
+    const result = await this.coursesService.withdrawStudentCourse(studentId, courseId);
     return result;
   }
-
 
 }

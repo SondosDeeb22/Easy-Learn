@@ -2,7 +2,7 @@
 import { apiClient } from '../../shared/services/apiClient';
 import { Course, Semester } from '../interfaces/courses.interface';
 // interfaces
-import { CurrentStudentCourses } from "../interfaces/courses.interface";
+import { CurrentStudentCourses, WithdrawStudentCourse } from "../interfaces/courses.interface";
 
 
 //=====================================================
@@ -14,9 +14,9 @@ export const getStudentCurrentCoursesForAdmin = async (
 ): Promise<CurrentStudentCourses> => {
   // For now we reuse the existing endpoint logic; the backend will filter by studentId.
   const response = await apiClient.get(
-    `/api/courses/current/${studentId}`
+    `/api/courses/current?studentId=${studentId}`
   );
-  console.log(`Response for /api/courses/current/${studentId}`, response.data);
+  console.log(`Response for /api/courses/current?studentId=${studentId}`, response.data);
   return response.data.data;
 }
 
@@ -31,5 +31,26 @@ export const getAllCourses = async (): Promise<Course[]> => {
   console.log("this is response for /courses/all", response.data);
   return response.data.data;
 }
+
+
+//=====================================================
+//? Withdraw a student from course 
+//=====================================================
+
+export const withdrawStudentFromCourse = async ({
+  studentId,
+  courseId,
+}: WithdrawStudentCourse): Promise<void> => {
+
+  try {
+    const response = await apiClient.delete(
+      `/api/courses/withdraw/${studentId}/${courseId}`,
+    );
+    return response.data.data;
+  } catch (error: any) {
+    console.log(`Error [withdrawStudentCourse]:`, error)
+    throw new Error(error.response?.data?.message || "Failed to withdraw from course")
+  }
+};
 
 

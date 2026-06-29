@@ -71,6 +71,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                             currentCourses={studentCurrentSemesterCourses?.courses || []}
                             loading={coursesLoading}
                             error={coursesError ? "Failed to load courses" : undefined}
+                            studentId={studentId}
                         />
                     </Card>
                 </ConfigProvider>

@@ -20,6 +20,9 @@ import { NotFoundError } from "../../common/errors";
 
 // enums
 import { Roles } from "../users/enums/roles.enum";
+
+// helper
+import { CrudHelper } from "../../common/helpers/crud.helper";
 // =========================================================================
 @Injectable()
 export class CoursesService {
@@ -35,6 +38,9 @@ export class CoursesService {
         private readonly usersModel: typeof UsersModel,
         @InjectModel(OfferedCoursesModel)
         private readonly offeredCoursesModel: typeof OfferedCoursesModel,
+
+
+        private readonly crudHelper: CrudHelper,
     ) { }
 
     // =========================================================================
@@ -122,11 +128,10 @@ export class CoursesService {
     // =========================================================================
     async getCurrentStudentCourses(
         studentId: string,
-        page: number = 1,
-        limit: number = 10,
     ): Promise<ServiceResult<CurrentStudentCourses>> {
         let customMessage: string;
         const today = new Date();
+
 
         // Find the current active semester(s) and include academic records for the student
         const result = await this.semestersModel.findAndCountAll({
@@ -262,5 +267,21 @@ export class CoursesService {
     }
 
 
-}
 
+    // =========================================================================
+    //? withdraw student from a course
+    // =========================================================================
+
+    async withdrawStudentCourse(studentId: string, courseId: string): Promise<ServiceResult<null>> {
+
+        await this.crudHelper.remove(this.academicRecordsModel, {
+            studentId: studentId,
+            courseId: courseId
+        });
+        return {
+            message: "Student withdrawn successfully",
+            data: null,
+        }
+
+    }
+}

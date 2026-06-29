@@ -2,14 +2,25 @@ import React from 'react';
 import { useState } from 'react';
 import { TableColumnsType, Alert, Button, notification, ConfigProvider } from 'antd';
 
+import {
+    EditOutlined,
+    DeleteOutlined,
+} from '@ant-design/icons';
+
+
 // interface
 import { CourseWithGrade } from '../interfaces/courses.interface';
 
 // component
 import Reusable from "../../shared/components/ReusableTable";
 import UpdateGradeModal from './UpdateGradeModal';
+
+import WithdrawStudentCourseModal from '../components/WithdrawStudentCourseModal';
+
 //hook
 import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
+import { useWithdrawStudentCourse } from '../hooks/useWithdrawStudentCourse';
+
 
 import { colors } from '../../styles/colorPalette'
 // ====================================================
@@ -19,26 +30,37 @@ interface CurrentStudentCourses {
     currentCourses: CourseWithGrade[],
     loading: boolean,
     error?: string,
+    studentId: string
 }
+
+
 
 // ====================================================
 const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
     currentCourses,
     loading,
     error,
+    studentId
 }) => {
     const [api, contextHolder] = notification.useNotification();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState<CourseWithGrade | null>(null);
 
-    const { mutate: updateGrade, isPending } = useUpdateStudentGrade();
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+    const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
+    const { mutate: updateGrade, isPending: isPendingUpdate } = useUpdateStudentGrade();
+
+    const { mutate: withdrawStudent, isPending: isPendingWithdraw } = useWithdrawStudentCourse();
     // ----------------------------------------------------------------------
-    const handleOpenModal = (course: CourseWithGrade) => {
+
+
+    // Update Modal  
+    const handleOpenUpdateModal = (course: CourseWithGrade) => {
         setSelectedCourse(course);
-        setIsModalOpen(true);
+        setIsUpdateModalOpen(true);
     };
+
 
     const handleSubmitGrade = (numericGrade: number) => {
         if (!selectedCourse) return;
@@ -51,7 +73,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
             },
             {
                 onSuccess: (res) => {
-                    setIsModalOpen(false);
+                    setIsUpdateModalOpen(false);
                     if (res && (res.data === false || res.message === 'common.crud.noChanges')) {
                         api.info({
                             title: "No changes were made",
@@ -65,7 +87,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                     }
                 },
                 onError: () => {
-                    setIsModalOpen(false);
+                    setIsUpdateModalOpen(false);
                     api.error({
                         title: "Failed to update grade",
                         placement: "topRight",
@@ -75,6 +97,46 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
         );
     };
 
+    // -----------------------------------
+
+    // Withdraw Modal
+    const handleOpenWithdrawModal = (course: CourseWithGrade) => {
+        setSelectedCourse(course);
+        setIsWithdrawModalOpen(true);
+    };
+
+    const handleConfirmWithdraw = () => {
+        if (!selectedCourse) return;
+        console.log("selected course :", selectedCourse)
+        setIsWithdrawModalOpen(false);
+
+        console.log("handle confirm withdraw executed")
+
+        withdrawStudent(
+            {
+                studentId: studentId,
+                courseId: selectedCourse.id,
+            },
+            {
+                onSuccess: () => {
+                    setIsWithdrawModalOpen(false);
+
+                    api.success({
+                        title: "Student withdraw successfully",
+                        placement: "topRight",
+                    });
+
+                },
+                onError: () => {
+                    setIsWithdrawModalOpen(false);
+                    api.error({
+                        title: "Failed to withdraw course",
+                        placement: "topRight",
+                    });
+                }
+            }
+        )
+    };
     // -------------------------------------------------------------
     const columns: TableColumnsType<CourseWithGrade> = [
         { title: 'Code', dataIndex: 'code', key: 'code', width: "15%" },
@@ -86,19 +148,43 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <Button
-                    onClick={() => handleOpenModal(record)}
-                    onMouseDown={(e) => e.preventDefault()}// Prevents focus ring from persisting after mouse click
-                    style={{
-                        color: colors.burgundy,
-                        padding: 5,
-                        border: '1px solid',
-                        background: 'none',
-                        boxShadow: 'none',
-                    }}
-                >
-                    Update
-                </Button>
+
+                <div className="flex gap-1 items-center justify-center">
+                    {/* Update course button --------------------------- */}
+
+                    <Button
+                        icon={<EditOutlined />}
+                        onClick={() => handleOpenUpdateModal(record)}
+                        onMouseDown={(e) => e.preventDefault()}// Prevents focus ring from persisting after mouse click
+                        style={{
+                            color: colors.burgundy,
+                            padding: 5,
+                            border: '1px solid',
+                            background: 'none',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        Update
+                    </Button>
+
+                    {/* Withdraw course button --------------------------- */}
+                    <Button
+                        type="text"
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => handleOpenWithdrawModal(record)}
+                        onMouseDown={(e) => e.preventDefault()}
+                        style={{
+                            color: colors.burgundy,
+                            padding: 5,
+                            border: '1px solid',
+                            background: 'none',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        Withdraw
+                    </Button>
+                </div>
 
 
             ),
@@ -119,11 +205,19 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
         <>
             {contextHolder}
             <UpdateGradeModal
-                open={isModalOpen}
+                open={isUpdateModalOpen}
                 course={selectedCourse}
-                loading={isPending}
-                onCancel={() => setIsModalOpen(false)}
+                loading={isPendingUpdate}
+                onCancel={() => setIsUpdateModalOpen(false)}
                 onSubmit={handleSubmitGrade}
+            />
+
+            <WithdrawStudentCourseModal
+                open={isWithdrawModalOpen}
+                course={selectedCourse}
+                loading={isPendingWithdraw}
+                onCancel={() => setIsWithdrawModalOpen(false)}
+                onSubmit={handleConfirmWithdraw}
             />
             <div style={{ marginTop: 20 }}>
                 <Reusable<CourseWithGrade>
