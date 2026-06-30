@@ -34,6 +34,21 @@ export const getAllCourses = async (): Promise<Course[]> => {
 
 
 //=====================================================
+//? Enroll student in a course
+//=====================================================
+export const enrollStudent = async (offeredCourseId: string, studentId: string): Promise<void> => {
+  try {
+    const response = await apiClient.post(`/api/courses/${offeredCourseId}/enroll?studentId=${studentId}`);
+    console.log("this is response for /courses/:offeredCourseId/enroll:", response.data);
+    return response.data.data;
+
+  } catch (error: any) {
+    console.log(`Error [enrollStudent]:`, error)
+    throw new Error(error.response?.data?.message || "Failed to enroll student in course")
+  }
+}
+
+//=====================================================
 //? Withdraw a student from course 
 //=====================================================
 

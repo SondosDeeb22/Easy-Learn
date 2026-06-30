@@ -13,11 +13,12 @@ export const useWithdrawStudentCourse = () => {
         mutationFn: withdrawStudentFromCourse,
         onSuccess: () => {
             // Invalidate both the current courses query and the student list/detail query
-            queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
+            queryClient.invalidateQueries({ queryKey: ['offeredCourses'] });
         },
         onError: (error: Error) => {
             console.log("Error [Withdraw Student's course]:", error);
-            queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
         },
     });
-};
+}; 

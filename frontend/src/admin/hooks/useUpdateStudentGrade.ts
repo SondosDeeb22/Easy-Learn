@@ -14,11 +14,11 @@ export const useUpdateStudentGrade = () => {
         mutationFn: updateStudentGrade,
         onSuccess: () => {
             // Invalidate both the current courses query and the student list/detail query
-            queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
         },
         onError: (error: Error) => {
             console.log("error in updating grade :", error);
-            queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
         },
     });
 };

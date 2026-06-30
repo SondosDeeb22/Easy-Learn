@@ -23,7 +23,7 @@ export class OfferedCoursesController {
   //? fetch offered courses (available courses for registeration)
   // ==========================================================================================
   @Get('/')
-  @SetMetadata('roles', [Roles.STUDENT])
+  @SetMetadata('roles', [Roles.STUDENT, Roles.ADMIN])
   @ApiOperation({ summary: 'Get Available Offered Courses', description: 'Fetch offered courses for the current semester that the authenticated student can enroll in based on remaining credit limits.' })
   @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
   @ApiQuery({ name: 'limit', required: true, type: Number, example: 8, description: 'Number of items per page' })
@@ -37,8 +37,15 @@ export class OfferedCoursesController {
     @Request() req,
     @Query("page") page: number,
     @Query("limit") limit: number,
+    @Query('studentId') studentId?: string,
   ) {
-    const result = await this.offeredCoursesService.getAvailableCoursesForStudent(req.user.id, page, limit);
+
+    const targetStudentId =
+      req.user.role === Roles.ADMIN
+        ? studentId
+        : req.user.id;
+
+    const result = await this.offeredCoursesService.getAvailableCoursesForStudent(targetStudentId, page, limit);
     return result;
   }
 }

@@ -24,8 +24,8 @@ export const getAllStudnetCourses = async (page: number, limit: number): Promise
 //=====================================================
 //? Enroll course
 //=====================================================
-export const enrollStudent = async (offeredCourseId: string): Promise<void> => {
-    const response = await apiClient.post(`/api/courses/${offeredCourseId}/enroll`);
+export const enrollStudent = async (offeredCourseId: string, studentId: string): Promise<void> => {
+    const response = await apiClient.post(`/api/courses/${offeredCourseId}/enroll/${studentId}`);
     console.log("this is response for /courses/:offeredCourseId/enroll:", response.data);
     return response.data.data;
 }

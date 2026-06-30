@@ -8,7 +8,7 @@ export const useStudentCurrentCourses = (
   studentId: string
 ) => {
   return useQuery({
-    queryKey: ['studentCurrentCoursesForAdmin', studentId],
+    queryKey: ['CurrentStudentCoursesForAdmin', studentId],
     queryFn: () => getStudentCurrentCoursesForAdmin(studentId),
     placeholderData: keepPreviousData,
     staleTime: 5 * 60 * 1000,

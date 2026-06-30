@@ -274,10 +274,28 @@ export class CoursesService {
 
     async withdrawStudentCourse(studentId: string, courseId: string): Promise<ServiceResult<null>> {
 
+        // verify student exists
+        const student = await this.usersModel.findByPk(studentId);
+        if (!student) throw new NotFoundError("Student not found");
+
+        // verify course exists
+        const course = await this.coursesModel.findByPk(courseId);
+        if (!course) throw new NotFoundError("Course not found");
+
+        // remove the academic record
         await this.crudHelper.remove(this.academicRecordsModel, {
             studentId: studentId,
             courseId: courseId
         });
+
+        // deduct course credits from student's totals
+        await this.usersModel.update({
+            currentSemesterCredits: Math.max(0, (student.currentSemesterCredits ?? 0) - course.credit),
+            totalCredits: Math.max(0, (student.totalCredits ?? 0) - course.credit)
+        }, {
+            where: { id: studentId }
+        });
+
         return {
             message: "Student withdrawn successfully",
             data: null,

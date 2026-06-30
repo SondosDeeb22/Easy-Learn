@@ -27,7 +27,7 @@ export default function StudentsPage() {
     const handleApplyFilters = (newFilters: StudentFilterParams) => {
         setFilters(newFilters);
         setPage(1);
-        queryClient.invalidateQueries({ queryKey: ['studentCurrentCoursesForAdmin'] });
+        queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
 
     };
 

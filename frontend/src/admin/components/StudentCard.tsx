@@ -11,10 +11,11 @@ import { colors } from '../../styles/colorPalette';
 
 // component
 import StudentCurrentCoursesTable from '../components/CurrentStudentCoursesTable';
+import EnrollStudentInCourse from '../components/EnrollStudentInCourse';
 
 
 //hook
-import { useStudentCurrentCourses } from "../hooks/useStudentCurrentCourses";
+import { useStudentCurrentCourses } from "../hooks/useCurrentStudentCourses";
 
 interface StudentCardProps {
     student: Student;
@@ -65,6 +66,11 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                             </div>
                         </div>
 
+
+
+
+                        {/* Add Course Button --------------------------------------------------------------------- */}
+                        <EnrollStudentInCourse studentId={studentId} />
 
                         {/* Courses Table ------------------------------------------------------------------------*/}
                         <StudentCurrentCoursesTable

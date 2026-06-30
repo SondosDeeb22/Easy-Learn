@@ -68,42 +68,6 @@ export class CoursesController {
   };
 
 
-  // // ==========================================================================================
-  // //? Get Studnet courses for current semester - by student
-  // // ==========================================================================================
-  // @Get("current")
-  // @SetMetadata('roles', [Roles.STUDENT])
-  // @ApiOperation({ summary: 'Get Current Semester Courses for Student', description: 'Fetch courses the authenticated student is registered in for the active academic semester.' })
-  // @HttpCode(200)
-  // @ApiOkResponse({ description: 'Current Courses fetched successfully' })
-  // //error
-  // @ApiForbiddenResponse({ description: "You are not authorized to access" })
-
-  // async getStudentCurrentCourses(
-  //   @Request() req,
-
-  // ) {
-  //   return this.coursesService.getCurrentStudentCourses(req.user.id);
-  // };
-
-  // // ==========================================================================================
-  // //? Get Studnet courses for current semester - by admin
-  // // ==========================================================================================
-  // @Get("current/:studentId")
-  // @ApiOperation({ summary: 'Get Current Semester Courses for Student (Admin)', description: 'Allows admins to view any student\'s courses for the current semester.' })
-  // @ApiParam({ name: 'studentId', required: true, type: String, example: '20261144', description: 'The unique student identifier' })
-  // @HttpCode(200)
-  // @ApiOkResponse({ description: 'Current Courses fetched successfully' })
-  // //error
-  // @ApiForbiddenResponse({ description: "You are not authorized to access" })
-
-  // async getStudentCurrentCoursesForAdmin(
-  //   @Request() req,
-  //   @Param('studentId') studentId: string,
-  // ) {
-  //   return this.coursesService.getCurrentStudentCourses(studentId);
-  // };
-
 
   // ==========================================================================================
   //? Get Studnet courses for current semester - by admin
@@ -146,7 +110,7 @@ export class CoursesController {
   //? Enroll student in a course
   // ==========================================================================================
   @Post(':courseId/enroll')
-  @SetMetadata('roles', [Roles.STUDENT])
+  @SetMetadata('roles', [Roles.STUDENT, Roles.ADMIN])
   @ApiOperation({ summary: 'Enroll Student in Course', description: 'Enrolls the authenticated student in the specified course ID for the current semester.' })
   @ApiParam({ name: 'courseId', required: true, type: String, example: '50000004', description: 'The unique course identifier' })
   @ApiCreatedResponse({ description: 'Student enrolled in course successfully' })
@@ -156,10 +120,19 @@ export class CoursesController {
   @ApiConflictResponse({ description: 'Already enrolled in this course' })
   async enrollStudent(
     @Param('courseId') courseId: string,
+    @Query('studentId') studentId: string,
     @Request() req
   ) {
-    const result = await this.coursesService.enrollStudent(req.user.id, courseId);
-    return result;
+
+    if (req.user.role === Roles.ADMIN && !studentId) throw new BadRequestException("studentId is required for administrators.");
+
+    const targetStudentId =
+      req.user.role === Roles.ADMIN
+        ? studentId
+        : req.user.id;
+
+    return this.coursesService.enrollStudent(targetStudentId, courseId);
+
   }
 
 
