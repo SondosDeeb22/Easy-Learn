@@ -69,8 +69,8 @@ export class CrudHelper {
         }
 
         await add(
-            model as unknown as ModelStatic<Model>,
-            payload as unknown as Record<string, unknown>,
+            model as ModelStatic<Model>,
+            payload as Record<string, unknown>,
             options ? mappedOptions : undefined
         );
     }

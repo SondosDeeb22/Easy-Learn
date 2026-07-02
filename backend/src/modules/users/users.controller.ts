@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { NotFoundError } from 'src/common/errors';
 
 // guard
-import { Roles } from './enums/roles.enum';
+import { Roles } from './enums/users.enum';
 import { RolesGuard } from '../auth/guards/auth.guard';
 
 

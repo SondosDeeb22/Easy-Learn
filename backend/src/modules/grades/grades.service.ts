@@ -145,7 +145,7 @@ export class GradesService {
             await gpaRecord.save();
         } else {
             await this.gpaRecordsModel.create({
-                id: uuidv4(),
+                id: uuidv4().substring(0, 8),
                 studentId,
                 semesterId,
                 gpa,

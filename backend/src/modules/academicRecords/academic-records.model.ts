@@ -11,7 +11,7 @@ import { AcademicRecordInterface } from "./interfaces/academicRecord.interface";
 import { GradeScaleModel } from "../grades/grades.model";
 
 // =============================================================
-@Table({ tableName: "academic_records" })
+@Table({ tableName: "academic_records", paranoid: true })
 export class AcademicRecordsModel extends Model<AcademicRecordsModel, AcademicRecordInterface> implements AcademicRecordInterface {
 
     // id =============================================

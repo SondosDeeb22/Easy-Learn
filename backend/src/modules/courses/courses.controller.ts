@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Param, Query, Post, HttpCode, BadRequestException, Delete } from '@nestjs/common';
+import { Controller, Get, Request, Param, Query, Post, HttpCode, BadRequestException, Delete, Body, Patch } from '@nestjs/common';
 import { ApiQuery, ApiForbiddenResponse, ApiBadRequestResponse, ApiOkResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiConflictResponse, ApiOperation, ApiParam } from '@nestjs/swagger';
 
 //service
@@ -8,10 +8,12 @@ import { CoursesService } from './courses.service';
 import { RolesGuard } from '../auth/guards/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { SetMetadata } from '@nestjs/common';
-import { Roles } from '../users/enums/roles.enum';
+import { Roles } from '../users/enums/users.enum';
 import { NotFoundError } from 'src/common/errors';
-// ======================================================
+// dtos
+import { GetCoursesQueryDto, CreateCourseDto, UpdateCourseDto } from './dtos/courses.dto';
 
+// ======================================================
 @UseGuards(RolesGuard)
 @SetMetadata('roles', [Roles.ADMIN])
 
@@ -20,57 +22,39 @@ export class CoursesController {
   constructor(private readonly coursesService: CoursesService) { }
 
 
-  // ==========================================================================================
-  //? Get all courses 
-  // ==========================================================================================
-  @Get('all')
-  @ApiOperation({ summary: 'Get All Database Courses', description: 'Fetch list of all courses present in the system database records.' })
 
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'All courses fetched successfully' })
-  //error
+  // ==========================================================================================
+  //? Create a new course
+  // ==========================================================================================
+  @Post('add')
+  @ApiOperation({ summary: 'Create Course', description: 'Creates a new course in the system.' })
+  @HttpCode(201)
+  @ApiCreatedResponse({ description: 'Course created successfully' })
+  // error
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+  @ApiConflictResponse({ description: 'Course with this code already exists' })
 
-  async getAllCourses(@Request() req,) {
-    const result = await this.coursesService.getAllCourses();
-    return result;
+  async createCourse(@Body() data: CreateCourseDto) {
+    return this.coursesService.createCourse(data);
+  }
+
+  // ==========================================================================================
+  //? Update course details
+  // ==========================================================================================
+  @Patch('update')
+  @ApiOperation({ summary: 'Update Course', description: 'Updates details of an existing course in the system.' })
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Course updated successfully' })
+  // error
+  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+  @ApiConflictResponse({ description: 'Course with this code or title already exists' })
+  async updateCourse(@Body() data: UpdateCourseDto) {
+    return this.coursesService.updateCourse(data);
   }
 
 
   // ==========================================================================================
-  //? Get Studnet all courses 
-  // ==========================================================================================
-  @Get("student/all")
-  @SetMetadata('roles', [Roles.STUDENT])
-  @ApiOperation({ summary: 'Get Student All Registered Courses', description: 'Retrieve history of all courses the authenticated student is or has been registered in.' })
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
-  @ApiQuery({
-    name: 'semester',
-    required: false,
-    type: String,
-    example: '20000008',
-    description: 'Filter by specific Semester ID'
-  })
-  @HttpCode(200)
-  @ApiOkResponse({ description: 'Courses fetched successfully' })
-  //error
-  @ApiForbiddenResponse({ description: "You are not authorized to access" })
-
-  async getAllStudentCourses(
-    @Request() req,
-    @Query("page") page: number,
-    @Query("limit") limit: number,
-    @Query("semester") semester?: string,
-  ) {
-    console.log(req.user);
-    return this.coursesService.getAllStudentCourses(req.user.id, page, limit, semester);
-  };
-
-
-
-  // ==========================================================================================
-  //? Get Studnet courses for current semester - by admin
+  //? Get Studnet courses for current semester
   // ==========================================================================================
   @Get("current")
   @SetMetadata('roles', [Roles.STUDENT, Roles.ADMIN])
@@ -99,10 +83,60 @@ export class CoursesController {
   };
 
 
+  // ==========================================================================================
+  //? Get courses with filters
+  // ==========================================================================================
+  @Get()
+  @ApiOperation({ summary: 'Get Filtered Courses', description: 'Fetch a list of courses. Filter by code, name, or status.' })
+  @HttpCode(200)
+  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
+
+  @ApiQuery({ name: 'code', required: false, type: String, example: 'CSE101', description: 'Filter by course code' })
+  @ApiQuery({ name: 'title', required: false, type: String, example: 'Introduction to Computer Science', description: 'Filter by course title' })
+  @ApiQuery({ name: 'active', required: false, type: Boolean, example: true, description: 'Filter by course status' })
+
+  @ApiOkResponse({ description: 'Courses fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: 'You are not authorized to access' })
+  async getCourses(
+    @Query() query: GetCoursesQueryDto,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.coursesService.getCourses(query, page, limit);
+  }
 
 
+  // ==========================================================================================
+  //? Get Studnet's all courses 
+  // ==========================================================================================
+  @Get("student/all")
+  @SetMetadata('roles', [Roles.STUDENT])
+  @ApiOperation({ summary: 'Get Student All Registered Courses', description: 'Retrieve history of all courses the authenticated student is or has been registered in.' })
+  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
+  @ApiQuery({
+    name: 'semester',
+    required: false,
+    type: String,
+    example: '20000008',
+    description: 'Filter by specific Semester ID'
+  })
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Courses fetched successfully' })
+  //error
+  @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
-
+  async getAllStudentCourses(
+    @Request() req,
+    @Query("page") page: number,
+    @Query("limit") limit: number,
+    @Query("semester") semester?: string,
+  ) {
+    console.log(req.user);
+    return this.coursesService.getAllStudentCourses(req.user.id, page, limit, semester);
+  };
 
 
 

@@ -1,11 +1,10 @@
 // ====================================================================
 //? import  
 // ====================================================================
-import { Roles } from "../enums/roles.enum"
-import { Gender } from "../enums/gender.enum"
+import { Roles, Gender, Status } from "../enums/users.enum"
 // ====================================================================
 
-export interface UserInterface {
+export interface User {
     id: string,
     name: string,
     role: Roles,
@@ -15,7 +14,8 @@ export interface UserInterface {
     password: string,
     currentSemesterCredits: number | null,
     totalCredits: number | null,
-    cgpa: number | null
+    cgpa: number | null,
+    status: Status
 }
 
 

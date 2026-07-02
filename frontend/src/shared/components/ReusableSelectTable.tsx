@@ -21,6 +21,7 @@ interface ReusableSelectTableInterface<T> {
         pageSize?: number;
         total?: number;
         onChange?: (page: number, pageSize: number) => void;
+        showSizeChanger?: boolean;
     };
 }
 // ====================================================================
@@ -55,6 +56,8 @@ function ReusableSelectTable<T extends object>({ data, columns, loading, rowKey,
                     ...pagination,
                     hideOnSinglePage: true,
                     placement: ['bottomCenter'],
+                    showSizeChanger: pagination.showSizeChanger ?? false,
+
                 } : false}
             />
         </ConfigProvider>

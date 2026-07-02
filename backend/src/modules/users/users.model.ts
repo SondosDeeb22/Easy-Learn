@@ -6,16 +6,16 @@ import { Exclude } from "class-transformer";
 import { AcademicRecordsModel } from "../academicRecords/academic-records.model";
 
 
-import { UserInterface } from "./interfaces/user.interface";
+import { User } from "./interfaces/user.interface";
 
 import { GPARecordsModel } from "../grades/gpa-records.model";
 //enum 
-import { Roles } from "./enums/roles.enum";
-import { Gender } from "./enums/gender.enum";
-import { Optional } from "@nestjs/common";
+import { Roles, Gender, Status } from "./enums/users.enum";
+
+
 // =============================================================
 @Table({ tableName: "users" })
-export class UsersModel extends Model<UsersModel> implements UserInterface {
+export class UsersModel extends Model<UsersModel, User> implements User {
 
     // id =============================================
     @PrimaryKey
@@ -77,6 +77,12 @@ export class UsersModel extends Model<UsersModel> implements UserInterface {
     @Column(DataType.DOUBLE(4, 2))
 
     declare cgpa: number | null;
+
+    // status ==============================================
+    @Column(DataType.ENUM(...Object.values(Status)))
+
+    declare status: Status;
+
 
     // Associations ========================================
     @HasMany(() => AcademicRecordsModel)

@@ -17,6 +17,7 @@ interface ReusableTableInterface<T> {
         pageSize?: number;
         total?: number;
         onChange?: (page: number, pageSize: number) => void;
+        showSizeChanger?: boolean;
     };
 
 }
@@ -42,6 +43,7 @@ function ReusableTable<T extends object>({ data, columns, loading, rowKey, empty
                     ...pagination,
                     hideOnSinglePage: true,
                     placement: ['bottomCenter'],
+                    showSizeChanger: pagination.showSizeChanger ?? false,
                 } : false}
 
             />

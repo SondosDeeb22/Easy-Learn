@@ -10,7 +10,7 @@ import { OfferedCoursesService } from './offered-courses.service';
 import { RolesGuard } from '../auth/guards/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { SetMetadata } from '@nestjs/common';
-import { Roles } from '../users/enums/roles.enum';
+import { Roles } from '../users/enums/users.enum';
 
 
 @Controller('offered-courses')

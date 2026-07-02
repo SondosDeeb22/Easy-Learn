@@ -11,7 +11,7 @@ import { GPARecordsModel } from "../grades/gpa-records.model";
 import { Semester } from "./interfaces/semesters.interface";
 // ========================================================================
 @Table({ tableName: "semester" })
-export class SemestersModel extends Model<SemestersModel> implements Semester {
+export class SemestersModel extends Model<SemestersModel, Semester> implements Semester {
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))

@@ -1,15 +1,16 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { getCourses } from "../services/courses.service";
+import { CourseFilterParams } from '../interfaces/courses.interface';
 
 // =======================================================================
-//? fetch all courses
+//? fetch filtered courses
 // api: /courses
 // ==============================================================
 
-export const useAllCourses = () => {
+export const useCourses = (filters: CourseFilterParams, page: number, limit: number) => {
     return useQuery({
-        queryKey: ['AllCourses'],
-        queryFn: () => getCourses({}, 1, 100),
+        queryKey: ['Courses', filters, page, limit],
+        queryFn: () => getCourses(filters, page, limit),
         placeholderData: keepPreviousData,
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,

@@ -1,8 +1,38 @@
 
 import { apiClient } from '../../shared/services/apiClient';
-import { Course, Semester } from '../interfaces/courses.interface';
+import { Course, Semester, CourseFilterParams, CreateCourseData } from '../interfaces/courses.interface';
 // interfaces
-import { CurrentStudentCourses, WithdrawStudentCourse } from "../interfaces/courses.interface";
+import { CurrentStudentCourses, WithdrawStudentCourse, AllCourses } from "../interfaces/courses.interface";
+
+//=====================================================
+//? Get filtered courses
+//=====================================================
+export const getCourses = async (filters: CourseFilterParams, page: number, limit: number): Promise<AllCourses> => {
+  const params = new URLSearchParams();
+  if (filters.code) params.append('code', filters.code);
+  if (filters.title) params.append('title', filters.title);
+  if (filters.status) params.append('status', filters.status);
+
+  console.log(JSON.stringify(params))
+  const response = await apiClient.get(`/api/courses?${params.toString()}&page=${page}&limit=${limit}`);
+  console.log(`Response for /api/courses`, response.data.data);
+  return response.data.data;
+}
+
+//=====================================================
+//? Create a new course
+//=====================================================
+export const createCourse = async (data: CreateCourseData): Promise<Course> => {
+  try {
+    console.log(`[frontend/courses.service] provided data:\n ${JSON.stringify(data)}`);
+    const response = await apiClient.post(`/api/courses/add`, data);
+    console.log(`Response for POST /api/courses/add`, response.data);
+    return response.data.data;
+  } catch (error: any) {
+    console.log(`Error [createCourse]:`, error.message)
+    throw new Error(error.response?.data?.message || "Failed to create course")
+  }
+}
 
 
 //=====================================================
@@ -66,6 +96,21 @@ export const withdrawStudentFromCourse = async ({
     console.log(`Error [withdrawStudentCourse]:`, error)
     throw new Error(error.response?.data?.message || "Failed to withdraw from course")
   }
+
 };
 
+//=====================================================
+//? Update a course
+//=====================================================
+export const updateCourse = async (data: Course): Promise<any> => {
+  try {
+    console.log(`[frontend/courses.service] update data:\n ${JSON.stringify(data)}`);
+    const response = await apiClient.patch(`/api/courses/update`, data);
+    console.log(`Response for PATCH /api/courses/update`, response.data);
+    return response.data;
+  } catch (error: any) {
+    console.log(`Error [updateCourse]:`, error.message)
+    throw new Error(error.response?.data?.message || "Failed to update course")
+  }
+}
 

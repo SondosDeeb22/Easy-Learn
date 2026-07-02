@@ -10,7 +10,7 @@ import { AcademicRecordsModel } from "../academicRecords/academic-records.model"
 import { Grade } from "./interfaces/grades.interface";
 // ========================================================================
 @Table({ tableName: "grade_scale" })
-export class GradeScaleModel extends Model<GradeScaleModel> implements Grade {
+export class GradeScaleModel extends Model<GradeScaleModel, Grade> implements Grade {
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(2))

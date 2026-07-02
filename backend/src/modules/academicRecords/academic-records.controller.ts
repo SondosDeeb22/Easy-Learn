@@ -4,7 +4,7 @@ import { ApiTags, ApiOkResponse, ApiNotFoundResponse, ApiForbiddenResponse, ApiQ
 import { NotFoundError } from 'src/common/errors';
 
 // guard
-import { Roles } from '../users/enums/roles.enum';
+import { Roles } from '../users/enums/users.enum';
 import { RolesGuard } from '../auth/guards/auth.guard';
 
 //service

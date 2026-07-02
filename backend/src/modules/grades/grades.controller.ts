@@ -1,6 +1,6 @@
 import { Controller, Get, Param, SetMetadata } from '@nestjs/common';
 
-import { Roles } from 'src/modules/users/enums/roles.enum';
+import { Roles } from 'src/modules/users/enums/users.enum';
 import { ApiTags, ApiForbiddenResponse, ApiOperation, ApiParam, ApiOkResponse } from '@nestjs/swagger';
 //service
 import { GradesService } from './grades.service';

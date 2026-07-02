@@ -2,13 +2,12 @@
 //? import
 // ====================================================================
 
-import { UserInterface } from "src/modules/users/interfaces/user.interface";
+import { User } from "src/modules/users/interfaces/user.interface";
 
 
-import { Roles } from "src/modules/users/enums/roles.enum";
-import { Gender } from "src/modules/users/enums/gender.enum";
+import { Roles, Gender, Status } from "src/modules/users/enums/users.enum";
 // ====================================================================
-export const sampleUsers: UserInterface[] = [
+export const sampleUsers: User[] = [
     {
         id: '20261234',
         name: 'Sara Latifi',
@@ -19,7 +18,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 0,
         totalCredits: 0,
-        cgpa: 3.75
+        cgpa: 3.75,
+        status: Status.GRADUATED
     },
     {
         id: '20261155',
@@ -31,7 +31,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 12,
         totalCredits: 60,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
     {
         id: '20261144',
@@ -43,7 +44,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 5,
         totalCredits: 75,
-        cgpa: 2.84
+        cgpa: 2.84,
+        status: Status.PASSIVE
     },
     {
         id: '20261133',
@@ -55,7 +57,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 18,
         totalCredits: 90,
-        cgpa: 3.12
+        cgpa: 3.12,
+        status: Status.ACTIVE
     },
     {
         id: '20261122',
@@ -67,7 +70,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 9,
         totalCredits: 45,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
     {
         id: '20261111',
@@ -79,7 +83,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 15,
         totalCredits: 30,
-        cgpa: 4.05
+        cgpa: 4.05,
+        status: Status.ACTIVE
     },
     {
         id: '20261100',
@@ -91,7 +96,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 10,
         totalCredits: 55,
-        cgpa: 2.67
+        cgpa: 2.67,
+        status: Status.GRADUATED
     },
     {
         id: '20261099',
@@ -103,7 +109,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 6,
         totalCredits: 40,
-        cgpa: 3.90
+        cgpa: 3.90,
+        status: Status.ACTIVE
     },
     {
         id: '20261088',
@@ -115,7 +122,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 12,
         totalCredits: 50,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
     {
         id: '20261077',
@@ -127,7 +135,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 9,
         totalCredits: 35,
-        cgpa: 3.33
+        cgpa: 3.33,
+        status: Status.PASSIVE
     },
     {
         id: '20261066',
@@ -139,7 +148,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: 18,
         totalCredits: 80,
-        cgpa: 2.10
+        cgpa: 2.10,
+        status: Status.ACTIVE
     },
     {
         id: '20261055',
@@ -151,7 +161,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 6,
         totalCredits: 25,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
     {
         id: '20261044',
@@ -163,7 +174,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 14,
         totalCredits: 65,
-        cgpa: 3.58
+        cgpa: 3.58,
+        status: Status.ACTIVE
     },
     {
         id: '20261033',
@@ -175,7 +187,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 11,
         totalCredits: 42,
-        cgpa: 4.22
+        cgpa: 4.22,
+        status: Status.GRADUATED
     },
     {
         id: '20261022',
@@ -187,7 +200,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 16,
         totalCredits: 70,
-        cgpa: 2.95
+        cgpa: 2.95,
+        status: Status.ACTIVE
     },
     {
         id: '20261011',
@@ -199,7 +213,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 8,
         totalCredits: 20,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
     {
         id: '20261000',
@@ -211,7 +226,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 13,
         totalCredits: 58,
-        cgpa: 3.01
+        cgpa: 3.01,
+        status: Status.ACTIVE
     },
     {
         id: '20260999',
@@ -223,7 +239,8 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhOG.V/C',
         currentSemesterCredits: 7,
         totalCredits: 15,
-        cgpa: 2.76
+        cgpa: 2.76,
+        status: Status.ACTIVE
     },
     {
         id: '10001234',
@@ -235,6 +252,7 @@ export const sampleUsers: UserInterface[] = [
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
         currentSemesterCredits: null,
         totalCredits: 0,
-        cgpa: null
+        cgpa: null,
+        status: Status.ACTIVE
     },
 ];

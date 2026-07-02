@@ -8,11 +8,12 @@ import { Table, Column, Model, DataType, PrimaryKey, HasMany } from "sequelize-t
 import { AcademicRecordsModel } from "../academicRecords/academic-records.model";
 import { OfferedCoursesModel } from "../offered-courses/offered-courses.model";
 
+
 import { Course } from "./interfaces/courses.interface";
 
 // ========================================================================
 @Table({ tableName: "courses" })
-export class CoursesModel extends Model<CoursesModel> implements Course {
+export class CoursesModel extends Model<CoursesModel, Course> implements Course {
 
     // Id =============================
     @PrimaryKey
@@ -34,6 +35,12 @@ export class CoursesModel extends Model<CoursesModel> implements Course {
     @Column(DataType.INTEGER)
 
     declare credit: number;
+
+    // active ===== ========================
+    @Column({ type: DataType.BOOLEAN, defaultValue: true })
+
+    declare active: boolean;
+
 
     // Associations --------------------------------------
     @HasMany(() => AcademicRecordsModel)

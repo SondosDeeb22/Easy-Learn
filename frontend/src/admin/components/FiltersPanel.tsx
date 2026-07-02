@@ -27,7 +27,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
     const [courseId, setCourseId] = useState<string | null>(null);
     const [semesterId, setSemesterId] = useState<string | null>(null);
 
-    const { data: courses, loading: coursesLoading, error: coursesError } = useAllCourses();
+    const { data: courses, isLoading: coursesLoading, error: coursesError } = useAllCourses();
     const { data: semesters, loading: semestersLoading, error: semestersError } = useAllSemesters();
 
 
@@ -99,7 +99,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             style={{ width: '100%' }}
                             loading={coursesLoading}
                             value={courseId ?? undefined}
-                            options={courses.map(c => ({ value: c.id, label: `${c.code} - ${c.title}` }))}
+                            options={courses?.courses.map(c => ({ value: c.id, label: `${c.code} - ${c.title}` }))}
                             onChange={(value) => setCourseId(value ?? null)}
                             allowClear
                             disabled={!!studentId}

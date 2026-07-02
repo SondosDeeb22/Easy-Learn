@@ -8,7 +8,7 @@ import { SemestersService } from './semesters.service';
 
 //guard
 import { RolesGuard } from '../auth/guards/auth.guard';
-import { Roles } from '../users/enums/roles.enum';
+import { Roles } from '../users/enums/users.enum';
 
 @Controller('semesters')
 @UseGuards(RolesGuard)

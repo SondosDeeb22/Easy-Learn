@@ -1,8 +1,23 @@
 
 export interface Course {
-    id: string,
-    code: string,
-    title: string
+    id: string;
+    code: string;
+    title: string;
+    credit: number;
+    active: boolean;
+}
+
+export interface CreateCourseData {
+    code: string;
+    title: string;
+    credit: number;
+    active: boolean;
+}
+
+export interface CourseFilterParams {
+    code?: string;
+    title?: string;
+    status?: string;
 }
 
 export interface Semester {
@@ -10,6 +25,12 @@ export interface Semester {
     title: string
 }
 
+
+
+export interface AllCourses {
+    courses: Course[] | [],
+    totalRows: number;
+}
 
 // ==============================================================================================
 // interface for the current semester courses

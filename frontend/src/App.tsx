@@ -22,6 +22,7 @@ import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 // Admin - protected pages ---------------------------------------
 import AdminDashboard from './admin/pages/dashboard';
 import StudentsPage from './admin/pages/students';
+import CoursesPage from './admin/pages/courses';
 
 // Student - protected pages ---------------------------------------
 import StudentHomepage from './student/pages/studentHomepage';
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "students",
         element: <StudentsPage />
+      },
+      {
+        path: "courses",
+        element: <CoursesPage />
       }
     ]
 

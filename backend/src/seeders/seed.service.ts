@@ -42,13 +42,13 @@ export class SeedService {
 
     async seed() {
         // Clear existing data- children then parents
-        await this.gpaRecordsModel.destroy({ where: {} });
-        await this.academicRecordsModel.destroy({ where: {} });
+        await this.gpaRecordsModel.destroy({ where: {}, force: true });
+        await this.academicRecordsModel.destroy({ where: {}, force: true });
         await this.gradeScaleModel.destroy({ where: {} });
         await this.offeredCoursesModel.destroy({ where: {} });
         await this.coursesModel.destroy({ where: {} });
         await this.semestersModel.destroy({ where: {} });
-        await this.userModel.destroy({ where: {} });
+        await this.userModel.destroy({ where: {}, force: true });
 
         //seed data - parents then children
         await this.userModel.bulkCreate(sampleUsers as any);

@@ -59,7 +59,7 @@ export const sampleSemesters: Semester[] = [
         id: '20000008',
         title: 'Spring 2025-2026',
         startDate: new Date('2026-02-01'),
-        endDate: new Date('2026-06-30'),
+        endDate: new Date('2026-07-15T23:59:59.000Z'),
         maxCredits: 18,
     },
     {

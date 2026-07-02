@@ -37,14 +37,23 @@ export const add = async (
                 primaryKey?: boolean;
             };
 
-            if (!field.allowNull && field.defaultValue === undefined && !field.autoIncrement && !field.primaryKey) {
+            if (
+                field.allowNull === false &&
+                field.defaultValue === undefined &&
+                !field.autoIncrement &&
+                !field.primaryKey &&
+                name !== 'createdAt' &&
+                name !== 'updatedAt' &&
+                name !== 'deletedAt'
+            ) {
                 requiredFields.push(name);
             }
         }
 
+        console.log(`[helper/add] - payload:\n ${JSON.stringify(payload, null, 4)}`)
         for (const field of requiredFields) {
             if (body[field] === undefined || body[field] === null || body[field] === "") {
-                throw new ValidationError("common.errors.validation.fillAllFields");
+                throw new ValidationError(`Please, fill all required fields (missing: ${field})`);
             }
         }
 
@@ -98,7 +107,7 @@ export const add = async (
             // If the PK not provided, not auto-increment, and has no default value, 
             // we generate a uuid 
             if (!hasPk && !pkAttrTyped.autoIncrement && pkAttrTyped.defaultValue === undefined) {
-                body[pkName] = uuidv4();
+                body[pkName] = uuidv4().substring(0, 8);
             }
 
 
@@ -123,7 +132,7 @@ export const add = async (
                 })) as Model | null;
 
                 if (exists) {
-                    throw new ConflictError("common.errors.validation.duplicate");
+                    throw new ConflictError(`DUPLICATE_FIELD:${field}`);
                 }
             }
         }
@@ -136,11 +145,12 @@ export const add = async (
         // centralized error mapping
 
         if (error instanceof ValidationError || error instanceof ConflictError || error instanceof InternalServerError) {
+            console.log(`[helper/add] error: \n${error}`);
             throw error;
         }
 
 
-
-        throw new InternalServerError("common.errors.internal");
+        console.log(`[helper/add] error: \n${error}`);
+        throw new InternalServerError("Common Internal Error");
     }
 };

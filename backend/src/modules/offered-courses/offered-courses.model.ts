@@ -10,7 +10,7 @@ import { SemestersModel } from "../semesters/semesters.model";
 import { OfferedCourse } from "./interfaces/offeredCourses.interface";
 // ========================================================================
 @Table({ tableName: "offered_courses" })
-export class OfferedCoursesModel extends Model<OfferedCoursesModel> implements OfferedCourse {
+export class OfferedCoursesModel extends Model<OfferedCoursesModel, OfferedCourse> implements OfferedCourse {
     // id =============================================
     @PrimaryKey
     @Column(DataType.STRING(8))

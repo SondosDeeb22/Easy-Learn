@@ -8,12 +8,9 @@ import { UsersModel } from "../users/users.model";
 import { SemestersModel } from "../semesters/semesters.model";
 import { GPARecord } from "./interfaces/gpa-records.interface";
 
-// export type GPARecordCreationAttributes = Optional<GPARecord, "id">;
-export type GPARecordCreationAttributes = GPARecord;
-
 // ========================================================================
 @Table({ tableName: "gpa_records" })
-export class GPARecordsModel extends Model<GPARecordsModel, GPARecordCreationAttributes> implements GPARecord {
+export class GPARecordsModel extends Model<GPARecordsModel, GPARecord> implements GPARecord {
     // Creation attributes (GPARecordCreationAttributes) are used because Sequelize operates on model instances internally, but .create() accepts plain object inputs from the service layer.
     // id =============================================
     @PrimaryKey

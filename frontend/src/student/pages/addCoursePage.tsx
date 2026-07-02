@@ -31,7 +31,7 @@ export default function AddCoursePage() {
     const [api, contextHolder] = notification.useNotification();
 
     // get current semester title 
-    const { data: currentSemester } = useCurrentStudentCourses(page, rowsLimit);
+    const { data: currentSemester } = useCurrentStudentCourses();
     const semesterTitle = currentSemester?.semesterTitle ?? "";
 
     // update offerd course
@@ -49,7 +49,7 @@ export default function AddCoursePage() {
         if (!selectedCourse) return;
 
         try {
-            await enrollStudent(selectedCourse.id);
+            await enrollStudent(selectedCourse.id,);
             api.success({ title: "Enrolled successfully!", description: `You have been enrolled in ${selectedCourse.code}` });
             setSelectedCourse(null);
 
@@ -65,7 +65,7 @@ export default function AddCoursePage() {
             const errorMessage = enrollmentError.response?.data?.message || "Try again later";
             api.error({ title: "Failed to enroll", description: errorMessage });
             setSelectedCourse(null);
-            
+
             // Refetch offered courses immediately to sync list if it changed
             queryClient.invalidateQueries({
                 queryKey: ['offeredCourses']

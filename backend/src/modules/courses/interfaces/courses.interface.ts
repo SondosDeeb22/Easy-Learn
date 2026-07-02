@@ -4,6 +4,7 @@ export interface Course {
     code: string;
     title: string;
     credit: number;
+    active: boolean;
 }
 
 // =========================================================== 
@@ -18,6 +19,14 @@ export interface CourseWithGrade extends Course {
 
 export interface AllStudentCourses {
     courses: CourseWithGrade[],
+    totalRows: number;
+}
+
+// =========================================================== 
+
+
+export interface AllCourses {
+    courses: Course[] | [],
     totalRows: number;
 }
 
@@ -42,3 +51,9 @@ export interface Course {
     title: string,
 }
 // ========================================================
+
+export type CoursesQueryParams = {
+    code?: string;
+    title?: any;
+    active?: boolean;
+};
