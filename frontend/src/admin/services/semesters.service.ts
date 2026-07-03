@@ -9,3 +9,11 @@ export const getAllSemesters = async (): Promise<Semester[]> => {
     console.log("this is response for /semesters/all", response.data);
     return response.data.data;
 };
+
+//=====================================================
+//? get current active semester
+//=====================================================
+export const getCurrentSemester = async (): Promise<Semester | null> => {
+    const response = await apiClient.get(`/api/semesters/current`);
+    return response.data.data;
+};

@@ -14,10 +14,13 @@ import { AcademicRecordsModel } from '../academicRecords/academic-records.model'
 import { SemestersModel } from '../semesters/semesters.model';
 import { UsersModel } from '../users/users.model';
 import { AuthModule } from '../auth/auth.module';
+
+//helper
+import { CrudHelper } from 'src/common/helpers/crud.helper';
 // ==================================================================================================
 @Module({
   controllers: [OfferedCoursesController],
-  providers: [OfferedCoursesService],
+  providers: [OfferedCoursesService, CrudHelper],
 
   imports: [
     SequelizeModule.forFeature([OfferedCoursesModel, CoursesModel, AcademicRecordsModel, SemestersModel, UsersModel]),

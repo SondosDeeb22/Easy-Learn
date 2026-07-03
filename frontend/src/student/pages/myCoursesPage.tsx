@@ -6,11 +6,11 @@ import StudnetCoursesTable from '../components/StudnetCoursesTable';
 import { useAllStudentCourses } from '../hooks/useAllStudnetCourses';
 // ====================================================================
 export default function MyCoursesPage() {
-    const rowsLimit = 8;
+    const PAGE_LIMIT = 8;
 
     const [page, setPage] = useState(1); // page 1 as defualt
 
-    const { data, isLoading, isError } = useAllStudentCourses(page, rowsLimit);
+    const { data, isLoading, isError } = useAllStudentCourses(page, PAGE_LIMIT);
 
 
     return (
@@ -21,7 +21,7 @@ export default function MyCoursesPage() {
                 loading={isLoading}
                 error={isError ? "Failed to Load Courses" : undefined}
                 page={page}
-                limit={rowsLimit}
+                limit={PAGE_LIMIT}
                 totalRows={data?.totalRows ?? 0}
                 setPage={setPage}
             />

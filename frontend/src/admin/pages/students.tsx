@@ -16,11 +16,11 @@ import { StudentFilterParams } from '../interfaces/users.interface';
 // ====================================================================
 
 export default function StudentsPage() {
-    const rowsLimit = 5;
+    const PAGE_LIMIT = 5;
     const [page, setPage] = useState(1);
     const [filters, setFilters] = useState<StudentFilterParams>({});
 
-    const { data, isLoading, isError } = useStudents({ page, limit: rowsLimit, ...filters });
+    const { data, isLoading, isError } = useStudents({ page, limit: PAGE_LIMIT, ...filters });
     const { data: studentData, loading: studentLoading, error: studentError } = useStudentDetails(filters.studentId || "");
 
     // when filters change, reset to page 1
@@ -49,7 +49,7 @@ export default function StudentsPage() {
                     loading={isLoading}
                     error={isError ? "Failed to load students" : undefined}
                     page={page}
-                    limit={rowsLimit}
+                    limit={PAGE_LIMIT}
                     totalRows={data?.totalRows ?? 0}
                     setPage={setPage}
                 />)}

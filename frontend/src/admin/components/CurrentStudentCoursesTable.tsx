@@ -175,7 +175,6 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                         onClick={() => handleOpenWithdrawModal(record)}
                         onMouseDown={(e) => e.preventDefault()}
                         style={{
-                            color: colors.burgundy,
                             padding: 5,
                             border: '1px solid',
                             background: 'none',

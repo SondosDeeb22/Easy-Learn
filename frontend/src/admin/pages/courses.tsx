@@ -20,8 +20,8 @@ export default function CoursesPage() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const [page, setPage] = useState(1);
-    const rowsLimit = 5;
-    const { data, isLoading, isError } = useCourses(filters, page, rowsLimit);
+    const PAGE_LIMIT = 5;
+    const { data, isLoading, isError } = useCourses(filters, page, PAGE_LIMIT);
 
     console.log(`[CoursesPage] total courses: ${data?.totalRows}\ncourses: ${JSON.stringify(data?.courses)}\n data: ${JSON.stringify(data)}`);
 
@@ -45,19 +45,22 @@ export default function CoursesPage() {
                     </Button>
                 </div>
 
+                {/* Filter  --------------------------------------*/}
                 <CoursesFilterPanel onApply={handleApplyFilters} />
 
+                {/* Table --------------------------------------------*/}
                 <CoursesTable
                     courses={data?.courses ?? []}
                     loading={isLoading}
                     error={isError ? "Failed to load courses" : undefined}
                     page={page}
-                    limit={rowsLimit}
+                    limit={PAGE_LIMIT}
                     totalRows={data?.totalRows ?? 0}
                     setPage={setPage}
 
                 />
 
+                {/* Add Modal -------------------------------------------*/}
                 <AddCourseModal
                     open={isAddModalOpen}
                     onClose={() => setIsAddModalOpen(false)}

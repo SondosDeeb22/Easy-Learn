@@ -80,8 +80,10 @@ export class CrudHelper {
     //========================================================================================================
 
 
-    async remove(model: ModelStatic<Model<any, any>>,
-        where: WhereOptions): Promise<number> {
+    async remove(
+        model: ModelStatic<Model<any, any>>,
+        where: WhereOptions
+    ): Promise<number> {
 
         return remove(model, where)
     }

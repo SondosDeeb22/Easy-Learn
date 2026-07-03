@@ -17,6 +17,22 @@ export class SemestersController {
   constructor(private readonly semestersService: SemestersService) { }
 
   // ==========================================================================================
+  //? Get current active semester
+  // ==========================================================================================
+  @Get('/current')
+
+  @SetMetadata('roles', [Roles.ADMIN, Roles.STUDENT])
+  @ApiOperation({ summary: 'Get Current Semester', description: 'Fetch the active semester based on the current date.' })
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Current semester fetched successfully' })
+
+  async getCurrentSemester(@Request() req) {
+    const result = await this.semestersService.getCurrentSemester();
+    return result;
+  }
+
+  // ==========================================================================================
   //? Get all semesters
   // ==========================================================================================
   @Get('/all')
@@ -32,3 +48,4 @@ export class SemestersController {
     return result;
   }
 }
+

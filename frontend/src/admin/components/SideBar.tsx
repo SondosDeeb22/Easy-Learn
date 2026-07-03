@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { UserGroupIcon, Squares2X2Icon, BookOpenIcon } from '@heroicons/react/24/outline';
+import { UserGroupIcon, Squares2X2Icon, BookOpenIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -23,6 +23,11 @@ export default function Sidebar() {
             path: '/admin/courses',
             label: 'Courses',
             icon: BookOpenIcon,
+        },
+        {
+            path: '/admin/offered-courses',
+            label: 'Offered Courses',
+            icon: CalendarDaysIcon,
         },
     ];
 

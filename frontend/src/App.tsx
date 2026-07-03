@@ -23,6 +23,7 @@ import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 import AdminDashboard from './admin/pages/dashboard';
 import StudentsPage from './admin/pages/students';
 import CoursesPage from './admin/pages/courses';
+import OfferedCoursesPage from './admin/pages/offeredCourses';
 
 // Student - protected pages ---------------------------------------
 import StudentHomepage from './student/pages/studentHomepage';
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "courses",
         element: <CoursesPage />
+      },
+      {
+        path: "offered-courses",
+        element: <OfferedCoursesPage />
       }
     ]
 

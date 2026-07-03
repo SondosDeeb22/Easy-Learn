@@ -25,7 +25,7 @@ export default function AddCoursePage() {
     const [selectedCourse, setSelectedCourse] = useState<CourseWithGrade | null>(null);
     const [page, setPage] = useState(1); // initial state of page
 
-    const rowsLimit = 8;
+    const PAGE_LIMIT = 8;
 
     // Ant Design notification hook
     const [api, contextHolder] = notification.useNotification();
@@ -39,7 +39,7 @@ export default function AddCoursePage() {
         data: offeredCourses,
         isLoading,
         isError: offeredCoursesError,
-    } = useOfferedCourses(page, rowsLimit);
+    } = useOfferedCourses(page, PAGE_LIMIT);
 
 
     // ----------------------------------------------------

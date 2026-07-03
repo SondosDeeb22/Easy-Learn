@@ -1,7 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { format } from 'sql-formatter'
 
+import { WhereOptions } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 //models
 import { CoursesModel } from '../courses/courses.model';
@@ -12,10 +14,16 @@ import { OfferedCoursesModel } from './offered-courses.model';
 
 //interface
 import { ServiceResult } from '../../common/interfaces/service-result.interface';
-import { OfferedCourses } from './interfaces/offeredCourses.interface';
+import { Course, OfferedCourses, AvailableCourses, AdminOfferedCourses } from './interfaces/offeredCourses.interface';
 
 //error
 import { NotFoundError } from "../../common/errors";
+
+// dtos
+import { CreateOfferedCourseDto } from './dtos/offered-courses.dto';
+
+// helper
+import { CrudHelper } from '../../common/helpers/crud.helper';
 
 
 // =========================================================================
@@ -34,13 +42,15 @@ export class OfferedCoursesService {
         private readonly usersModel: typeof UsersModel,
         @InjectModel(OfferedCoursesModel)
         private readonly offeredCoursesModel: typeof OfferedCoursesModel,
+
+        private readonly crudHelper: CrudHelper
     ) { }
 
 
     // =========================================================================
-    //? fetch offered courses (available courses for registeration) that studetn can pick from according to his credits 
+    //? fetch offered courses (available courses for registeration) according to the student remaining credits 
     // =========================================================================
-    async getAvailableCoursesForStudent(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCourses>> {
+    async getOfferedCoursesForStudent(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCourses>> {
 
         // get current semester
         const today = new Date();
@@ -97,7 +107,7 @@ export class OfferedCoursesService {
             }],
             attributes: []
         });
-        console.log("backend/courses.service (getAvailableCoursesForStudent function ) - offered courses count= \n", offeredCourses.count,
+        console.log("backend/courses.service (getOfferedCoursesForStudent function ) - offered courses count= \n", offeredCourses.count,
             "\noffered courses = \n", offeredCourses.rows.map(record => (record.course?.toJSON())));
 
 
@@ -113,6 +123,143 @@ export class OfferedCoursesService {
             message: formatted.length === 0 ? "No courses available" : "Courses fetched successfully",
             data: { remainingCredits, courses: formatted, totalRows: offeredCourses.count },
         }
+    }
+
+    // =========================================================================
+    //? fetch offered courses for admin management (filterable by semester)
+    // =========================================================================
+    async getOfferedCoursesForAdmin(semesterId: string | undefined, page: number, limit: number): Promise<ServiceResult<AdminOfferedCourses>> {
+        const offset = (page - 1) * limit;
+
+        const whereClause: WhereOptions<OfferedCoursesModel> = {};
+        if (semesterId) whereClause.semesterId = semesterId;
+
+        const result = await this.offeredCoursesModel.findAndCountAll({
+            limit,
+            offset,
+            where: whereClause,
+            include: [
+                {
+                    model: CoursesModel,
+                    as: 'course',
+                    attributes: ['id', 'code', 'title', 'credit'],
+                },
+                {
+                    model: SemestersModel,
+                    as: 'semester',
+                    attributes: ['id', 'title'],
+                },
+            ],
+        });
+
+        const formatted = result.rows.map(row => ({
+            id: row.id,
+            courseId: row.courseId,
+            semesterId: row.semesterId,
+            course: row.course ? { id: row.course.id, code: row.course.code, title: row.course.title, credit: row.course.credit } : null,
+            semester: row.semester ? { id: row.semester.id, title: row.semester.title } : null,
+        }));
+
+        return {
+            message: `${result.count} offered course(s) found`,
+            data: { courses: formatted, totalRows: result.count },
+        };
+    }
+
+    // =========================================================================
+    //? get courses NOT yet offered in a given semester (admin — for Add Offered Course dropdown)
+    // =========================================================================
+    async getAvailableCoursesForSemester(semesterId: string, page: number, limit: number): Promise<ServiceResult<AvailableCourses>> {
+        const offset = (page - 1) * limit;
+
+        const result = await this.coursesModel.findAndCountAll({
+            subQuery: false,// prevent nested query
+            limit,
+            offset,
+            where: {
+                '$offeredCourses.id$': null,  // get only courses with no matching offered-course (in left-join, null is placed on offered courses for courses with no match)
+            },
+            include: [
+                {
+                    model: OfferedCoursesModel,
+                    as: 'offeredCourses',
+                    required: false,  // LEFT JOIN will keep courses that have no match
+                    where: { semesterId },
+                    attributes: [],
+                },
+            ],
+            attributes: ['id', 'code', 'title', 'credit'],
+
+
+            logging: (sql) => {
+                const cleanSql = sql.replace(/^Executing\s+\(default\):\s*/, '');
+
+                console.log(`\n================ SQL =================\n${format(cleanSql, { language: 'postgresql' })}\n========================================\n`);
+            },
+
+        });
+
+        const formatted = result.rows.map(row => ({
+            id: row.id,
+            code: row.code,
+            title: row.title,
+            credit: row.credit,
+        }));
+
+        return {
+            message: `${result.count} offered course(s) found`,
+            data: { courses: formatted, totalRows: result.count },
+        };
+    }
+
+
+
+
+    // =========================================================================
+    //? add a course to a semester (admin)
+    // =========================================================================
+    async createOfferedCourse(data: CreateOfferedCourseDto): Promise<ServiceResult<null>> {
+        const { courseId, semesterId } = data;
+
+        // validate course exists
+        const course = await this.coursesModel.findByPk(courseId);
+        if (!course) throw new NotFoundError(`Course with id ${courseId} not found`);
+
+        // validate semester exists
+        const semester = await this.semestersModel.findByPk(semesterId);
+        if (!semester) throw new NotFoundError(`Semester with id ${semesterId} not found`);
+
+
+        // check for duplicate (same course in same semester)
+        const existing = await this.offeredCoursesModel.findOne({ where: { courseId, semesterId } });
+        if (existing) throw new ConflictException(`DUPLICATE_FIELD:course — this course is already offered in the selected semester`);
+
+        await this.crudHelper.add(this.offeredCoursesModel, {
+            id: uuidv4().substring(0, 8),
+            courseId,
+            semesterId
+        },)
+        return {
+            message: 'Course added to semester successfully',
+            data: null,
+        };
+    }
+
+
+
+    // =========================================================================
+    //? delete an offered course by id (admin)
+    // =========================================================================
+    async deleteOfferedCourse(id: string): Promise<ServiceResult<null>> {
+        const record = await this.offeredCoursesModel.findByPk(id);
+        if (!record) throw new NotFoundError(`Offered course with id ${id} not found`);
+
+        await this.offeredCoursesModel.destroy({ where: { id } });
+
+        return {
+            message: 'Offered course removed successfully',
+            data: null,
+        };
     }
 
 }
