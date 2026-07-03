@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Button, ConfigProvider } from 'antd';
+import { Select, Button, Card, ConfigProvider } from 'antd';
 import { SearchOutlined, ClearOutlined } from '@ant-design/icons';
 import { useAllSemesters } from '../hooks/semesters.hook';
 import { colors } from '../../styles/colorPalette';
@@ -15,14 +15,15 @@ interface OfferedCoursesFilterPanelProps {
 
 const OfferedCoursesFilterPanel: React.FC<OfferedCoursesFilterPanelProps> = ({ defaultSemesterId, onApply }) => {
     const { data: semesters, isLoading } = useAllSemesters();
+    console.log(`[frontend/offeredCoursesFilterPanel]\nresult: ${JSON.stringify(semesters?.semesters, null, 2)}}`)
     const [selectedSemester, setSelectedSemester] = useState<string | undefined>(defaultSemesterId);
 
     // Once the current semester resolves, seed the filter
-    useEffect(() => {
-        if (defaultSemesterId) {
-            setSelectedSemester(defaultSemesterId);
-        }
-    }, [defaultSemesterId]);
+    // useEffect(() => {
+    //     if (defaultSemesterId) {
+    //         setSelectedSemester(defaultSemesterId);
+    //     }
+    // }, [defaultSemesterId]);
 
     const handleApply = () => {
         onApply(selectedSemester);
@@ -35,51 +36,64 @@ const OfferedCoursesFilterPanel: React.FC<OfferedCoursesFilterPanelProps> = ({ d
 
     // =====================================================================
     return (
-        <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy } }}>
-            <div
-                style={{
-                    background: '#fff',
-                    borderRadius: 10,
-                    padding: '16px 20px',
-                    marginBottom: 20,
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'flex-end',
-                    gap: 12,
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-                }}
-            >
-                <div style={{ flex: '1 1 220px', minWidth: 200 }}>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#555', marginBottom: 4 }}>
-                        Semester
-                    </label>
-                    <Select
-                        placeholder="Select semester"
-                        loading={isLoading}
-                        value={selectedSemester ?? undefined}
-                        options={semesters?.map(s => ({ value: s.id, label: s.title }))}
-                        onChange={(value) => setSelectedSemester(value ?? undefined)}
-                        allowClear
-                        style={{ width: '100%' }}
-                    />
+        <ConfigProvider theme={{
+            token: {
+                colorPrimary: colors.burgundy,
+                colorPrimaryBg: "#ecececff",
+                colorPrimaryBgHover: "#ececec",
+            },
+        }}>
+
+            <Card className="mb-6 rounded-xl shadow-sm">
+                <label className="text-[15px] font-medium text-gray-900">
+                    View offered courses by semester
+                </label>
+
+                <div className="mt-6 flex flex-wrap items-end gap-4">
+                    {/* semester ------------------------------------------------ */}
+                    <div className="flex min-w-[220px] flex-col gap-1.5">
+                        <label className="font-medium text-[13px]">
+                            Semester
+                        </label>
+                        <Select
+                            showSearch
+                            size="large"
+                            style={{ width: '100%' }}
+                            placeholder="Select semester"
+
+                            loading={isLoading}
+                            value={selectedSemester ?? undefined}
+                            options={semesters?.semesters.map(s => ({ value: s.id, label: s.title }))}
+                            onChange={(value) => setSelectedSemester(value ?? undefined)}
+
+                            allowClear
+                        />
+                    </div>
+
+                    {/* Buttons ----------------------------------------- */}
+                    <div className="ml-auto flex gap-2.5 pb-[1px]">
+                        <Button
+                            type="primary"
+                            size="large"
+                            icon={<SearchOutlined />}
+                            onClick={handleApply}
+                        >
+                            Apply
+                        </Button>
+                        <Button
+                            size="large"
+                            icon={<ClearOutlined />}
+                            onClick={handleClear}
+                        >
+                            Clear
+                        </Button>
+
+
+                    </div>
+
                 </div>
 
-                <Button
-                    type="primary"
-                    icon={<SearchOutlined />}
-                    onClick={handleApply}
-                    style={{ minWidth: 100 }}
-                >
-                    Filter
-                </Button>
-                <Button
-                    icon={<ClearOutlined />}
-                    onClick={handleClear}
-                    style={{ minWidth: 100 }}
-                >
-                    Clear
-                </Button>
-            </div>
+            </Card>
         </ConfigProvider>
     );
 };

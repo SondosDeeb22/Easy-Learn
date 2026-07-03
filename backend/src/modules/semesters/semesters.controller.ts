@@ -1,10 +1,13 @@
-import { Controller, HttpCode, Get, Request, SetMetadata, UseGuards } from '@nestjs/common';
+import { Controller, HttpCode, Get, Request, SetMetadata, UseGuards, Query, Post, Patch, Body } from '@nestjs/common';
 
 //swagger
 import { ApiOperation, ApiOkResponse, ApiForbiddenResponse } from '@nestjs/swagger';
 
 //service
 import { SemestersService } from './semesters.service';
+
+//dtos
+import { GetSemestersQueryDto, CreateSemesterDto, UpdateSemesterDto } from './dtos/semesters.dto';
 
 //guard
 import { RolesGuard } from '../auth/guards/auth.guard';
@@ -43,9 +46,33 @@ export class SemestersController {
   //error
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
 
-  async getAllSemesters(@Request() req) {
-    const result = await this.semestersService.getAllSemesters();
+  async getAllSemesters(
+    @Request() req,
+    @Query() query?: GetSemestersQueryDto) {
+
+    const result = await this.semestersService.getAllSemesters(query);
     return result;
   }
-}
 
+  // ==========================================================================================
+  //? Create Semester
+  // ==========================================================================================
+  @Post('/add')
+  @ApiOperation({ summary: 'Create Semester', description: 'Create a new semester in the system.' })
+  @HttpCode(201)
+  @ApiOkResponse({ description: 'Semester created successfully' })
+  async createSemester(@Body() body: CreateSemesterDto) {
+    return await this.semestersService.createSemester(body);
+  }
+
+  // ==========================================================================================
+  //? Update Semester
+  // ==========================================================================================
+  @Patch('/update')
+  @ApiOperation({ summary: 'Update Semester', description: 'Update details of an existing semester.' })
+  @HttpCode(200)
+  @ApiOkResponse({ description: 'Semester updated successfully' })
+  async updateSemester(@Body() body: UpdateSemesterDto) {
+    return await this.semestersService.updateSemester(body);
+  }
+}

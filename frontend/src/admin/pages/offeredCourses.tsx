@@ -13,9 +13,8 @@ import AddOfferedCourseModal from '../components/AddOfferedCourseModal';
 // styles
 import { colors } from '../../styles/colorPalette';
 
-const { Title } = Typography;
 
-const PAGE_LIMIT = 10;
+const PAGE_LIMIT = 5;
 
 // ====================================================================
 
@@ -50,7 +49,7 @@ const OfferedCoursesPage: React.FC = () => {
                     <h1 className="text-2xl font-bold text-gray-800 m-0">Offered Courses Management</h1>
                     <Button
                         type="primary"
-                        disabled={!semesterId}
+                        size="large"
                         icon={<PlusOutlined />}
                         onClick={() => setIsAddModalOpen(true)}
                     >

@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 // hooks
 import { useAllCourses } from '../hooks/useAllCourses';
-import { useAllSemesters } from '../hooks/useAllSemesters';
+import { useAllSemesters } from '../hooks/semesters.hook';
 import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
 // interfaces
 import { StudentFilterParams } from '../interfaces/users.interface';
@@ -28,7 +28,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
     const [semesterId, setSemesterId] = useState<string | null>(null);
 
     const { data: courses, isLoading: coursesLoading, error: coursesError } = useAllCourses();
-    const { data: semesters, loading: semestersLoading, error: semestersError } = useAllSemesters();
+    const { data: semesters, isLoading: semestersLoading, error: semestersError } = useAllSemesters();
 
 
     // ------------------------------------------------
@@ -75,9 +75,9 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             style={{ width: '100%' }}
                             value={studentId ?? ''}
                             onChange={(e) => {
-                                const val = e.target.value || null;
-                                setStudentId(val);
-                                if (val) {
+                                const value = e.target.value || null;
+                                setStudentId(value);
+                                if (value) {
                                     setCourseId(null);
                                     setSemesterId(null);
                                 }
@@ -88,7 +88,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
 
                     {/* filter by Course -------------------------------------------------------------------------- */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
-                        <label style={{ fontWeight: 500, fontSize: 13 }}>Course</label>
+                        <label className="font-medium text-[13px]">Course</label>
                         <Select
                             showSearch
                             filterOption={(input, option) =>
@@ -97,10 +97,12 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             placeholder="Select a course"
                             size="large"
                             style={{ width: '100%' }}
+
                             loading={coursesLoading}
                             value={courseId ?? undefined}
                             options={courses?.courses.map(c => ({ value: c.id, label: `${c.code} - ${c.title}` }))}
                             onChange={(value) => setCourseId(value ?? null)}
+
                             allowClear
                             disabled={!!studentId}
                         />
@@ -113,10 +115,12 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             placeholder="Select a semester"
                             size="large"
                             style={{ width: '100%' }}
+
                             loading={semestersLoading}
                             value={semesterId ?? undefined}
-                            options={semesters.map(s => ({ value: s.id, label: s.title }))}
+                            options={semesters?.semesters.map(s => ({ value: s.id, label: s.title }))}
                             onChange={(value) => setSemesterId(value ?? null)}
+
                             allowClear
                             disabled={!!studentId}
                         />

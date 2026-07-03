@@ -1,15 +1,64 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 // api
-import { getAllSemesters } from '../services/semesters.service';
+import { getAllSemesters, createSemester, updateSemester } from '../services/semesters.service';
+
+import { Semester, GetSemestersParam } from '../interfaces/semesters.interface';
 
 // =======================================================================
-//? fetch all semesters
+//? fetch all semesters (unfiltered fallback/legacy)
 // =======================================================================
 export const useAllSemesters = () => {
     return useQuery({
         queryKey: ['AllSemesters'],
-        queryFn: getAllSemesters,
+        queryFn: () => getAllSemesters(),
         staleTime: 10 * 60 * 1000,
+    });
+};
+
+// =======================================================================
+//? fetch semesters with filters and pagination
+// =======================================================================
+export const useFilteredSemesters = (params?: GetSemestersParam) => {
+    return useQuery({
+        queryKey: ['Semesters', params],
+        queryFn: () => getAllSemesters(params),
+        staleTime: 5 * 60 * 1000,
+    });
+};
+
+// =======================================================================
+//? create semester mutation
+// =======================================================================
+export const useCreateSemester = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: Semester) => createSemester(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['Semesters'] });
+            queryClient.invalidateQueries({ queryKey: ['AllSemesters'] });
+        },
+        onError: (error: any) => {
+            console.log(`Error [useCreateSemester] -> ${error.message}`);
+
+        }
+    });
+};
+
+// =======================================================================
+//? update semester mutation
+// =======================================================================
+export const useUpdateSemester = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (data: Semester) => updateSemester(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['Semesters'] });
+            queryClient.invalidateQueries({ queryKey: ['AllSemesters'] });
+        },
+        onError: (error: any) => {
+            console.log(`Error [useUpdateSemester] -> ${error.message}`);
+
+        }
     });
 };

@@ -5,3 +5,8 @@ export interface Semester {
     endDate?: Date,
     maxCredits?: number,
 }
+
+export interface GetSemesters {
+    semesters: Semester[] | [];
+    totalRows?: number;
+}

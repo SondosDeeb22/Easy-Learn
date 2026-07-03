@@ -11,10 +11,13 @@ import { SemestersController } from './semesters.controller';
 import { SemestersModel } from './semesters.model';
 import { AuthModule } from '../auth/auth.module';
 
+//helpers
+import { CrudHelper } from '../../common/helpers/crud.helper';
+
 //==========================================================================================
 @Module({
   controllers: [SemestersController],
-  providers: [SemestersService],
+  providers: [SemestersService, CrudHelper],
 
   imports: [
     SequelizeModule.forFeature([SemestersModel]),

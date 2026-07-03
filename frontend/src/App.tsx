@@ -24,6 +24,7 @@ import AdminDashboard from './admin/pages/dashboard';
 import StudentsPage from './admin/pages/students';
 import CoursesPage from './admin/pages/courses';
 import OfferedCoursesPage from './admin/pages/offeredCourses';
+import SemestersPage from './admin/pages/semesters';
 
 // Student - protected pages ---------------------------------------
 import StudentHomepage from './student/pages/studentHomepage';
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "offered-courses",
         element: <OfferedCoursesPage />
+      },
+      {
+        path: "semesters",
+        element: <SemestersPage />
       }
     ]
 

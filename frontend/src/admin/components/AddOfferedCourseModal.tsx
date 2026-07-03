@@ -65,7 +65,11 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
                     <Button key="back" onClick={onClose}>
                         Cancel
                     </Button>,
-                    <Button key="submit" type="primary" loading={isPending} onClick={() => form.submit()}>
+                    <Button
+                        key="submit"
+                        type="primary"
+                        loading={isPending}
+                        onClick={() => form.submit()}>
                         Add Course
                     </Button>,
                 ]}
@@ -84,7 +88,7 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
                         <Select
                             placeholder="Select semester"
                             loading={semestersLoading}
-                            options={semesters?.map(s => ({ value: s.id, label: s.title }))}
+                            options={semesters?.semesters.map(s => ({ value: s.id, label: s.title }))}
                             style={{ width: '100%' }}
                         />
                     </Form.Item>
