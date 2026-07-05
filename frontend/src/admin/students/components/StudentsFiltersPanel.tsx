@@ -1,0 +1,192 @@
+import React from 'react';
+import { Select, Card, Button, Input, ConfigProvider } from 'antd';
+import { ClearOutlined, SearchOutlined } from '@ant-design/icons';
+
+import { useState } from 'react';
+
+// hooks
+import { useAllCourses } from '../../courses/hooks/useAllCourses';
+import { useAllSemesters } from '../../semesters/semesters.hook';
+import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
+// interfaces
+import { StudentFilterParams } from '../users.interface';
+
+// styles
+import { colors } from '../../../styles/colorPalette';
+
+
+// =================================================================================================
+
+interface StudentFilterProps {
+    onApply: (filters: StudentFilterParams) => void;
+}
+
+const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
+
+    const [studentId, setStudentId] = useState<string | null>(null);
+    const [courseId, setCourseId] = useState<string | null>(null);
+    const [semesterId, setSemesterId] = useState<string | null>(null);
+    const [status, setStatus] = useState<string | null>(null);
+
+    const { data: courses, isLoading: coursesLoading, error: coursesError } = useAllCourses();
+    const { data: semesters, isLoading: semestersLoading, error: semestersError } = useAllSemesters();
+
+
+    // ------------------------------------------------
+    const handleApply = () => {
+        onApply({
+            studentId: studentId || undefined,
+            courseId: courseId || undefined,
+            semesterId: semesterId || undefined,
+            status: status || undefined,
+        });
+    };
+
+    const handleReset = () => {
+        setStudentId(null);
+        setCourseId(null);
+        setSemesterId(null);
+        setStatus(null);
+        onApply({});
+    };
+    // ------------------------------------------------
+
+    return (
+        <ConfigProvider theme={{ token: { colorPrimary: colors.burgundy, colorPrimaryBg: '#ecececff', colorPrimaryBgHover: "#ececec" } }}>
+            <Card
+                style={{
+                    marginBottom: 24,
+                    borderRadius: 12,
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+                }}
+            >
+                <label style={{ margin: '0 0 16px', fontWeight: 500, fontSize: 15, color: '#181818ff' }}>
+                    Filter students by ID, course, or semester
+                </label>
+                <br /><br />
+
+                <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+
+
+                    {/* get specific student by Student Id ------------------------------------------------------------------------ */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+                        <label style={{ fontWeight: 500, fontSize: 13 }}>Student Id</label>
+                        <Input
+                            placeholder="Enter student ID"
+                            size="large"
+                            style={{ width: '100%' }}
+                            value={studentId ?? ''}
+                            onChange={(e) => {
+                                const value = e.target.value || null;
+                                setStudentId(value);
+                                if (value) {
+                                    setCourseId(null);
+                                    setSemesterId(null);
+                                    setStatus(null);
+                                }
+                            }}
+                            allowClear // 
+                        />
+                    </div>
+
+                    {/* filter by Course -------------------------------------------------------------------------- */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+                        <label className="font-medium text-[13px]">Course</label>
+                        <Select
+                            showSearch
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toString().toLowerCase().includes(input.toLowerCase())
+                            }
+                            placeholder="Select a course"
+                            size="large"
+                            style={{ width: '100%' }}
+
+                            loading={coursesLoading}
+                            value={courseId ?? undefined}
+                            options={courses?.courses.map(c => ({ value: c.id, label: `${c.code} - ${c.title}` }))}
+                            onChange={(value) => setCourseId(value ?? null)}
+
+                            allowClear
+                            disabled={!!studentId}
+                        />
+                    </div>
+
+                    {/* filter by Semester -------------------------------------------------------------------------- */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+                        <label style={{ fontWeight: 500, fontSize: 13 }}>Semester</label>
+                        <Select
+                            placeholder="Select a semester"
+                            size="large"
+                            style={{ width: '100%' }}
+
+                            loading={semestersLoading}
+                            value={semesterId ?? undefined}
+                            options={semesters?.semesters.map(s => ({ value: s.id, label: s.title }))}
+                            onChange={(value) => setSemesterId(value ?? null)}
+
+                            allowClear
+                            disabled={!!studentId}
+                        />
+                    </div>
+
+                    {/* filter by Status -------------------------------------------------------------------------- */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+                        <label style={{ fontWeight: 500, fontSize: 13 }}>Status</label>
+                        <Select
+                            placeholder="Select status"
+                            size="large"
+                            style={{ width: '100%' }}
+                            value={status ?? undefined}
+                            options={[
+                                { value: 'active', label: 'Active' },
+                                { value: 'passive', label: 'Passive' },
+                                { value: 'graduated', label: 'Graduated' },
+                            ]}
+                            onChange={(value) => setStatus(value ?? null)}
+                            allowClear
+                            disabled={!!studentId}
+                        />
+                    </div>
+
+                    {/* Action Buttons -------------------------------------------------------------------------- */}
+                    <div style={{ display: 'flex', gap: 10, paddingBottom: 1, marginLeft: 'auto', }}>
+
+                        {/* Apply Button ------------------------------------------------------------ */}
+                        <Button
+                            type="primary"
+                            icon={<SearchOutlined />}
+                            size="large"
+                            onClick={handleApply}
+                            style={{
+                                backgroundColor: colors.burgundy,
+                                borderColor: colors.burgundy,
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = colors.burgundyHover;
+                                e.currentTarget.style.borderColor = colors.burgundyHover;
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = colors.burgundy;
+                                e.currentTarget.style.borderColor = colors.burgundy;
+                            }}
+                        >
+                            Apply
+                        </Button>
+
+                        {/* Reset Button -------------------------------------------- */}
+                        <Button
+                            icon={<ClearOutlined />}
+                            size="large"
+                            onClick={handleReset}
+                        >
+                            Reset
+                        </Button>
+                    </div>
+
+                </div>
+            </Card>
+        </ConfigProvider>
+    );
+}
+
+export default StudentFilter;

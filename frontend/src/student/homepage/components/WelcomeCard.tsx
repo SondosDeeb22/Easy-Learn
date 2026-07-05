@@ -1,0 +1,68 @@
+import { StudentData } from '../studentData.interface';
+
+// =====================================================================
+
+interface WelcomeCardProps {
+    user: StudentData;
+    semesterId: string
+}
+// =====================================================================
+
+const WelcomeCard: React.FC<WelcomeCardProps> = ({ user, semesterId }) => {
+
+    const firstName = user.name.split(' ')[0];
+    const formattedBirthDate = new Date(user.birthDate).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    });
+
+    return (
+        <div className={`bg-[white] rounded-xl border border-gray-200  mb-10 mt-5`}>
+
+            {/* Header ---------------------------------------*/}
+            <div className="flex items-center gap-4 mb-1 bg-burgundy/100  rounded-2xl rounded-b-none p-3 pl-5">
+
+                <div>
+                    <p className="text-[12px] text-white uppercase tracking-widest m-0">Welcome back</p>
+                    <p className="text-[25px] font-medium text-navbar m-0">{firstName}</p>
+                    <p className="text-[14px] text-white m-0">{user.email}</p>
+                    <p className="text-[13px] text-white m-0">ID: {user.id}</p>
+                </div>
+            </div>
+
+            {/* Stats -------------------------------------*/}
+            <div className=" grid grid-cols-5 gap-3">
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4">
+                    <p className="text-[12px] text-black mb-1">Birth date</p>
+                    <p className="text-[14px] font-medium text-black">{formattedBirthDate}</p>
+                </div>
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
+                    <p className="text-[12px] text-black mb-1">Current Semester Credits</p>
+                    <p className="text-[14px] font-medium text-black">{user.currentSemesterCredits}</p>
+                </div>
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
+                    <p className="text-[12px] text-black mb-1">Credit Limit (Per Semester)</p>
+                    <p className="text-[14px] font-medium text-black">{user.maxCredits}</p>
+                </div>
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
+                    <p className="text-[12px] text-black mb-1">Cumulative Credits</p>
+                    <p className="text-[14px] font-medium text-black">{user.totalCredits}</p>
+                </div>
+
+                <div className="bg-navbar/50 rounded-lg p-3 m-4 break-words">
+                    <p className="text-[12px] text-black mb-1">CGPA</p>
+                    <p className="text-[14px] font-medium text-black">{user.cgpa}</p>
+                </div>
+
+
+            </div>
+        </div >
+    );
+};
+
+export default WelcomeCard;

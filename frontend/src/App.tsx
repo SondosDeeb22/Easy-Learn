@@ -12,24 +12,24 @@ import { setUser, clearUser, stopLoading, setError } from './redux/slices/authSl
 
 import { apiClient } from './shared/services/apiClient';
 
-import DashboardLayout from './admin/layout/dashboardLayout';
-import StudentLayout from './student/layout/studentLayout';
+import DashboardLayout from './admin/shared/layout/appLayout';
+import StudentLayout from './student/shared/layout/studentLayout';
 
 // auth pages --------------------------------
 import Login from './Login';
 import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 
 // Admin - protected pages ---------------------------------------
-import AdminDashboard from './admin/pages/dashboard';
-import StudentsPage from './admin/pages/students';
-import CoursesPage from './admin/pages/courses';
-import OfferedCoursesPage from './admin/pages/offeredCourses';
-import SemestersPage from './admin/pages/semesters';
+import AdminDashboard from './admin/dashboard/dashboard';
+import StudentsPage from './admin/students/students';
+import CoursesPage from './admin/courses/page/courses';
+import OfferedCoursesPage from './admin/offeredCourses/offeredCourses';
+import SemestersPage from './admin/semesters/semesters';
 
 // Student - protected pages ---------------------------------------
-import StudentHomepage from './student/pages/studentHomepage';
-import MyCoursesPage from './student/pages/myCoursesPage';
-import AddCoursePage from './student/pages/addCoursePage';
+import StudentHomepage from './student/homepage/components/StudentHomepage';
+import MyCoursesPage from './student/courses/pages/myCoursesPage';
+import AddCoursePage from './student/courses/pages/addCoursePage';
 // ========================================================================
 
 const router = createBrowserRouter([
