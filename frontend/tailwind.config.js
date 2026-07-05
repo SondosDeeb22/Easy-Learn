@@ -23,6 +23,7 @@ export default {
         bgHover: colors.bgHover,
 
         navbar: colors.navbar,
+        beige: colors.beige
       },
     },
   },

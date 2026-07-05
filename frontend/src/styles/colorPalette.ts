@@ -14,6 +14,7 @@ export const colors = {
     burgundyHover: '#6e0120',
     burgundyDark: '#420014',
     navbar: '#DCC4AC',
+    beige: '#a88861ff',
 };
 
 // export default COLORS;

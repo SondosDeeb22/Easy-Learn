@@ -8,7 +8,7 @@ import {
 import { getAllSemesters, getCurrentSemester } from '../services/semesters.service';
 
 // =======================================================================
-//? fetch offered courses for admin
+//? fetch offered courses 
 // =======================================================================
 export const useAdminOfferedCourses = (semesterId: string | undefined, page: number, limit: number) => {
     return useQuery({

@@ -6,7 +6,7 @@ export interface StudentFilterParams {
     studentId?: string
     courseId?: string;
     semesterId?: string;
-
+    status?: string;
 }
 export interface FilterdStudentInterface {
     id: string,
@@ -35,10 +35,13 @@ export interface Student {
     gender: Gender,
     currentSemesterCredits: number,
     totalCredits: number,
-
+    status?: string;
 }
 
 export interface Students {
     totalRows: number,
-    students: Student[]
+    students: Student[],
+    activeCount?: number;
+    graduatedCount?: number;
+    passiveCount?: number;
 }

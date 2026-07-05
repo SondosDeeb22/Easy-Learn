@@ -8,6 +8,7 @@ import { UsersModel } from './users.model';
 import { SemestersModel } from '../semesters/semesters.model';
 import { AcademicRecordsModel } from '../academicRecords/academic-records.model';
 import { GPARecordsModel } from '../grades/gpa-records.model';
+import { Roles, Status } from './enums/users.enum';
 //dto
 import { StudentDataDto, GetStudentsQueryDto } from './dtos/users.dto';
 //interface
@@ -102,10 +103,14 @@ export class UsersService {
     // ==================================================
 
     async getStudents(query: GetStudentsQueryDto): Promise<ServiceResult<FilterdStudent | FilteredStudentData | [] | null>> {
-        const { studentId, courseId, semesterId, page, limit } = query;
+        const { studentId, courseId, semesterId, status, page, limit } = query;
 
         const offset = (page - 1) * limit;
 
+        // Calculate global counts for the dashboard cards
+        const activeCount = await this.usersModel.count({ where: { role: Roles.STUDENT, status: Status.ACTIVE } });
+        const graduatedCount = await this.usersModel.count({ where: { role: Roles.STUDENT, status: Status.GRADUATED } });
+        const passiveCount = await this.usersModel.count({ where: { role: Roles.STUDENT, status: Status.PASSIVE } });
 
         // Case 1: find specific student by ID
         if (studentId) {
@@ -120,30 +125,34 @@ export class UsersService {
                 ...studentWithoutPassword,
             }
 
-
             return { message: "Student found successfully", data: filteredStudent };
         }
 
-        // ------------------------------------------------------------------
         // Case 2: both courseId and semesterId
         if (courseId && semesterId) {
             const academicRecords = await this.academicRecordsModel.findAndCountAll({
                 limit,
                 offset,
                 where: { courseId, semesterId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 // used group which remove duplicated objects with same studentId, so we have only one entry per user in .rows
                 // side effect for user group is that .count changed from number to array of duplicated objects(GroupedCountResultItem[]), defining thier studentId and how many times they found
 
                 include: [{
                     model: UsersModel,
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
+                    where: {
+                        ...(status ? { status } : {})
+                    },
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits", "status"]
                 }],
                 attributes: ['studentId']
             });
 
             if (academicRecords.rows.length === 0) {
-                return { message: `No users found for this course: ${courseId} at this semester: ${semesterId}`, data: [] };
+                return {
+                    message: `No users found for this course: ${courseId} at this semester: ${semesterId}`,
+                    data: { totalRows: 0, students: [], activeCount, graduatedCount, passiveCount }
+                };
             }
             const students = academicRecords.rows.map(record => ({
                 id: record.user?.id,
@@ -152,19 +161,16 @@ export class UsersService {
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
                 currentSemesterCredits: record.user?.currentSemesterCredits,
-                totalCredits: record.user?.totalCredits
-            })
-            );
+                totalCredits: record.user?.totalCredits,
+                status: record.user?.status
+            }));
             const totalRows = Array.isArray(academicRecords.count)
-                ? academicRecords.count.length   // if grouped query, count will be an array, its .length = unique rows(here sence we used group in the query it will always be array, we keep this condition to satisfy typescript, becasue .count is declared as number | GroupedCountResultItem[])
+                ? academicRecords.count.length
                 : academicRecords.count;
-
-            console.log(`/backend/users.service.ts \n students counts: ${totalRows} \n students: ${students} \n query result: ${academicRecords}`)
-
 
             return {
                 message: `${totalRows} Students found successfully`,
-                data: { totalRows: totalRows, students: students }
+                data: { totalRows: totalRows, students: students, activeCount, graduatedCount, passiveCount }
             };
         }
 
@@ -175,16 +181,22 @@ export class UsersService {
                 limit,
                 offset,
                 where: { semesterId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 include: [{
                     model: UsersModel,
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
+                    where: {
+                        ...(status ? { status } : {})
+                    },
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits", "status"]
                 }],
                 attributes: ['studentId']
             });
 
             if (academicRecords.rows.length == 0) {
-                return { message: `No users found with for this semester: ${semesterId}`, data: [] };
+                return {
+                    message: `No users found with for this semester: ${semesterId}`,
+                    data: { totalRows: 0, students: [], activeCount, graduatedCount, passiveCount }
+                };
             }
 
             const students = academicRecords.rows.map(record => ({
@@ -194,39 +206,42 @@ export class UsersService {
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
                 currentSemesterCredits: record.user?.currentSemesterCredits,
-                totalCredits: record.user?.totalCredits
-            })
-            );
+                totalCredits: record.user?.totalCredits,
+                status: record.user?.status
+            }));
             const totalRows = Array.isArray(academicRecords.count)
                 ? academicRecords.count.length
                 : academicRecords.count;
 
-            console.log(`/backend/users.service.ts \n Found students count: ${totalRows} \n Found students: ${JSON.stringify(students, null, 2)}\n query result: ${JSON.stringify(academicRecords, null, 2)}`)
-
             return {
                 message: `${totalRows} Students found successfully`,
-                data: { totalRows: totalRows, students: students }
+                data: { totalRows: totalRows, students: students, activeCount, graduatedCount, passiveCount }
             };
         }
 
-        // ------------------------------------------------------------------
         // Case 4: only courseId
         if (courseId) {
             const academicRecords = await this.academicRecordsModel.findAndCountAll({
                 limit,
                 offset,
                 where: { courseId },
-                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits'],
+                group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 include: [{
                     model: UsersModel,
                     as: "user",
-                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits"]
+                    where: {
+                        ...(status ? { status } : {})
+                    },
+                    attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits", "status"]
                 }],
                 attributes: ['studentId']
             });
 
             if (academicRecords.rows.length === 0) {
-                return { message: `No users found for this course: ${courseId}`, data: [] };
+                return {
+                    message: `No users found for this course: ${courseId}`,
+                    data: { totalRows: 0, students: [], activeCount, graduatedCount, passiveCount }
+                };
             }
 
             const students = academicRecords.rows.map(record => ({
@@ -236,28 +251,53 @@ export class UsersService {
                 gender: record.user?.gender,
                 birthDate: record.user?.birthDate,
                 currentSemesterCredits: record.user?.currentSemesterCredits,
-                totalCredits: record.user?.totalCredits
-            })
-            );
+                totalCredits: record.user?.totalCredits,
+                status: record.user?.status
+            }));
             const totalRows = Array.isArray(academicRecords.count)
                 ? academicRecords.count.length
                 : academicRecords.count;
 
-
-            console.log("this is students data from get students service:", students)
             return {
                 message: `${totalRows} Students found successfully`,
-                data: { totalRows: totalRows, students: students }
+                data: { totalRows: totalRows, students: students, activeCount, graduatedCount, passiveCount }
             };
-
         }
 
-        // ------------------------------------------------------------------
+        // Case 5: general query (e.g. status filter, or empty filter listing all students)
+        const whereClause: any = { role: Roles.STUDENT };
+        if (status) {
+            whereClause.status = status;
+        }
+
+        const { rows: studentsRows, count: totalRows } = await this.usersModel.findAndCountAll({
+            limit,
+            offset,
+            where: whereClause,
+            attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits", "status"]
+        });
+
+        const students = studentsRows.map(user => ({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            gender: user.gender,
+            birthDate: user.birthDate,
+            currentSemesterCredits: user.currentSemesterCredits,
+            totalCredits: user.totalCredits,
+            status: user.status
+        }));
 
         return {
-            message: "Set parameters to find students",
-            data: [],
-        }
+            message: `${totalRows} Students found successfully`,
+            data: {
+                totalRows,
+                students,
+                activeCount,
+                graduatedCount,
+                passiveCount
+            }
+        };
     }
 
 

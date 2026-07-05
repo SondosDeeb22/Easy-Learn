@@ -10,10 +10,29 @@ import ReusableTable from "../../shared/components/ReusableTable";
 
 const columns: TableColumnsType<Student> = [
     { title: "Name", dataIndex: "name", key: "name", width: "20%" },
-    { title: "ID", dataIndex: "id", key: "id", width: "20%" },
-    { title: "Gender", dataIndex: "gender", key: "gender", width: "20%" },
-    { title: "Current Semester Credits", dataIndex: "currentSemesterCredits", key: "currentSemesterCredits", width: "20%" },
-    { title: "Total Credits", dataIndex: "totalCredits", key: "totalCredits", width: "20%" },
+    { title: "ID", dataIndex: "id", key: "id", width: "15%" },
+    { title: "Gender", dataIndex: "gender", key: "gender", width: "15%" },
+    { title: "Current Semester Credits", dataIndex: "currentSemesterCredits", key: "currentSemesterCredits", width: "15%" },
+    { title: "Total Credits", dataIndex: "totalCredits", key: "totalCredits", width: "15%" },
+    {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        width: "20%",
+
+        render: (status: string) => {
+            let color = 'text-gray-500 bg-gray-100';
+            if (status === 'active') color = 'text-green-700 bg-green-50';
+            else if (status === 'passive') color = 'text-amber-700 bg-amber-50';
+            else if (status === 'graduated') color = 'text-burgundy bg-burgundy/10';
+
+            return (
+                <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${color}`}>
+                    {status || 'active'}
+                </span>
+            );
+        }
+    },
 ];
 
 interface Students {

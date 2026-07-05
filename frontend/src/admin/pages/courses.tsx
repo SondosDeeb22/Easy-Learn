@@ -23,6 +23,7 @@ export default function CoursesPage() {
     const PAGE_LIMIT = 5;
     const { data, isLoading, isError } = useCourses(filters, page, PAGE_LIMIT);
 
+    console.log(`[CoursesPage] filters: ${JSON.stringify(filters)}`)
     console.log(`[CoursesPage] total courses: ${data?.totalRows}\ncourses: ${JSON.stringify(data?.courses)}\n data: ${JSON.stringify(data)}`);
 
     const handleApplyFilters = (newFilters: CourseFilterParams) => {

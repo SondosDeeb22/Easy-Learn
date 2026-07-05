@@ -53,7 +53,7 @@ const OfferedCoursesPage: React.FC = () => {
                         icon={<PlusOutlined />}
                         onClick={() => setIsAddModalOpen(true)}
                     >
-                        Insert Offered Course
+                        Add Offered Course
                     </Button>
                 </div>
 

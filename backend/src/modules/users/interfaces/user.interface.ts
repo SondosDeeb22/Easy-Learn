@@ -46,5 +46,8 @@ export interface StudnetData extends FilterdStudent {
 export interface FilteredStudentData {
     totalRows: number
     students: FilterdStudent[],
+    activeCount?: number;
+    graduatedCount?: number;
+    passiveCount?: number;
 }
 

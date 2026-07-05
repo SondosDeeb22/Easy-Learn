@@ -51,6 +51,9 @@ export class GetStudentsQueryDto {
     @ApiPropertyOptional({ description: 'Filter by Semester ID', example: '20000008' })
     semesterId?: string;
 
+    @ApiPropertyOptional({ description: 'Filter by Student Status', example: 'active', enum: ['active', 'passive', 'suspended', 'graduated'] })
+    status?: string;
+
     @ApiProperty({ description: 'The page number for pagination context', example: 1, })
     page: number;
 

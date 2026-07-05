@@ -51,7 +51,7 @@ const SemestersPage: React.FC = () => {
                         onClick={() => setIsAddModalOpen(true)}
                         size="large"
                     >
-                        Insert Semester
+                        Add Semester
                     </Button>
                 </div>
 

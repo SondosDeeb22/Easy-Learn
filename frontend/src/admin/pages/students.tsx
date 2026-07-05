@@ -43,7 +43,7 @@ export default function StudentsPage() {
                 <StudentCard student={studentData!} />
             )}
 
-            {(filters.courseId || filters.semesterId) && !isLoading && (
+            {(filters.courseId || filters.semesterId || filters.status) && !isLoading && (
                 <StudentsTable
                     students={data?.students ?? []}
                     loading={isLoading}

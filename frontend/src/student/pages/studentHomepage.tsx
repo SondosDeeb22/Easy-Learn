@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Alert } from "antd";
 
 import CurrentStudentCoursesTable from "../components/CurrentStudentCoursesTable";
@@ -18,11 +17,7 @@ import { queryClient } from "../../lib/react-query/queryClient";
 export default function StudentHomepage() {
     const user = useAppSelector((state) => state.auth);
 
-    const PAGE_LIMIT = 3;
-    const [page, setPage] = useState(1); // page 1 as defualt
-
-
-    const { data: currentSemesterCourses, isLoading, isError } = useCurrentStudentCourses(page, PAGE_LIMIT);
+    const { data: currentSemesterCourses, isLoading, isError } = useCurrentStudentCourses();
     // ------------------------------------------------------
 
     // student basic data

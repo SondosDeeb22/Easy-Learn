@@ -26,6 +26,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
     const [studentId, setStudentId] = useState<string | null>(null);
     const [courseId, setCourseId] = useState<string | null>(null);
     const [semesterId, setSemesterId] = useState<string | null>(null);
+    const [status, setStatus] = useState<string | null>(null);
 
     const { data: courses, isLoading: coursesLoading, error: coursesError } = useAllCourses();
     const { data: semesters, isLoading: semestersLoading, error: semestersError } = useAllSemesters();
@@ -37,7 +38,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
             studentId: studentId || undefined,
             courseId: courseId || undefined,
             semesterId: semesterId || undefined,
-
+            status: status || undefined,
         });
     };
 
@@ -45,6 +46,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
         setStudentId(null);
         setCourseId(null);
         setSemesterId(null);
+        setStatus(null);
         onApply({});
     };
     // ------------------------------------------------
@@ -80,6 +82,7 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                                 if (value) {
                                     setCourseId(null);
                                     setSemesterId(null);
+                                    setStatus(null);
                                 }
                             }}
                             allowClear // 
@@ -121,6 +124,25 @@ const StudentFilter: React.FC<StudentFilterProps> = ({ onApply }) => {
                             options={semesters?.semesters.map(s => ({ value: s.id, label: s.title }))}
                             onChange={(value) => setSemesterId(value ?? null)}
 
+                            allowClear
+                            disabled={!!studentId}
+                        />
+                    </div>
+
+                    {/* filter by Status -------------------------------------------------------------------------- */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 220 }}>
+                        <label style={{ fontWeight: 500, fontSize: 13 }}>Status</label>
+                        <Select
+                            placeholder="Select status"
+                            size="large"
+                            style={{ width: '100%' }}
+                            value={status ?? undefined}
+                            options={[
+                                { value: 'active', label: 'Active' },
+                                { value: 'passive', label: 'Passive' },
+                                { value: 'graduated', label: 'Graduated' },
+                            ]}
+                            onChange={(value) => setStatus(value ?? null)}
                             allowClear
                             disabled={!!studentId}
                         />

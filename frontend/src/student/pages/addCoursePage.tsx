@@ -83,7 +83,7 @@ export default function AddCoursePage() {
             <div className="flex items-center justify-between mt-5 mb-10">
                 <h1 className="text-2xl  font-bold text-gray-800">
                     {offeredCoursesError ? "Available Courses" : `Available Courses - ${semesterTitle}`}
-                    <p className="text-sm text-gray-500 mt-2 ">Select a Course to Insert</p>
+                    <p className="text-sm text-gray-500 mt-2 ">Select a Course to Add</p>
                 </h1>
                 <EnrollButton
                     selectedCourse={selectedCourse}
