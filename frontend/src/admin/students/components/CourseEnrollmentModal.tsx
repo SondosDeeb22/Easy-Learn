@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, Typography } from 'antd';
+import { Modal, Select, Typography, Alert } from 'antd';
 
 // hook
 import { useStudentOfferedCourses } from '../hooks/useStudentOfferedCourses';
@@ -13,11 +13,12 @@ interface Props {
     loading?: boolean;
     onCancel: () => void;
     onSubmit: (courseId: string) => void;
+    error?: string | null;
 }
 
 //============================================================
 
-const EnrollStudentInCourseModal: React.FC<Props> = ({ open, studentId, loading, onCancel, onSubmit }) => {
+const EnrollStudentInCourseModal: React.FC<Props> = ({ open, studentId, loading, onCancel, onSubmit, error }) => {
 
     const [courseId, setCourseId] = useState<string | null>(null);
 
@@ -65,6 +66,10 @@ const EnrollStudentInCourseModal: React.FC<Props> = ({ open, studentId, loading,
                     onChange={(value) => setCourseId(value)}
                     allowClear
                 />
+                
+                {error && (
+                    <Alert message={error} type="error" showIcon style={{ marginTop: 8 }} />
+                )}
             </div>
         </Modal>
     );

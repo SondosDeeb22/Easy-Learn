@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Switch, Button, message, ConfigProvider } from 'antd';
+import { Modal, Form, Input, InputNumber, Switch, Button, message, ConfigProvider, Alert } from 'antd';
+import { useState } from 'react';
 import { useCreateCourse } from '../hooks/useCreateCourse';
 import { CreateCourseData } from '../courses.interface';
 import { colors } from '../../../styles/colorPalette';
@@ -16,6 +17,7 @@ interface AddCourseModalProps {
 const AddCourseModal: React.FC<AddCourseModalProps> = ({ open, onClose }) => {
     const [form] = Form.useForm<CreateCourseData>();
     const { mutate: createCourse, isPending } = useCreateCourse();
+    const [error, setError] = useState<string | null>(null);
 
     const [api, contextHolder] = notification.useNotification();
 
@@ -24,6 +26,7 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ open, onClose }) => {
         if (open) {
             form.resetFields();
             form.setFieldsValue({ active: true });
+            setError(null);
         }
     }, [open, form]);
 
@@ -33,22 +36,21 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ open, onClose }) => {
                 api.success({ title: "Course created successfully!" });
                 onClose();
             },
-            onError: (error: any) => {
-                const errMsg: string = error?.message || 'Failed to create course';
+            onError: (err: any) => {
+                const errMsg: string = err?.message || 'Failed to create course';
 
                 // Backend encodes which field caused the conflict as "DUPLICATE_FIELD:<fieldName>"
                 if (errMsg.startsWith('DUPLICATE_FIELD:')) {
-                    const conflictField = errMsg.replace('DUPLICATE_FIELD:', ''); // get the field name only 
+                    const conflictField = errMsg.replace('DUPLICATE_FIELD:', '');
                     const labelMap: Record<string, string> = {
                         code: 'Course Code',
                         title: 'Course Title',
                         credit: 'Credits',
                     };
                     const label = labelMap[conflictField] ?? conflictField;
-                    form.setFields([{ name: conflictField as any, errors: [`${label} already exists`] }]);
+                    setError(`${label} already exists`);
                 } else {
-                    // Generic error
-                    form.setFields([{ name: 'active', errors: [errMsg] }]);
+                    setError(errMsg);
                 }
             },
         });
@@ -117,6 +119,10 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ open, onClose }) => {
                     >
                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
                     </Form.Item>
+
+                    {error && (
+                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                    )}
                 </Form>
             </Modal>
         </ConfigProvider>

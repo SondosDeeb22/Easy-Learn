@@ -5,6 +5,11 @@ import StudentsInfoCard from "./components/StudentsCard";
 import CoursesInfoCard from "./components/CoursesCard";
 import OfferedCoursesInfoCard from "./components/OfferedCoursesCard";
 
+// generic componenets
+import Loading from '../../shared/components/Loading';
+import ErrorState from "../../shared/components/ErrorState";
+
+
 // hook
 import { useUserData } from "../students/hooks/useUserData";
 
@@ -17,8 +22,13 @@ export default function AdminDashboard() {
   const { data: userData, loading, error } = useUserData(user?.userId);
 
   // ======================================================================
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return (
+    <Loading />
+  );
+
+  if (error) return (
+    <ErrorState />
+  )
   if (!userData) return null;
 
   return (

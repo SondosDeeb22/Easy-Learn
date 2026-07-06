@@ -6,6 +6,11 @@ import { Student } from '../users.interface';
 // reusable component
 import ReusableTable from "../../../shared/components/ReusableTable";
 
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
+
+
 // ====================================================
 
 const columns: TableColumnsType<Student> = [
@@ -56,13 +61,14 @@ const StudentsTable: React.FC<Students> = ({
     totalRows,
     setPage
 }) => {
+
+
+    if (loading) return (
+        <Loading />
+    );
+
     if (error) return (
-        <Alert
-            title={error}
-            type="error"
-            showIcon
-            style={{ margin: '16px 0', fontSize: '14px' }}
-        />
+        <ErrorState />
     );
     console.log(`/StudentsTable\nlimit: ${limit}, page: ${page}, totalRows: ${totalRows}\nStudents:${JSON.stringify(students, null, 0)}`);
 

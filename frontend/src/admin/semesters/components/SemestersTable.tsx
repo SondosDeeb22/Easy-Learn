@@ -9,6 +9,10 @@ import { Semester } from '../semesters.interface';
 import ReusableTable from '../../../shared/components/ReusableTable';
 import UpdateSemesterModal from './UpdateSemesterModal';
 
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
+
 // style
 import { colors } from '../../../styles/colorPalette';
 
@@ -105,14 +109,14 @@ const SemestersTable: React.FC<SemestersTableProps> = ({
         },
     ];
 
-    if (error) return (
-        <Alert
-            message={error}
-            type="error"
-            showIcon
-            style={{ margin: '16px 0', fontSize: '14px' }}
-        />
+    if (loading) return (
+        <Loading />
     );
+
+    if (error) return (
+        <ErrorState />
+    );
+
 
     return (
         <>

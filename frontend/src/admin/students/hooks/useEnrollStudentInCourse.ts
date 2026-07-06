@@ -3,7 +3,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { enrollStudent } from '../../courses/courses.service';
 
 // ==========================================================================
-// Hook to enroll a student in an offered course
+//?  enroll a student in an offered course
+// =======================================================================
+
 export const useEnrollStudentInCourse = () => {
     const queryClient = useQueryClient();
 

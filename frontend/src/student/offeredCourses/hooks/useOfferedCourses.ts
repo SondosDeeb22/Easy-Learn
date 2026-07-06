@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 //service
 import { getOfferedCoursesForStudent } from '../offeredCourses.service';
@@ -13,7 +13,6 @@ export const useOfferedCourses = (page: number, limit: number) => {
     return useQuery({
         queryKey: ['offeredCourses', page],
         queryFn: () => getOfferedCoursesForStudent("", page, limit),
-        placeholderData: keepPreviousData,
         staleTime: 1000 * 60,
     });
 };

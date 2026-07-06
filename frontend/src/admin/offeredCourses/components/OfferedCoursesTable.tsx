@@ -5,6 +5,9 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 // components
 import ReusableTable from '../../../shared/components/ReusableTable';
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
 
 //hook
 import { useDeleteOfferedCourse } from '../hooks/offeredCourses.hook';
@@ -39,8 +42,9 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
 }) => {
     const [api, contextHolder] = notification.useNotification();
     const [selectedRow, setSelectedRow] = useState<OfferedCourse | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
-    const { mutate: deleteOfferedCourse, isPending: isDeleting } = useDeleteOfferedCourse();
+    const { mutate: deleteOfferedCourse } = useDeleteOfferedCourse();
 
     const handleOpenUpdateModal = (row: OfferedCourse) => {
         setSelectedRow(row);
@@ -55,11 +59,14 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
             okType: 'danger',
             cancelText: 'Cancel',
             onOk: () => {
+                setDeletingId(row.id);
                 deleteOfferedCourse(row.id, {
                     onSuccess: () => {
+                        setDeletingId(null);
                         api.success({ message: 'Offered course removed successfully', placement: 'topRight' });
                     },
                     onError: () => {
+                        setDeletingId(null);
                         api.error({ message: 'Failed to remove offered course', placement: 'topRight' });
                     },
                 });
@@ -101,7 +108,7 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
                         icon={<DeleteOutlined />}
                         onClick={() => handleDelete(record)}
                         onMouseDown={(e) => e.preventDefault()}
-                        loading={isDeleting}
+                        loading={deletingId === record.id}
                         style={{
                             padding: 5,
                             border: '1px solid',
@@ -116,13 +123,12 @@ const OfferedCoursesTable: React.FC<OfferedCoursesTableProps> = ({
         },
     ];
 
+    if (loading) return (
+        <Loading />
+    );
+
     if (error) return (
-        <Alert
-            message={error}
-            type="error"
-            showIcon
-            style={{ margin: '16px 0', fontSize: '14px' }}
-        />
+        <ErrorState />
     );
 
     // =======================================================================================================================

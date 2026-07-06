@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Switch, Button, ConfigProvider } from 'antd';
+import { Modal, Form, Input, InputNumber, Switch, Button, ConfigProvider, Alert } from 'antd';
+import { useState } from 'react';
 import { useUpdateCourse } from '../hooks/useUpdateCourse';
 import { Course } from '../courses.interface';
 import { colors } from '../../../styles/colorPalette';
@@ -18,17 +19,21 @@ interface UpdateCourseModalProps {
 const UpdateCourseModal: React.FC<UpdateCourseModalProps> = ({ open, course, onClose }) => {
     const [form] = Form.useForm<Course>();
     const { mutate: updateCourse, isPending } = useUpdateCourse();
+    const [error, setError] = useState<string | null>(null);
     const [api, contextHolder] = notification.useNotification();
 
     useEffect(() => {
-        if (open && course) {
-            form.setFieldsValue({
-                id: course.id,
-                code: course.code,
-                title: course.title,
-                credit: course.credit,
-                active: course.active,
-            });
+        if (open) {
+            setError(null);
+            if (course) {
+                form.setFieldsValue({
+                    id: course.id,
+                    code: course.code,
+                    title: course.title,
+                    credit: course.credit,
+                    active: course.active,
+                });
+            }
         }
     }, [open, course, form]);
 
@@ -56,22 +61,21 @@ const UpdateCourseModal: React.FC<UpdateCourseModalProps> = ({ open, course, onC
                 }
                 onClose();
             },
-            onError: (error: any) => {
-                const errMsg: string = error?.message || 'Failed to update course';
+            onError: (err: any) => {
+                const errMsg: string = err?.message || 'Failed to update course';
 
                 // Backend encodes which field caused the conflict as "DUPLICATE_FIELD:<fieldName>"
                 if (errMsg.startsWith('DUPLICATE_FIELD:')) {
-                    const conflictField = errMsg.replace('DUPLICATE_FIELD:', ''); // get the field name only 
+                    const conflictField = errMsg.replace('DUPLICATE_FIELD:', '');
                     const labelMap: Record<string, string> = {
                         code: 'Course Code',
                         title: 'Course Title',
                         credit: 'Credits',
                     };
                     const label = labelMap[conflictField] ?? conflictField;
-                    form.setFields([{ name: conflictField as any, errors: [`${label} already exists`] }]);
+                    setError(`${label} already exists`);
                 } else {
-                    // Generic error
-                    form.setFields([{ name: 'active', errors: [errMsg] }]);
+                    setError(errMsg);
                 }
             },
         });
@@ -139,6 +143,10 @@ const UpdateCourseModal: React.FC<UpdateCourseModalProps> = ({ open, course, onC
                     >
                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
                     </Form.Item>
+
+                    {error && (
+                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                    )}
                 </Form>
             </Modal>
         </ConfigProvider>

@@ -5,6 +5,10 @@ import StudentsTable from './components/StudentsTable';
 import StudentFilter from './components/StudentsFiltersPanel';
 import StudentCard from './components/StudentCard';
 
+// generic componenets
+import Loading from '../../shared/components/Loading';
+import ErrorState from "../../shared/components/ErrorState";
+
 //hook
 import { useStudents } from './hooks/useStudents';
 import { useStudentDetails } from './hooks/useStudentDetails';
@@ -20,8 +24,8 @@ export default function StudentsPage() {
     const [page, setPage] = useState(1);
     const [filters, setFilters] = useState<StudentFilterParams>({});
 
-    const { data, isLoading, isError } = useStudents({ page, limit: PAGE_LIMIT, ...filters });
-    const { data: studentData, loading: studentLoading, error: studentError } = useStudentDetails(filters.studentId || "");
+    const { data: studentsData, isLoading: studentsLoading, error: studentsError } = useStudents({ page, limit: PAGE_LIMIT, ...filters });
+    const { data: studentData, isLoading: studentLoading, error: studentError } = useStudentDetails(filters.studentId || "");
 
     // when filters change, reset to page 1
     const handleApplyFilters = (newFilters: StudentFilterParams) => {
@@ -30,6 +34,14 @@ export default function StudentsPage() {
         queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
 
     };
+
+    if (studentsLoading || studentLoading) return (
+        <Loading />
+    );
+
+    if (studentsError || studentError) return (
+        <ErrorState />
+    );
 
     // ------------------------------------------------
     return (
@@ -43,14 +55,14 @@ export default function StudentsPage() {
                 <StudentCard student={studentData!} />
             )}
 
-            {(filters.courseId || filters.semesterId || filters.status) && !isLoading && (
+            {(filters.courseId || filters.semesterId || filters.status) && !studentsLoading && (
                 <StudentsTable
-                    students={data?.students ?? []}
-                    loading={isLoading}
-                    error={isError ? "Failed to load students" : undefined}
+                    students={studentsData?.students ?? []}
+                    loading={studentsLoading}
+                    error={studentsError ? "Failed to load students" : undefined}
                     page={page}
                     limit={PAGE_LIMIT}
-                    totalRows={data?.totalRows ?? 0}
+                    totalRows={studentsData?.totalRows ?? 0}
                     setPage={setPage}
                 />)}
         </div>

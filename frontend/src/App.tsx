@@ -22,12 +22,12 @@ import ProtectedRoute from './shared/components/auth/ProtectedRoute';
 // Admin - protected pages ---------------------------------------
 import AdminDashboard from './admin/dashboard/dashboard';
 import StudentsPage from './admin/students/students';
-import CoursesPage from './admin/courses/page/courses';
+import CoursesPage from './admin/courses/courses';
 import OfferedCoursesPage from './admin/offeredCourses/offeredCourses';
 import SemestersPage from './admin/semesters/semesters';
 
 // Student - protected pages ---------------------------------------
-import StudentHomepage from './student/homepage/components/StudentHomepage';
+import StudentHomepage from './student/homepage/studentHomepage';
 import MyCoursesPage from './student/courses/pages/myCoursesPage';
 import AddCoursePage from './student/courses/pages/addCoursePage';
 // ========================================================================

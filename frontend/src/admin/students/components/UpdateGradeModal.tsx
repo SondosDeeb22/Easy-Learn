@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, Typography } from 'antd';
+import { Modal, Select, Typography, Alert } from 'antd';
 
 // interface
 import { CourseWithGrade } from '../../courses/courses.interface';
@@ -14,6 +14,7 @@ interface Props {
     loading?: boolean;
     onCancel: () => void;
     onSubmit: (numericGrade: number) => void;
+    error?: string | null;
 }
 
 //============================================================
@@ -24,6 +25,7 @@ const UpdateGradeModal: React.FC<Props> = ({
     loading,
     onCancel,
     onSubmit,
+    error,
 }) => {
     const [gradeInput, setGradeInput] = useState<string>('');
 
@@ -97,6 +99,10 @@ const UpdateGradeModal: React.FC<Props> = ({
                         </p>
                     )}
                 </div>
+
+                {error && (
+                    <Alert message={error} type="error" showIcon style={{ marginTop: 8 }} />
+                )}
             </div>
         </Modal>
     );

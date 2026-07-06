@@ -8,6 +8,10 @@ import { Course } from '../courses.interface';
 import ReusableTable from "../../../shared/components/ReusableTable";
 import UpdateCourseModal from './UpdateCourseModal';
 
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
+
 import { colors } from '../../../styles/colorPalette';
 
 interface CoursesTableProps {
@@ -79,13 +83,12 @@ const CoursesTable: React.FC<CoursesTableProps> = ({
         },
     ];
 
+    if (loading) return (
+        <Loading />
+    );
+
     if (error) return (
-        <Alert
-            title={error}
-            type="error"
-            showIcon
-            style={{ margin: '16px 0', fontSize: '14px' }}
-        />
+        <ErrorState />
     );
 
     // =======================================================================================================================

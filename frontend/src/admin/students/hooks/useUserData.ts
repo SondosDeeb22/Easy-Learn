@@ -1,38 +1,15 @@
-import { useState, useEffect } from "react";
-
+import { useQuery } from "@tanstack/react-query";
 import { getUserData } from "../users.service";
-import { User } from "../users.interface";
 
 // =======================================================================
 //? fetch user data
-// api: /users/:id
 // ==============================================================
 
 export const useUserData = (userId?: string) => {
-    const [data, setData] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (!userId) {
-            setLoading(false);
-            return;
-        }
-
-        const fetch = async () => {
-            try {
-                const result = await getUserData(userId);
-                setData(result);
-            } catch (err) {
-                console.log("error(useUserData):", err);
-                setError(`Failed to load user data. Please, try later`);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetch();
-    }, [userId]);
-
-    return { data, loading, error };
-}
+    return useQuery({
+        queryKey: ["userData", userId],
+        queryFn: () => getUserData(userId!),
+        enabled: !!userId, // only run when userId exists
+        staleTime: 5 * 60 * 1000, // cache for 5 minutes
+    });
+};

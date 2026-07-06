@@ -3,7 +3,6 @@ import { withdrawStudentFromCourse } from '../../courses/courses.service';
 import { notification } from 'antd';
 // =======================================================================
 //? withdraw student from course
-// api: /courses/withdraw/:studentId/:courseId
 // =======================================================================
 
 export const useWithdrawStudentCourse = () => {

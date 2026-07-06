@@ -24,7 +24,7 @@ interface StudentCardProps {
 
 const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
     const studentId = student?.id ?? "";
-    const { data: studentCurrentSemesterCourses, isLoading: coursesLoading, isError: coursesError } = useStudentCurrentCourses(studentId);
+    const { data: studentCurrentSemesterCourses, isLoading: coursesLoading, error: coursesError } = useStudentCurrentCourses(studentId);
 
     return (
         <>
@@ -76,7 +76,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
                         <StudentCurrentCoursesTable
                             currentCourses={studentCurrentSemesterCourses?.courses || []}
                             loading={coursesLoading}
-                            error={coursesError ? "Failed to load courses" : undefined}
+                            error={coursesError ? "Failed to Load Courses" : undefined}
                             studentId={studentId}
                         />
                     </Card>

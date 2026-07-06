@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
     getOfferedCourses,
     createOfferedCourse,
@@ -14,9 +14,7 @@ export const useAdminOfferedCourses = (semesterId: string | undefined, page: num
     return useQuery({
         queryKey: ['AdminOfferedCourses', semesterId, page, limit],
         queryFn: () => getOfferedCourses(semesterId, page, limit),
-        placeholderData: keepPreviousData,
         staleTime: 2 * 60 * 1000,
-        enabled: true,
     });
 };
 // =======================================================================
@@ -26,7 +24,6 @@ export const useAdminAvailableCourses = (semesterId: string | undefined) => {
     return useQuery({
         queryKey: ['AdminAvailableCourses', semesterId],
         queryFn: () => getAvailableCourses(semesterId!),
-        placeholderData: keepPreviousData,
         staleTime: 2 * 60 * 1000,
         enabled: !!semesterId,
     });

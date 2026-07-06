@@ -19,6 +19,7 @@ interface Props {
 
 const EnrollStudentInCourse: React.FC<Props> = ({ studentId }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalError, setModalError] = useState<string | null>(null);
     const { mutate: enrollStudent, isPending } = useEnrollStudentInCourse();
     const [api, contextHolder] = notification.useNotification();
 
@@ -35,12 +36,7 @@ const EnrollStudentInCourse: React.FC<Props> = ({ studentId }) => {
                 },
                 onError: (error: any) => {
                     console.log(`[EnrollStudentInCourse Component] Error:`, error?.message);
-                    api.error({
-                        title: "Failed to enroll student",
-                        description: error?.message || "Something went wrong",
-                        placement: "topRight",
-                    });
-                    setIsModalOpen(false);
+                    setModalError(error?.message || "Something went wrong");
                 }
             }
         );
@@ -53,7 +49,10 @@ const EnrollStudentInCourse: React.FC<Props> = ({ studentId }) => {
             <Button
                 type="primary"
                 size="large"
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                    setModalError(null);
+                    setIsModalOpen(true);
+                }}
                 style={{
                     backgroundColor: colors.burgundy,
                     borderColor: colors.burgundy,
@@ -76,6 +75,7 @@ const EnrollStudentInCourse: React.FC<Props> = ({ studentId }) => {
                 onCancel={() => setIsModalOpen(false)}
                 onSubmit={handleEnroll}
                 loading={isPending}
+                error={modalError}
             />
         </div>
     );

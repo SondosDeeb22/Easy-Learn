@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Button, ConfigProvider, notification } from 'antd';
+import { Modal, Form, Input, InputNumber, Button, ConfigProvider, notification, Alert } from 'antd';
+import { useState, useEffect } from 'react';
 import { useUpdateSemester } from '../semesters.hook';
 import { Semester } from '../semesters.interface';
 import { colors } from '../../../styles/colorPalette';
@@ -28,16 +28,20 @@ const UpdateSemesterModal: React.FC<UpdateSemesterModalProps> = ({ open, semeste
     const [form] = Form.useForm<Semester>();
     const { mutate: updateSemester, isPending } = useUpdateSemester();
     const [api, contextHolder] = notification.useNotification();
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (open && semester) {
-            form.setFieldsValue({
-                id: semester.id,
-                title: semester.title,
-                startDate: formatDateToYYYYMMDD(semester.startDate) as any,
-                endDate: formatDateToYYYYMMDD(semester.endDate) as any,
-                maxCredits: semester.maxCredits,
-            });
+        if (open) {
+            setError(null);
+            if (semester) {
+                form.setFieldsValue({
+                    id: semester.id,
+                    title: semester.title,
+                    startDate: formatDateToYYYYMMDD(semester.startDate) as any,
+                    endDate: formatDateToYYYYMMDD(semester.endDate) as any,
+                    maxCredits: semester.maxCredits,
+                });
+            }
         }
     }, [open, semester, form]);
 
@@ -64,12 +68,12 @@ const UpdateSemesterModal: React.FC<UpdateSemesterModalProps> = ({ open, semeste
                 }
                 onClose();
             },
-            onError: (error: any) => {
-                const errMsg: string = error?.message || 'Failed to update semester';
+            onError: (err: any) => {
+                const errMsg: string = err?.message || 'Failed to update semester';
                 if (errMsg.startsWith('DUPLICATE_FIELD:')) {
-                    form.setFields([{ name: 'title', errors: ['Semester title already exists'] }]);
+                    setError('Semester title already exists');
                 } else {
-                    form.setFields([{ name: 'title', errors: [errMsg] }]);
+                    setError(errMsg);
                 }
             },
         });
@@ -137,6 +141,10 @@ const UpdateSemesterModal: React.FC<UpdateSemesterModalProps> = ({ open, semeste
                     >
                         <InputNumber controls={true} style={{ width: '100%' }} />
                     </Form.Item>
+
+                    {error && (
+                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                    )}
                 </Form>
             </Modal>
         </ConfigProvider>

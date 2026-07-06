@@ -9,6 +9,9 @@ import { useFilteredSemesters } from './semesters.hook';
 import SemestersFilterPanel from './components/SemestersFilterPanel';
 import SemestersTable from './components/SemestersTable';
 import AddSemesterModal from './components/AddSemesterModal';
+// generic componenets
+import Loading from '../../shared/components/Loading';
+import ErrorState from "../../shared/components/ErrorState";
 
 // styles
 import { colors } from '../../styles/colorPalette';
@@ -23,7 +26,7 @@ const SemestersPage: React.FC = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     // Fetch semesters based on filters and page/limit pagination parameters
-    const { data, isLoading, isError, error } = useFilteredSemesters({
+    const { data, isLoading: filterdSemestersLoading, error: filterdSemestersError, } = useFilteredSemesters({
         ...filters,
         page,
         limit: PAGE_LIMIT,
@@ -37,6 +40,14 @@ const SemestersPage: React.FC = () => {
         setFilters(newFilters);
         setPage(1); // reset to page 1 on filter change
     };
+
+    if (filterdSemestersLoading) return (
+        <Loading />
+    );
+
+    if (filterdSemestersError) return (
+        <ErrorState />
+    )
 
     // ====================================================================
     return (
@@ -67,8 +78,8 @@ const SemestersPage: React.FC = () => {
                     limit={PAGE_LIMIT}
                     totalRows={totalRows}
                     setPage={setPage}
-                    loading={isLoading}
-                    error={isError ? (error as any)?.message : undefined}
+                    loading={filterdSemestersLoading}
+                    error={filterdSemestersError ? (filterdSemestersError as any)?.message : undefined}
                 />
             </div>
 

@@ -13,6 +13,9 @@ import { useOfferedCourses } from '../../offeredCourses/hooks/useOfferedCourses'
 //componenets
 import OfferedCoursesTable from "../../offeredCourses/components/OfferedCoursesTable";
 import EnrollButton from "../../offeredCourses/components/EnrollButton";
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
 
 // interfaces
 import { CourseWithGrade } from "../courses.interface";
@@ -20,26 +23,30 @@ import { CourseWithGrade } from "../courses.interface";
 // react query
 import { useQueryClient } from "@tanstack/react-query";
 
+const PAGE_LIMIT = 8;
+
+
 // ====================================================================
 export default function AddCoursePage() {
     const [selectedCourse, setSelectedCourse] = useState<CourseWithGrade | null>(null);
     const [page, setPage] = useState(1); // initial state of page
 
-    const PAGE_LIMIT = 8;
+
 
     // Ant Design notification hook
     const [api, contextHolder] = notification.useNotification();
 
     // get current semester title 
-    const { data: currentSemester } = useCurrentStudentCourses();
+    const { data: currentSemester, isLoading: currentSemesterLoading, error: currentSemesterError } = useCurrentStudentCourses();
     const semesterTitle = currentSemester?.semesterTitle ?? "";
 
     // update offerd course
     const {
         data: offeredCourses,
-        isLoading,
-        isError: offeredCoursesError,
+        isLoading: offeredCoursesLoading,
+        error: offeredCoursesError,
     } = useOfferedCourses(page, PAGE_LIMIT);
+
 
 
     // ----------------------------------------------------
@@ -74,6 +81,12 @@ export default function AddCoursePage() {
     };
 
 
+    if (offeredCoursesLoading || currentSemesterLoading) return (
+        <Loading />
+    )
+    if (offeredCoursesError || currentSemesterError) return (
+        <ErrorState message="Failed to Load Courses" />
+    )
 
     // =====================================================================
     return (
@@ -103,8 +116,8 @@ export default function AddCoursePage() {
             {/* table --------------------------------- */}
             <OfferedCoursesTable
                 offeredCourses={offeredCourses?.courses ?? []}
-                loading={isLoading}
-                error={offeredCoursesError ? "Failed to load courses" : undefined}
+                loading={offeredCoursesLoading}
+                error={offeredCoursesError ? "Failed to Load Courses" : undefined}
                 page={page}
                 limit={8}
                 totalRows={offeredCourses?.totalRows ?? 0}

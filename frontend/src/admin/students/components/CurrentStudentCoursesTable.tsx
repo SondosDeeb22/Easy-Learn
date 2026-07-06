@@ -17,6 +17,10 @@ import UpdateGradeModal from './UpdateGradeModal';
 
 import WithdrawStudentCourseModal from './WithdrawStudentCourseModal';
 
+// generic componenets
+import Loading from '../../../shared/components/Loading';
+import ErrorState from "../../../shared/components/ErrorState";
+
 //hook
 import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
 import { useWithdrawStudentCourse } from '../hooks/useWithdrawStudentCourse';
@@ -49,6 +53,9 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
 
+    const [updateError, setUpdateError] = useState<string | null>(null);
+    const [withdrawError, setWithdrawError] = useState<string | null>(null);
+
     const { mutate: updateGrade, isPending: isPendingUpdate } = useUpdateStudentGrade();
 
     const { mutate: withdrawStudent, isPending: isPendingWithdraw } = useWithdrawStudentCourse();
@@ -57,6 +64,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
 
     // Update Modal  
     const handleOpenUpdateModal = (course: CourseWithGrade) => {
+        setUpdateError(null);
         setSelectedCourse(course);
         setIsUpdateModalOpen(true);
     };
@@ -86,12 +94,8 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                         });
                     }
                 },
-                onError: () => {
-                    setIsUpdateModalOpen(false);
-                    api.error({
-                        title: "Failed to update grade",
-                        placement: "topRight",
-                    });
+                onError: (error: any) => {
+                    setUpdateError(error?.message || "Failed to update grade");
                 }
             }
         );
@@ -101,6 +105,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
 
     // Withdraw Modal
     const handleOpenWithdrawModal = (course: CourseWithGrade) => {
+        setWithdrawError(null);
         setSelectedCourse(course);
         setIsWithdrawModalOpen(true);
     };
@@ -127,12 +132,8 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                     });
 
                 },
-                onError: () => {
-                    setIsWithdrawModalOpen(false);
-                    api.error({
-                        title: "Failed to withdraw course",
-                        placement: "topRight",
-                    });
+                onError: (error: any) => {
+                    setWithdrawError(error?.message || "Failed to withdraw course");
                 }
             }
         )
@@ -190,13 +191,13 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
         },
     ];
 
+
+    if (loading) return (
+        <Loading />
+    );
+
     if (error) return (
-        <Alert
-            title={error}
-            type="error"
-            showIcon
-            style={{ margin: '16px 0', fontSize: '14px' }}
-        />
+        <ErrorState />
     );
 
     // =============================================================================
@@ -209,6 +210,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                 loading={isPendingUpdate}
                 onCancel={() => setIsUpdateModalOpen(false)}
                 onSubmit={handleSubmitGrade}
+                error={updateError}
             />
 
             <WithdrawStudentCourseModal
@@ -217,6 +219,7 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
                 loading={isPendingWithdraw}
                 onCancel={() => setIsWithdrawModalOpen(false)}
                 onSubmit={handleConfirmWithdraw}
+                error={withdrawError}
             />
             <div style={{ marginTop: 20 }}>
                 <Reusable<CourseWithGrade>

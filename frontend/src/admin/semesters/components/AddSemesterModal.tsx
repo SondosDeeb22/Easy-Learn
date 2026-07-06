@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Button, ConfigProvider, notification } from 'antd';
+import { Modal, Form, Input, InputNumber, Button, ConfigProvider, notification, Alert } from 'antd';
+import { useState } from 'react';
 import { useCreateSemester } from '../semesters.hook';
 import { Semester } from '../semesters.interface';
 import { colors } from '../../../styles/colorPalette';
@@ -18,10 +19,12 @@ const AddSemesterModal: React.FC<AddSemesterModalProps> = ({ open, onClose }) =>
     const [form] = Form.useForm<Semester>();
     const { mutate: createSemester, isPending } = useCreateSemester();
     const [api, contextHolder] = notification.useNotification();
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (open) {
             form.resetFields();
+            setError(null);
         }
     }, [open, form]);
 
@@ -35,12 +38,12 @@ const AddSemesterModal: React.FC<AddSemesterModalProps> = ({ open, onClose }) =>
                 // Wait briefly for user to see toast before close, or close immediately and let hook invalidate query
                 onClose();
             },
-            onError: (error: any) => {
-                const errMsg: string = error?.message || 'Failed to create semester';
+            onError: (err: any) => {
+                const errMsg: string = err?.message || 'Failed to create semester';
                 if (errMsg.startsWith('DUPLICATE_FIELD:')) {
-                    form.setFields([{ name: 'title', errors: ['Semester title already exists'] }]);
+                    setError('Semester title already exists');
                 } else {
-                    form.setFields([{ name: 'title', errors: [errMsg] }]);
+                    setError(errMsg);
                 }
             },
         });
@@ -111,8 +114,12 @@ const AddSemesterModal: React.FC<AddSemesterModalProps> = ({ open, onClose }) =>
                             },
                         ]}
                     >
-                        <InputNumber controls={true} style={{ width: '100%' }} />
+                        <InputNumber controls={false} style={{ width: '100%' }} />
                     </Form.Item>
+
+                    {error && (
+                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                    )}
                 </Form>
             </Modal>
         </ConfigProvider>

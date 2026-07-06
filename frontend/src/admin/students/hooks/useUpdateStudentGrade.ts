@@ -3,7 +3,6 @@ import { updateStudentGrade } from '../../academicRecords/academicRecords.servic
 import { notification } from 'antd';
 // =======================================================================
 //? update student grade
-// api: /academic-records/grade
 // =======================================================================
 
 export const useUpdateStudentGrade = () => {

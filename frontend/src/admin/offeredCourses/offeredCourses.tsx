@@ -10,6 +10,11 @@ import OfferedCoursesFilterPanel from '../offeredCourses/components/OfferedCours
 import OfferedCoursesTable from '../offeredCourses/components/OfferedCoursesTable';
 import AddOfferedCourseModal from '../offeredCourses/components/AddOfferedCourseModal';
 
+// generic componenets
+import Loading from '../../shared/components/Loading';
+import ErrorState from "../../shared/components/ErrorState";
+
+
 // styles
 import { colors } from '../../styles/colorPalette';
 
@@ -24,7 +29,7 @@ const OfferedCoursesPage: React.FC = () => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     // Resolve current semester on mount
-    const { data: currentSemester } = useCurrentSemester();
+    const { data: currentSemester, isLoading: currentSemesterLoading, error: currentSemesterError } = useCurrentSemester();
 
     useEffect(() => {
         if (currentSemester?.id) {
@@ -33,12 +38,20 @@ const OfferedCoursesPage: React.FC = () => {
     }, [currentSemester]);
 
     // Fetch offered courses whenever semesterId or page changes
-    const { data, isLoading, isError, error } = useAdminOfferedCourses(semesterId, page, PAGE_LIMIT);
+    const { data, isLoading: AdminOfferedCoursesLoading, error: AdminOfferedCoursesError } = useAdminOfferedCourses(semesterId, page, PAGE_LIMIT);
 
     const handleFilterApply = (newSemesterId: string | undefined) => {
         setSemesterId(newSemesterId);
         setPage(1); // reset to page 1 on filter change
     };
+
+    if (currentSemesterLoading || AdminOfferedCoursesLoading) return (
+        <Loading />
+    );
+
+    if (currentSemesterError || AdminOfferedCoursesError) return (
+        <ErrorState />
+    );
 
     // ====================================================================
     return (
@@ -70,8 +83,8 @@ const OfferedCoursesPage: React.FC = () => {
                     limit={PAGE_LIMIT}
                     totalRows={data?.totalRows ?? 0}
                     setPage={setPage}
-                    loading={isLoading}
-                    error={isError ? (error as any)?.message : undefined}
+                    loading={AdminOfferedCoursesLoading}
+                    error={AdminOfferedCoursesError ? (AdminOfferedCoursesError as any)?.message : undefined}
                 />
             </div>
 

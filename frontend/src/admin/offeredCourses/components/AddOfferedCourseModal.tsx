@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Select, Button, ConfigProvider, notification } from 'antd';
+import { Modal, Form, Select, Button, ConfigProvider, notification, Alert } from 'antd';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 // hook
@@ -7,7 +7,7 @@ import { useAdminAvailableCourses, useCreateOfferedCourse } from '../hooks/offer
 import { useAllSemesters } from '../../semesters/semesters.hook';
 
 // service
-import { getCourses } from '../../services/courses.service';
+import { getCourses } from '../../courses/courses.service';
 
 // style
 import { colors } from '../../../styles/colorPalette';
@@ -23,6 +23,7 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
     const [form] = Form.useForm<{ courseId: string; semesterId: string }>();
     const { mutate: createOfferedCourse, isPending } = useCreateOfferedCourse();
     const [api, contextHolder] = notification.useNotification();
+    const [error, setError] = useState<string | null>(null);
 
     const { data: semesters, isLoading: semestersLoading } = useAllSemesters();
     const { data: coursesData, isLoading: coursesLoading } = useAdminAvailableCourses(defaultSemesterId)
@@ -30,6 +31,7 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
     useEffect(() => {
         if (open) {
             form.resetFields();
+            setError(null);
             if (defaultSemesterId) {
                 form.setFieldsValue({ semesterId: defaultSemesterId });
             }
@@ -42,12 +44,12 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
                 api.success({ message: 'Course added to semester successfully!', placement: 'topRight' });
                 onClose();
             },
-            onError: (error: any) => {
-                const errMsg: string = error?.message || 'Failed to add offered course';
+            onError: (err: any) => {
+                const errMsg: string = err?.message || 'Failed to add offered course';
                 if (errMsg.includes('DUPLICATE_FIELD')) {
-                    form.setFields([{ name: 'courseId', errors: ['This course is already offered in the selected semester'] }]);
+                    setError('This course is already offered in the selected semester');
                 } else {
-                    form.setFields([{ name: 'courseId', errors: [errMsg] }]);
+                    setError(errMsg);
                 }
             },
         });
@@ -112,6 +114,10 @@ const AddOfferedCourseModal: React.FC<AddOfferedCourseModalProps> = ({ open, def
                             style={{ width: '100%' }}
                         />
                     </Form.Item>
+
+                    {error && (
+                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                    )}
                 </Form>
             </Modal>
         </ConfigProvider>

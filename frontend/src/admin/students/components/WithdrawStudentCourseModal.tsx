@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Select, Typography } from 'antd';
+import { Modal, Select, Typography, Alert } from 'antd';
 
 // interface
 import { CourseWithGrade } from '../../courses/courses.interface';
@@ -14,6 +14,7 @@ interface Props {
     loading?: boolean;
     onCancel: () => void;
     onSubmit: () => void;
+    error?: string | null;
 }
 
 //============================================================
@@ -24,6 +25,7 @@ const WithdrawStudentCourseModal: React.FC<Props> = ({
     loading,
     onCancel,
     onSubmit,
+    error,
 }) => {
 
 
@@ -62,6 +64,10 @@ const WithdrawStudentCourseModal: React.FC<Props> = ({
                 <div className="relative w-full m-0">
                     <p className=' text-red-500'>Are you sure you want to withdraw this course?</p>
                 </div>
+
+                {error && (
+                    <Alert message={error} type="error" showIcon style={{ marginTop: 8 }} />
+                )}
             </div>
         </Modal>
     );

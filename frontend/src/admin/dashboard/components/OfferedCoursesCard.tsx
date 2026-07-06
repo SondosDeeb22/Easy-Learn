@@ -13,7 +13,7 @@ const OfferedCoursesInfoCard: React.FC = () => {
     console.log(`[ OfferedCoursesInfoCard ] [offeredCourses]`, offeredCourses)
 
 
-    if (isLoading) {
+    if (currentSemesterLoading) {
         return (
             <div className="w-full bg-white/80 backdrop-blur-sm border border-navbar/30 rounded-xl p-5 flex justify-between items-center shadow-sm animate-pulse">
                 <div className="flex items-center gap-3 w-1/2">

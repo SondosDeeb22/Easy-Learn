@@ -2,26 +2,31 @@ import { useState } from 'react';
 import { Button, ConfigProvider } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 // component 
-import CoursesTable from '../components/CoursesTable';
-import CoursesFilterPanel from '../components/CoursesFilterPanel';
-import AddCourseModal from '../components/AddCourseModal';
+import CoursesTable from './components/CoursesTable';
+import CoursesFilterPanel from './components/CoursesFilterPanel';
+import AddCourseModal from './components/AddCourseModal';
+
+// generic componenets
+import Loading from '../../shared/components/Loading';
+import ErrorState from "../../shared/components/ErrorState";
+
 
 //hook
-import { useCourses } from '../hooks/useCourses';
+import { useCourses } from './hooks/useCourses';
 
 // interfaces
-import { CourseFilterParams } from '../courses.interface';
-import { colors } from '../../../styles/colorPalette';
-
+import { CourseFilterParams } from './courses.interface';
+import { colors } from '../../styles/colorPalette';
+const PAGE_LIMIT = 5;
 // ====================================================================
 
-export default function CoursesPage() {
+const CoursesPage: React.FC = () => {
     const [filters, setFilters] = useState<CourseFilterParams>({});
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const [page, setPage] = useState(1);
-    const PAGE_LIMIT = 5;
-    const { data, isLoading, isError } = useCourses(filters, page, PAGE_LIMIT);
+
+    const { data, isLoading: coursesLoading, error: coursesError } = useCourses(filters, page, PAGE_LIMIT);
 
     console.log(`[CoursesPage] filters: ${JSON.stringify(filters)}`)
     console.log(`[CoursesPage] total courses: ${data?.totalRows}\ncourses: ${JSON.stringify(data?.courses)}\n data: ${JSON.stringify(data)}`);
@@ -29,6 +34,14 @@ export default function CoursesPage() {
     const handleApplyFilters = (newFilters: CourseFilterParams) => {
         setFilters(newFilters);
     };
+
+    if (coursesLoading) return (
+        <Loading />
+    );
+
+    if (coursesError) return (
+        <ErrorState />
+    )
 
     // ------------------------------------------------
     return (
@@ -52,8 +65,8 @@ export default function CoursesPage() {
                 {/* Table --------------------------------------------*/}
                 <CoursesTable
                     courses={data?.courses ?? []}
-                    loading={isLoading}
-                    error={isError ? "Failed to load courses" : undefined}
+                    loading={coursesLoading}
+                    error={coursesError ? "Failed to Load Courses" : undefined}
                     page={page}
                     limit={PAGE_LIMIT}
                     totalRows={data?.totalRows ?? 0}
@@ -70,3 +83,5 @@ export default function CoursesPage() {
         </ConfigProvider>
     )
 }
+
+export default CoursesPage;
