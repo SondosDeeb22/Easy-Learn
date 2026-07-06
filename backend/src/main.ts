@@ -4,7 +4,10 @@
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as fs from 'fs';
+
 
 import cookieParser from 'cookie-parser';
 
@@ -35,12 +38,13 @@ async function bootstrap() {
 
   //  -----------
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/apis', app, document);
+  fs.writeFileSync(
+    './openapi.json',
+    JSON.stringify(document, null, 2),
+  );
+  SwaggerModule.setup('/api/docs', app, document);
 
   app.useGlobalInterceptors(new TimeoutInterceptor(5 * 60 * 1000));
-
-
-
 
   // prefix all routes with /api, so vite proxy forwards all backend requests to /api/...
   app.setGlobalPrefix('api')

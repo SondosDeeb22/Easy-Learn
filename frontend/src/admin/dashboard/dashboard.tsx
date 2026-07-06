@@ -19,14 +19,14 @@ import { useAppSelector } from "../../redux/hooks";
 // ======================================================================
 export default function AdminDashboard() {
   const user = useAppSelector((state) => state.auth);
-  const { data: userData, loading, error } = useUserData(user?.userId);
+  const { data: userData, isLoading: userDataLoding, error: userDataError } = useUserData(user?.userId);
 
   // ======================================================================
-  if (loading) return (
+  if (userDataLoding) return (
     <Loading />
   );
 
-  if (error) return (
+  if (userDataError) return (
     <ErrorState />
   )
   if (!userData) return null;

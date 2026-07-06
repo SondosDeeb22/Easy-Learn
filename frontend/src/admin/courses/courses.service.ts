@@ -23,15 +23,10 @@ export const getCourses = async (filters: CourseFilterParams, page: number, limi
 //? Create a new course
 //=====================================================
 export const createCourse = async (data: CreateCourseData): Promise<Course> => {
-  try {
-    console.log(`[frontend/courses.service] provided data:\n ${JSON.stringify(data)}`);
-    const response = await apiClient.post(`/api/courses/add`, data);
-    console.log(`Response for POST /api/courses/add`, response.data);
-    return response.data.data;
-  } catch (error: any) {
-    console.log(`Error [createCourse]:`, error.message)
-    throw new Error(error.response?.data?.message || "Failed to create course")
-  }
+  console.log(`[frontend/courses.service] provided data:\n ${JSON.stringify(data)}`);
+  const response = await apiClient.post(`/api/courses/add`, data);
+  console.log(`Response for POST /api/courses/add`, response.data);
+  return response.data.data;
 }
 
 
@@ -67,15 +62,9 @@ export const getAllCourses = async (): Promise<Course[]> => {
 //? Enroll student in a course
 //=====================================================
 export const enrollStudent = async (offeredCourseId: string, studentId: string): Promise<void> => {
-  try {
-    const response = await apiClient.post(`/api/courses/${offeredCourseId}/enroll?studentId=${studentId}`);
-    console.log("this is response for /courses/:offeredCourseId/enroll:", response.data);
-    return response.data.data;
-
-  } catch (error: any) {
-    console.log(`Error [enrollStudent]:`, error)
-    throw new Error(error.response?.data?.message || "Failed to enroll student in course")
-  }
+  const response = await apiClient.post(`/api/courses/${offeredCourseId}/enroll?studentId=${studentId}`);
+  console.log("this is response for /courses/:offeredCourseId/enroll:", response.data);
+  return response.data.data;
 }
 
 //=====================================================
@@ -86,16 +75,10 @@ export const withdrawStudentFromCourse = async ({
   studentId,
   courseId,
 }: WithdrawStudentCourse): Promise<void> => {
-
-  try {
-    const response = await apiClient.delete(
-      `/api/courses/withdraw/${studentId}/${courseId}`,
-    );
-    return response.data.data;
-  } catch (error: any) {
-    console.log(`Error [withdrawStudentCourse]:`, error)
-    throw new Error(error.response?.data?.message || "Failed to withdraw from course")
-  }
+  const response = await apiClient.delete(
+    `/api/courses/withdraw/${studentId}/${courseId}`,
+  );
+  return response.data.data;
 
 };
 
@@ -103,14 +86,10 @@ export const withdrawStudentFromCourse = async ({
 //? Update a course
 //=====================================================
 export const updateCourse = async (data: Course): Promise<any> => {
-  try {
-    console.log(`[frontend/courses.service] update data:\n ${JSON.stringify(data)}`);
-    const response = await apiClient.patch(`/api/courses/update`, data);
-    console.log(`Response for PATCH /api/courses/update`, response.data);
-    return response.data;
-  } catch (error: any) {
-    console.log(`Error [updateCourse]:`, error.message)
-    throw new Error(error.response?.data?.message || "Failed to update course")
-  }
+  console.log(`[frontend/courses.service] update data:\n ${JSON.stringify(data)}`);
+  const response = await apiClient.patch(`/api/courses/update`, data);
+  console.log(`Response for PATCH /api/courses/update`, response.data);
+  return response.data;
+
 }
 

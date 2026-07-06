@@ -5,6 +5,8 @@ import { Module } from '@nestjs/common';
 
 // services
 import { CoursesService } from './courses.service';
+import { CourseEnrollmentService } from './services/CourseEnrollment.service';
+import { GetCurrentStudentCoursesService } from './services/GetCurrentStudentCourses.service';
 
 // controller
 import { CoursesController } from './courses.controller';
@@ -31,7 +33,7 @@ import { CrudHelper } from 'src/common/helpers/crud.helper';
 
   ],
   controllers: [CoursesController],
-  providers: [CoursesService, CrudHelper],
+  providers: [CoursesService, CrudHelper, CourseEnrollmentService, GetCurrentStudentCoursesService],
   exports: [SequelizeModule, CoursesService]
 })
 export class CoursesModule { }

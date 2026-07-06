@@ -27,6 +27,10 @@ import { Roles } from "../users/enums/users.enum";
 
 // helper
 import { CrudHelper } from "../../common/helpers/crud.helper";
+
+// services
+import { CourseEnrollmentService } from './services/CourseEnrollment.service';
+import { GetCurrentStudentCoursesService } from './services/GetCurrentStudentCourses.service';
 // =========================================================================
 @Injectable()
 export class CoursesService {
@@ -45,6 +49,8 @@ export class CoursesService {
 
 
         private readonly crudHelper: CrudHelper,
+        private readonly courseEnrollment: CourseEnrollmentService,
+        private readonly getCurrentStudentCoursesService: GetCurrentStudentCoursesService,
     ) { }
 
     // =========================================================================
@@ -229,141 +235,14 @@ export class CoursesService {
     async getCurrentStudentCourses(
         studentId: string,
     ): Promise<ServiceResult<CurrentStudentCourses>> {
-        let customMessage: string;
-        const today = new Date();
-
-
-        // Find the current active semester(s) and include academic records for the student
-        const result = await this.semestersModel.findAndCountAll({
-            where: {
-                startDate: { [Op.lte]: today },
-                endDate: { [Op.gte]: today },
-            },
-            include: [{
-                model: AcademicRecordsModel,
-                as: "academicRecords",
-                where: { studentId },
-                include: [{
-                    model: CoursesModel,
-                    as: "course",
-                    attributes: ["id", "code", "title", "credit"]
-                }],
-                attributes: ["id", "numericGrade", "letterGrade"]
-            }],
-            attributes: ["title", "id", "startDate", "endDate"]
-        });
-
-        if (result.count === 0) {
-            customMessage = "No courses found";
-
-            const emptyData = {
-                semesterTitle: "",
-                semesterId: "",
-                startDate: new Date(),
-                endDate: new Date(),
-                totalRows: 0,
-                courses: [],
-            };
-            return { message: customMessage, data: emptyData };
-        }
-
-        const semester = result.rows[0];
-        const { title, id, startDate, endDate, academicRecords } = (semester as any).toJSON();
-
-        const courses = academicRecords.map((record: any) => ({
-            academicRecordId: record.id,
-            id: record.course?.id,
-            code: record.course?.code,
-            title: record.course?.title,
-            credit: record.course?.credit,
-            numericGrade: record.numericGrade,
-            letterGrade: record.letterGrade,
-        }));
-        console.log("--------------------\n ", courses[0].academicRecordId)
-        console.log(`Student Current Courses:\n${JSON.stringify(courses, null, 9)}`);
-
-        const data = {
-            semesterId: id,
-            semesterTitle: title,
-            startDate: new Date(startDate),
-            endDate,
-            totalRows: result.count,
-            courses,
-        };
-
-        customMessage = data.courses.length === 0 ? "No courses found" : "Courses found successfully";
-        console.log(`/courses.service.ts - (getCurrentStudentCourses):\nsemester= ${JSON.stringify(semester?.toJSON(), null, 2)} \ndata= ${JSON.stringify(data, null, 2)}`);
-        return { message: customMessage, data };
+        return this.getCurrentStudentCoursesService.getCurrentStudentCourses(studentId);
     }
 
     // =========================================================================
     //? enroll student in a course
     // =========================================================================
     async enrollStudent(studentId: string, courseId: string): Promise<ServiceResult<null>> {
-
-        // verify student exists
-        const student = await this.usersModel.findByPk(studentId);
-        if (!student) throw new NotFoundError("Student not found");
-
-        // if user is not student we stop the enrollment process --------
-        if (student.role !== Roles.STUDENT) {
-            throw new ConflictException(
-                "Only students can enroll in courses"
-            );
-        }
-
-        // verify course exists
-        const course = await this.coursesModel.findByPk(courseId);
-        if (!course) throw new NotFoundError("Course not found");
-
-
-
-        // check if student is already enrolled
-        const alreadyEnrolled = await this.academicRecordsModel.findOne({
-            where: { studentId, courseId }
-        });
-        if (alreadyEnrolled) throw new ConflictException("Already enrolled in this course");
-
-        // get current semesterv
-        const today = new Date();
-        const currentSemester = await this.semestersModel.findOne({
-            where: {
-                startDate: { [Op.lte]: today },
-                endDate: { [Op.gte]: today },
-            }
-        });
-        if (!currentSemester) throw new NotFoundError("No active semester found");
-        // verify course is offered in the current semester
-        const isOffered = await this.offeredCoursesModel.findOne({
-            where: { courseId, semesterId: currentSemester.id }
-        });
-        if (!isOffered) {
-            throw new ConflictException("This course is not offered in the current semester");
-        }
-
-        // enroll student - add reocrd in academic records table  ----------------------------------------------
-        await this.academicRecordsModel.create({
-            id: uuidv4().substring(0, 8),
-            studentId,
-            courseId,
-            semesterId: currentSemester.id,
-            numericGrade: null,
-            letterGrade: null
-        });
-
-
-        // update student's credit
-        await this.usersModel.update({
-            currentSemesterCredits: (student.currentSemesterCredits ?? 0) + course.credit,
-            totalCredits: (student.totalCredits ?? 0) + course.credit
-        }, {
-            where: { id: studentId }
-        });
-
-        return {
-            message: "Student enrolled successfully",
-            data: null,
-        }
+        return this.courseEnrollment.enrollStudent(studentId, courseId);
     }
 
 
@@ -389,12 +268,11 @@ export class CoursesService {
         });
 
         // deduct course credits from student's totals
-        await this.usersModel.update({
+        await this.crudHelper.update(this.usersModel, {
+            id: studentId,
             currentSemesterCredits: Math.max(0, (student.currentSemesterCredits ?? 0) - course.credit),
             totalCredits: Math.max(0, (student.totalCredits ?? 0) - course.credit)
-        }, {
-            where: { id: studentId }
-        });
+        })
 
         return {
             message: "Student withdrawn successfully",

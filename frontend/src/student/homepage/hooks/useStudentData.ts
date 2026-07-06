@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getStudentData } from "../studentData.service";
+import { getUserData } from "../../../shared/services/userData.service";
 
 
 // =======================================================================
@@ -9,7 +9,7 @@ import { getStudentData } from "../studentData.service";
 export const useStudentData = (studentId?: string) => {
     return useQuery({
         queryKey: ['studentData', studentId],
-        queryFn: () => getStudentData(studentId!),
+        queryFn: () => getUserData(studentId!),
         enabled: !!studentId,
         staleTime: 5 * 60 * 1000,
     });

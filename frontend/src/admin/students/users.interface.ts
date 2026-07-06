@@ -22,8 +22,8 @@ export interface FilterdStudentInterface {
 export interface User {
     id: string,
     name: string,
-    gender: Gender,
-    role: Roles,
+    gender: string,
+    role: string,
     email: string,
     currentSemesterCredits: number,
     totalCredits: number,

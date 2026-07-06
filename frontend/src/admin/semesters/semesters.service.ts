@@ -23,7 +23,7 @@ export const getCurrentSemester = async (): Promise<Semester | null> => {
 //=====================================================
 //? create a new semester
 //=====================================================
-export const createSemester = async (data: Semester): Promise<any> => {
+export const createSemester = async (data: Semester): Promise<{ message: string, data: null }> => {
     const response = await apiClient.post(`/api/semesters/add`, data);
     console.log(`[frontend/service/semester - /semesters/add] response: `, response.data);
     return response.data;
@@ -32,7 +32,7 @@ export const createSemester = async (data: Semester): Promise<any> => {
 //=====================================================
 //? update an existing semester
 //=====================================================
-export const updateSemester = async (data: Semester): Promise<any> => {
+export const updateSemester = async (data: Semester): Promise<{ message: string, data: boolean }> => {
     const response = await apiClient.patch(`/api/semesters/update`, data);
     console.log(`[frontend/service/semester - /semesters/update] response: `, response.data);
     return response.data;

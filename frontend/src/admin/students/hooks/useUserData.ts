@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserData } from "../users.service";
+import { getUserData } from "../../../shared/services/userData.service";
 
 // =======================================================================
 //? fetch user data

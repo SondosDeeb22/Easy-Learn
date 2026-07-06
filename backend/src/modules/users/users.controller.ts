@@ -22,25 +22,12 @@ import { StudentDataDto, UserCardDataDto, GetStudentsQueryDto } from './dtos/use
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
-  /// ============================================================
 
+  /// ================================================================
+  //? fetch the user data
+  // ===============================================================
+  @Get('/:id')
 
-  @Get('/students')
-  @ApiOperation({ summary: 'Get List of Filtered Students', description: 'Fetch a list of students with pagination. Filter by courseId, or semesterId.' })
-
-  @HttpCode(200)
-  @ApiOkResponse({ description: "User fetched successfully" })
-
-  //error
-  @ApiForbiddenResponse({ description: "Forbidden access" })
-  async getStudents(
-    @Query() query: GetStudentsQueryDto,
-  ) {
-    return this.usersService.getStudents(query);
-  }
-  /// ============================================================
-
-  @Get('/student/:id')
   @ApiParam({ name: 'id', example: '20261144', })
   @ApiOperation({ summary: 'Get Student Detailed Data', description: 'Retrieve detailed data for a specific student, basic info from users table and the semester maxCredits.' })
   @UseInterceptors(new TransformInterceptor(StudentDataDto))
@@ -52,24 +39,9 @@ export class UsersController {
   @ApiForbiddenResponse({ description: "You are not authorized to access" })
 
   async findUserById(@Param('id') id: string) {
-    const result = await this.usersService.getStudentData(id);
+    const result = await this.usersService.getUserData(id);
     if (!result) throw new NotFoundError("User was not found");
     console.log("this is userData:\n", result)
-    return result;
-  }
-
-
-  //============================================================
-  //? fetch basic Students data for Admin page
-  //============================================================
-  @Get('/:id')
-  @ApiParam({ name: 'id', example: '10001234', })
-  @ApiOperation({ summary: 'Get User Basic Card Data', description: 'Retrieve generic public card information for any user by their identifier (excluding sensitive attributes like password).' })
-  @UseInterceptors(new TransformInterceptor(UserCardDataDto))
-
-  async getUserCardData(@Param('id') id: string) {
-
-    const result = await this.usersService.findById(id);
     return result;
   }
 
@@ -88,6 +60,25 @@ export class UsersController {
     if (!result) throw new NotFoundError("User was not found");
     return result;
   }
+
+
+  /// ============================================================
+  //? fetch the filtered students
+  // =============================================================
+  @Get('/students')
+  @ApiOperation({ summary: 'Get List of Filtered Students', description: 'Fetch a list of students with pagination. Filter by courseId, or semesterId.' })
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: "User fetched successfully" })
+
+  //error
+  @ApiForbiddenResponse({ description: "Forbidden access" })
+  async getStudents(
+    @Query() query: GetStudentsQueryDto,
+  ) {
+    return this.usersService.getStudents(query);
+  }
+
 
 
 

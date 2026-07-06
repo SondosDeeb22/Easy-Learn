@@ -56,13 +56,16 @@ export default function AddCoursePage() {
         if (!selectedCourse) return;
 
         try {
-            await enrollStudent(selectedCourse.id,);
+            await enrollStudent(selectedCourse.id);
             api.success({ title: "Enrolled successfully!", description: `You have been enrolled in ${selectedCourse.code}` });
             setSelectedCourse(null);
 
-            // mark the cache stale and automatically refetch offeredCourses
+            // mark the cache stale and automatically refetch offeredCourses and studentData
             queryClient.invalidateQueries({
                 queryKey: ['offeredCourses']
+            });
+            queryClient.invalidateQueries({
+                queryKey: ['studentData']
             });
             //return user to first page
             setPage(1);

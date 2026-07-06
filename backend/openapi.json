@@ -1,0 +1,1164 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "description": "Retrieve detailed data for a specific student, basic info from users table and the semester maxCredits.",
+        "operationId": "UsersController_findUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "20261144",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "user fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        },
+        "summary": "Get Student Detailed Data",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/gpa/{studentId}/{semesterId}": {
+      "get": {
+        "operationId": "UsersController_getStudentCurrentGPA",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "20261144",
+              "type": "string"
+            }
+          },
+          {
+            "name": "semesterId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "semester-1",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/students": {
+      "get": {
+        "description": "Fetch a list of students with pagination. Filter by courseId, or semesterId.",
+        "operationId": "UsersController_getStudents",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Student ID",
+            "schema": {
+              "example": "20261144",
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Course ID",
+            "schema": {
+              "example": "50000004",
+              "type": "string"
+            }
+          },
+          {
+            "name": "semesterId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Semester ID",
+            "schema": {
+              "example": "20000008",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Student Status",
+            "schema": {
+              "example": "active",
+              "type": "string",
+              "enum": [
+                "active",
+                "passive",
+                "suspended",
+                "graduated"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "The page number for pagination context",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of rows to return per page",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User fetched successfully"
+          },
+          "403": {
+            "description": "Forbidden access"
+          }
+        },
+        "summary": "Get List of Filtered Students",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/grades/{studentId}": {
+      "get": {
+        "description": "Calculate and update a specific student GPA and CGPA.",
+        "operationId": "GradesController_upsertGPAAndUpdateCGPA",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "example": "20261144",
+              "type": "string"
+            }
+          },
+          {
+            "name": "semesterId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GPA and CGPA updated successfully"
+          },
+          "403": {
+            "description": "Forbidden access"
+          }
+        },
+        "summary": "Update Student GPA",
+        "tags": [
+          "grades"
+        ]
+      }
+    },
+    "/courses/add": {
+      "post": {
+        "description": "Creates a new course in the system.",
+        "operationId": "CoursesController_createCourse",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCourseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course created successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "409": {
+            "description": "Course with this code already exists"
+          }
+        },
+        "summary": "Create Course",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses/update": {
+      "patch": {
+        "description": "Updates details of an existing course in the system.",
+        "operationId": "CoursesController_updateCourse",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCourseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Course updated successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "409": {
+            "description": "Course with this code or title already exists"
+          }
+        },
+        "summary": "Update Course",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses/current": {
+      "get": {
+        "description": "Allows admins to view any student's courses for the current semester.",
+        "operationId": "CoursesController_getStudentCurrentCoursesForAdmin",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current Courses fetched successfully"
+          },
+          "400": {
+            "description": "studentId is required for administrators"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Get Student Current Semester Courses",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses": {
+      "get": {
+        "description": "Fetch a list of courses. Filter by code, name, or status.",
+        "operationId": "CoursesController_getCourses",
+        "parameters": [
+          {
+            "name": "code",
+            "required": false,
+            "in": "query",
+            "description": "Filter by course code",
+            "schema": {
+              "example": "CSE101",
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "Filter by course title",
+            "schema": {
+              "example": "Introduction to Computer Science",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Status (active - true/false)",
+            "schema": {
+              "example": "true",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "example": 5,
+              "type": "number"
+            }
+          },
+          {
+            "name": "active",
+            "required": false,
+            "in": "query",
+            "description": "Filter by course status",
+            "schema": {
+              "example": true,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Courses fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Get Filtered Courses",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses/student/all": {
+      "get": {
+        "description": "Retrieve history of all courses the authenticated student is or has been registered in.",
+        "operationId": "CoursesController_getAllStudentCourses",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "example": 5,
+              "type": "number"
+            }
+          },
+          {
+            "name": "semester",
+            "required": false,
+            "in": "query",
+            "description": "Filter by specific Semester ID",
+            "schema": {
+              "example": "20000008",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Courses fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Get Student All Registered Courses",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses/{courseId}/enroll": {
+      "post": {
+        "description": "Enrolls the authenticated student in the specified course ID for the current semester.",
+        "operationId": "CoursesController_enrollStudent",
+        "parameters": [
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "description": "The unique course identifier",
+            "schema": {
+              "example": "50000004",
+              "type": "string"
+            }
+          },
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Student enrolled in course successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": "Already enrolled in this course"
+          }
+        },
+        "summary": "Enroll Student in Course",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/courses/withdraw/{studentId}/{courseId}": {
+      "delete": {
+        "description": "Withdraws the authenticated student from the specified course for the current semester.",
+        "operationId": "CoursesController_withdrawStudent",
+        "parameters": [
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "description": "The unique course identifier",
+            "schema": {
+              "example": "50000004",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Student withdrawn from course successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": ""
+          },
+          "409": {
+            "description": "You are not registered for this course"
+          }
+        },
+        "summary": "Withdraw Student from Course",
+        "tags": [
+          "Courses"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "Login with Id and Password",
+        "operationId": "AuthController_Login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginCredDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          },
+          "401": {
+            "description": "Invalid Credentials"
+          },
+          "404": {
+            "description": "User not Registered"
+          }
+        },
+        "summary": "User login",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "description": "Invalidates user session and removes authentication cookies.",
+        "operationId": "AuthController_Logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Logout successful"
+          }
+        },
+        "summary": "User logout",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/auth/user": {
+      "get": {
+        "description": "Validates jwt login cookie and extracts current user identity metadata.",
+        "operationId": "AuthController_getUserData",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User data fetched successfully"
+          },
+          "401": {
+            "description": "Session Expired, please login again!"
+          }
+        },
+        "summary": "Get current user session data",
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/academic-records/student/update-grade": {
+      "patch": {
+        "description": "Allows an administrator to update a grade for a student in a specific academic record.",
+        "operationId": "AcademicRecordsController_updateGrade",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGradeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User fetched successfully"
+          },
+          "403": {
+            "description": "Forbidden access"
+          }
+        },
+        "summary": "Update Student Grade",
+        "tags": [
+          "academic-records"
+        ]
+      }
+    },
+    "/semesters/current": {
+      "get": {
+        "description": "Fetch the active semester based on the current date.",
+        "operationId": "SemestersController_getCurrentSemester",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Current semester fetched successfully"
+          }
+        },
+        "summary": "Get Current Semester",
+        "tags": [
+          "Semesters"
+        ]
+      }
+    },
+    "/semesters/all": {
+      "get": {
+        "description": "Fetch list of all semesters configured in the database system.",
+        "operationId": "SemestersController_getAllSemesters",
+        "parameters": [
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Semester Title",
+            "schema": {
+              "example": "Fall",
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "required": false,
+            "in": "query",
+            "description": "Filter by Date (ISO format)",
+            "schema": {
+              "example": "2026-07-03",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Limit number",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Semesters fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Get All Semesters",
+        "tags": [
+          "Semesters"
+        ]
+      }
+    },
+    "/semesters/add": {
+      "post": {
+        "description": "Create a new semester in the system.",
+        "operationId": "SemestersController_createSemester",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSemesterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Semester created successfully"
+          }
+        },
+        "summary": "Create Semester",
+        "tags": [
+          "Semesters"
+        ]
+      }
+    },
+    "/semesters/update": {
+      "patch": {
+        "description": "Update details of an existing semester.",
+        "operationId": "SemestersController_updateSemester",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSemesterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Semester updated successfully"
+          }
+        },
+        "summary": "Update Semester",
+        "tags": [
+          "Semesters"
+        ]
+      }
+    },
+    "/offered-courses": {
+      "get": {
+        "description": "Fetch offered courses for the current semester that the authenticated student can enroll in based on remaining credit limits.",
+        "operationId": "OfferedCoursesController_getOfferedCoursesForStudent",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "example": 8,
+              "type": "number"
+            }
+          },
+          {
+            "name": "studentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offered courses fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": "No active semester was found"
+          }
+        },
+        "summary": "Get Available Offered Courses",
+        "tags": [
+          "OfferedCourses"
+        ]
+      }
+    },
+    "/offered-courses/admin": {
+      "get": {
+        "description": "Fetch all offered courses, optionally filtered by semester, for administrative management.",
+        "operationId": "OfferedCoursesController_getOfferedCoursesForAdmin",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "semesterId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "example": "20000008",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offered courses fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Get Offered Courses for Admin",
+        "tags": [
+          "OfferedCourses"
+        ]
+      }
+    },
+    "/offered-courses/add": {
+      "post": {
+        "description": "Offer a course in a specific semester.",
+        "operationId": "OfferedCoursesController_createOfferedCourse",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfferedCourseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course added to semester successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": "Course or semester not found"
+          },
+          "409": {
+            "description": "This course is already offered in the selected semester"
+          }
+        },
+        "summary": "Add Offered Course",
+        "tags": [
+          "OfferedCourses"
+        ]
+      }
+    },
+    "/offered-courses/{id}": {
+      "delete": {
+        "description": "Remove a course from a semester offering.",
+        "operationId": "OfferedCoursesController_deleteOfferedCourse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offered course removed successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          },
+          "404": {
+            "description": "Offered course not found"
+          }
+        },
+        "summary": "Delete Offered Course",
+        "tags": [
+          "OfferedCourses"
+        ]
+      }
+    },
+    "/offered-courses/available-courses/{semesterId}": {
+      "get": {
+        "description": "Get courses that can be added to a semester offering (not already offered)",
+        "operationId": "OfferedCoursesController_getAvailableCoursesForSemester",
+        "parameters": [
+          {
+            "name": "semesterId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available courses fetched successfully"
+          },
+          "403": {
+            "description": "You are not authorized to access"
+          }
+        },
+        "summary": "Available Courses for Semester",
+        "tags": [
+          "OfferedCourses"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "APIs Documentation for EasyLearn Web App",
+    "description": "APIs description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "CreateCourseDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Course Code",
+            "example": "PHY101"
+          },
+          "title": {
+            "type": "string",
+            "description": "Course Title",
+            "example": "Introduction to Physics"
+          },
+          "credit": {
+            "type": "number",
+            "description": "Course Credits",
+            "example": 3
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Status (active)",
+            "example": true
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "credit"
+        ]
+      },
+      "UpdateCourseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique course identifier",
+            "example": "50000004"
+          },
+          "code": {
+            "type": "string",
+            "description": "Course Code",
+            "example": "PHY101"
+          },
+          "title": {
+            "type": "string",
+            "description": "Course Title",
+            "example": "Introduction to Physics"
+          },
+          "credit": {
+            "type": "number",
+            "description": "Course Credits",
+            "example": 3
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Status (active)",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "title",
+          "credit",
+          "active"
+        ]
+      },
+      "LoginCredDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "userId",
+            "example": "20261144"
+          },
+          "password": {
+            "type": "string",
+            "description": "password",
+            "example": "123"
+          }
+        },
+        "required": [
+          "id",
+          "password"
+        ]
+      },
+      "UpdateGradeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the academic/enrollment record",
+            "example": "10000005"
+          },
+          "numericGrade": {
+            "type": "number",
+            "description": "The grade letter or mark to assign to the record (e.g. A, B+, Pass, or numeric value)",
+            "example": 93
+          }
+        },
+        "required": [
+          "id",
+          "numericGrade"
+        ]
+      },
+      "CreateSemesterDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Semester Title",
+            "example": "Fall 2026-2027"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Start Date",
+            "example": "2026-09-01"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "End Date",
+            "example": "2027-01-15"
+          },
+          "maxCredits": {
+            "type": "number",
+            "description": "Maximum Credits",
+            "example": 18
+          }
+        },
+        "required": [
+          "title",
+          "startDate",
+          "endDate",
+          "maxCredits"
+        ]
+      },
+      "UpdateSemesterDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Semester ID",
+            "example": "20000001"
+          },
+          "title": {
+            "type": "string",
+            "description": "Semester Title",
+            "example": "Fall 2026-2027"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Start Date",
+            "example": "2026-09-01"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string",
+            "description": "End Date",
+            "example": "2027-01-15"
+          },
+          "maxCredits": {
+            "type": "number",
+            "description": "Maximum Credits",
+            "example": 18
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "startDate",
+          "endDate",
+          "maxCredits"
+        ]
+      },
+      "CreateOfferedCourseDto": {
+        "type": "object",
+        "properties": {
+          "courseId": {
+            "type": "string",
+            "description": "The unique course identifier",
+            "example": "50000004"
+          },
+          "semesterId": {
+            "type": "string",
+            "description": "The unique semester identifier",
+            "example": "20000008"
+          }
+        },
+        "required": [
+          "courseId",
+          "semesterId"
+        ]
+      }
+    }
+  }
+}

@@ -95,7 +95,7 @@ const UpdateGradeModal: React.FC<Props> = ({
                     />
                     {isInvalid && (
                         <p className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
-                            <span>⚠</span> Grade must be between 0 and 100.
+                            Grade must be between 0 and 100.
                         </p>
                     )}
                 </div>
