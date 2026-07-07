@@ -6,8 +6,8 @@ import { useCourses } from '../../courses/hooks/useCourses';
 
 // ==============================================================================
 const CoursesInfoCard: React.FC = () => {
-    const { data: activeCourses, isLoading: activeLoading } = useCourses({ status: "true" }, 1, 1000);
-    const { data: inactiveCourses, isLoading: inactiveLoading } = useCourses({ status: "false" }, 1, 1000);
+    const { data: activeCourses, isLoading: activeLoading } = useCourses({ status: "true" });
+    const { data: inactiveCourses, isLoading: inactiveLoading } = useCourses({ status: "false" });
     console.log(`[ CoursesInfoCard ] [activeCourses]`, activeCourses)
     console.log(`[ CoursesInfoCard ] [inactiveCourses]`, inactiveCourses)
 

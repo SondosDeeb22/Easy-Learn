@@ -24,7 +24,12 @@ export class GetStudentsService {
     async getStudents(query: GetStudentsQueryDto): Promise<ServiceResult<FilterdStudent | FilteredStudentData | [] | null>> {
         const { studentId, courseId, semesterId, status, page, limit } = query;
 
-        const offset = (page - 1) * limit;
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
+
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
 
         // Calculate global counts for the dashboard cards
         const activeCount = await this.usersModel.count({ where: { role: Roles.STUDENT, status: Status.ACTIVE } });
@@ -50,8 +55,8 @@ export class GetStudentsService {
         // Case 2: both courseId and semesterId
         if (courseId && semesterId) {
             const academicRecords = await this.academicRecordsModel.findAndCountAll({
-                limit,
-                offset,
+                limit: limitOption,
+                offset: offsetOption,
                 where: { courseId, semesterId },
                 group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 // used group which remove duplicated objects with same studentId, so we have only one entry per user in .rows
@@ -97,8 +102,8 @@ export class GetStudentsService {
         // Case 3: only semesterId
         if (semesterId) {
             const academicRecords = await this.academicRecordsModel.findAndCountAll({
-                limit,
-                offset,
+                limit: limitOption,
+                offset: offsetOption,
                 where: { semesterId },
                 group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 include: [{
@@ -141,8 +146,8 @@ export class GetStudentsService {
         // Case 4: only courseId
         if (courseId) {
             const academicRecords = await this.academicRecordsModel.findAndCountAll({
-                limit,
-                offset,
+                limit: limitOption,
+                offset: offsetOption,
                 where: { courseId },
                 group: ['studentId', 'user.id', 'user.name', 'user.email', 'user.gender', 'user.birthDate', 'user.currentSemesterCredits', 'user.totalCredits', 'user.status'],
                 include: [{
@@ -190,8 +195,8 @@ export class GetStudentsService {
         }
 
         const { rows: studentsRows, count: totalRows } = await this.usersModel.findAndCountAll({
-            limit,
-            offset,
+            limit: limitOption,
+            offset: offsetOption,
             where: whereClause,
             attributes: ["id", "name", "email", "gender", "birthDate", "currentSemesterCredits", "totalCredits", "status"]
         });

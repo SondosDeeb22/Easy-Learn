@@ -4,7 +4,9 @@ import { useStudents } from '../../students/hooks/useStudents';
 
 // ==============================================================================
 const StudentsInfoCard: React.FC = () => {
-    const { data: studentsData, isLoading: isLoadingStudents } = useStudents({ page: 1, limit: 1 });
+    const { data: studentsData, isLoading: isLoadingStudents } = useStudents({});
+    console.log(`[ StudentsInfoCard ] [studentsData]`, studentsData)
+
 
     if (isLoadingStudents) {
         return (

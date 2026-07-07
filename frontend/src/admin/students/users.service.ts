@@ -6,9 +6,12 @@ import { StudentFilterParams, User, Student, Students } from "../students/users.
 //? Get students data according to filters
 // ==================================================================================================
 
-export const getFilteredStudents = async (params: { page: number; limit: number } & StudentFilterParams): Promise<Students> => {
+export const getFilteredStudents = async (params: { page?: number; limit?: number } & StudentFilterParams): Promise<Students> => {
     const { page, limit, ...filters } = params;
-    const response = await apiClient.get(`/api/users/students?page=${page}&limit=${limit}`, { params: { ...filters } });
+    const queryParams = new URLSearchParams();
+    if (page !== undefined) queryParams.append('page', String(page));
+    if (limit !== undefined) queryParams.append('limit', String(limit));
+    const response = await apiClient.get(`/api/users/students?${queryParams.toString()}`, { params: { ...filters } });
 
     return response.data.data;
 }

@@ -8,13 +8,13 @@ import { OfferedCoursesResult, AvailableCourses } from '../offeredCourses/offere
 // ==================================================================================================
 export const getOfferedCourses = async (
     semesterId: string | undefined,
-    page: number,
-    limit: number
+    page?: number,
+    limit?: number
 ): Promise<OfferedCoursesResult> => {
     const params = new URLSearchParams();
     if (semesterId) params.append('semesterId', semesterId);
-    params.append('page', String(page));
-    params.append('limit', String(limit));
+    if (page !== undefined) params.append('page', String(page));
+    if (limit !== undefined) params.append('limit', String(limit));
 
     const response = await apiClient.get(`/api/offered-courses/admin?${params.toString()}`);
     console.log('Response for GET /api/offered-courses/admin', response.data.data);
@@ -26,7 +26,7 @@ export const getOfferedCourses = async (
 //? Get Available courses(the ones we can add to offered courses) for admin (filterable by semester)
 // ==================================================================================================
 export const getAvailableCourses = async (semesterId: string): Promise<AvailableCourses> => {
-    const response = await apiClient.get(`/api/offered-courses/available-courses/${semesterId}?page=1&limit=100`);
+    const response = await apiClient.get(`/api/offered-courses/available-courses/${semesterId}`);
     return response.data.data;
 }
 

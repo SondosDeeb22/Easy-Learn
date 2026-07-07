@@ -6,9 +6,13 @@ import { OfferedCoursesWithCredits } from './offeredCourse.interface';
 //? Get offered courses
 //=====================================================
 
-export const getOfferedCoursesForStudent = async (studentId: string, page: number, limit: number): Promise<OfferedCoursesWithCredits> => {
-    const response = await apiClient.get(`/api/offered-courses?page=${page}&limit=${limit}&studentId=${studentId}`);
-    console.log(`this is response for /offered-courses?page=${page}&limit=${limit}`, response.data.data);
+export const getOfferedCoursesForStudent = async (studentId: string, page?: number, limit?: number): Promise<OfferedCoursesWithCredits> => {
+    const queryParams = new URLSearchParams();
+    if (studentId) queryParams.append('studentId', studentId);
+    if (page !== undefined) queryParams.append('page', String(page));
+    if (limit !== undefined) queryParams.append('limit', String(limit));
+    const response = await apiClient.get(`/api/offered-courses?${queryParams.toString()}`);
+    console.log(`this is response for /offered-courses`, response.data.data);
 
     const { remainingCredits, courses, totalRows } = response.data.data;
     if (!Array.isArray(courses)) {

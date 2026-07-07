@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 //? Fetch students data
 // =======================================================================
 
-export const useStudents = (params: { page: number; limit: number } & StudentFilterParams) => {
+export const useStudents = (params: { page?: number; limit?: number } & StudentFilterParams) => {
 
     return useQuery({
         queryKey: ['students', params],

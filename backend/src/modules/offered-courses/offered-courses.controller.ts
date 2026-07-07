@@ -36,8 +36,8 @@ export class OfferedCoursesController {
   @Get('/')
   @SetMetadata('roles', [Roles.STUDENT, Roles.ADMIN])
   @ApiOperation({ summary: 'Get Available Offered Courses', description: 'Fetch offered courses for the current semester that the authenticated student can enroll in based on remaining credit limits.' })
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 8, description: 'Number of items per page' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 8, description: 'Number of items per page' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Offered courses fetched successfully' })
   //error
@@ -46,8 +46,8 @@ export class OfferedCoursesController {
 
   async getOfferedCoursesForStudent(
     @Request() req,
-    @Query("page") page: number,
-    @Query("limit") limit: number,
+    @Query("page") page?: number,
+    @Query("limit") limit?: number,
     @Query('studentId') studentId?: string,
   ) {
 
@@ -66,8 +66,8 @@ export class OfferedCoursesController {
   // ==========================================================================================
   @Get('admin')
   @ApiOperation({ summary: 'Get Offered Courses for Admin', description: 'Fetch all offered courses, optionally filtered by semester, for administrative management.' })
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1 })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 10 })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10 })
   @ApiQuery({ name: 'semesterId', required: false, type: String, example: '20000008' })
   @HttpCode(200)
   @ApiOkResponse({ description: 'Offered courses fetched successfully' })
@@ -75,8 +75,8 @@ export class OfferedCoursesController {
 
   async getOfferedCoursesForAdmin(
     @Query('semesterId') semesterId: string | undefined,
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
   ) {
     return this.offeredCoursesService.getOfferedCoursesForAdmin(semesterId, page, limit);
   }
@@ -127,8 +127,8 @@ export class OfferedCoursesController {
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
   async getAvailableCoursesForSemester(
     @Param('semesterId') semesterId: string,
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
   ) {
     return this.offeredCoursesService.getAvailableCoursesForSemester(semesterId, page, limit);
   }

@@ -50,7 +50,7 @@ export class OfferedCoursesService {
     // =========================================================================
     //? fetch offered courses (available courses for registeration) according to the student remaining credits 
     // =========================================================================
-    async getOfferedCoursesForStudent(studentId: string, page: number, limit: number): Promise<ServiceResult<OfferedCourses>> {
+    async getOfferedCoursesForStudent(studentId: string, page?: number, limit?: number): Promise<ServiceResult<OfferedCourses>> {
 
         // get current semester
         const today = new Date();
@@ -89,10 +89,16 @@ export class OfferedCoursesService {
         }
 
         // --------------------------------------------------------------------
-        const offset = (page - 1) * limit;
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
+
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
+
         const offeredCourses = await this.offeredCoursesModel.findAndCountAll({
-            limit,
-            offset,
+            limit: limitOption,
+            offset: offsetOption,
             where: {
                 semesterId: currentSemester.id,
                 courseId: { [Op.notIn]: enrolledCourseIds.length ? enrolledCourseIds : [''] }
@@ -128,15 +134,20 @@ export class OfferedCoursesService {
     // =========================================================================
     //? fetch offered courses for admin management (filterable by semester)
     // =========================================================================
-    async getOfferedCoursesForAdmin(semesterId: string | undefined, page: number, limit: number): Promise<ServiceResult<AdminOfferedCourses>> {
-        const offset = (page - 1) * limit;
+    async getOfferedCoursesForAdmin(semesterId: string | undefined, page?: number, limit?: number): Promise<ServiceResult<AdminOfferedCourses>> {
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
+
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
 
         const whereClause: WhereOptions<OfferedCoursesModel> = {};
         if (semesterId) whereClause.semesterId = semesterId;
 
         const result = await this.offeredCoursesModel.findAndCountAll({
-            limit,
-            offset,
+            limit: limitOption,
+            offset: offsetOption,
             where: whereClause,
             include: [
                 {
@@ -169,13 +180,18 @@ export class OfferedCoursesService {
     // =========================================================================
     //? get courses NOT yet offered in a given semester (admin — for Add Offered Course dropdown)
     // =========================================================================
-    async getAvailableCoursesForSemester(semesterId: string, page: number, limit: number): Promise<ServiceResult<AvailableCourses>> {
-        const offset = (page - 1) * limit;
+    async getAvailableCoursesForSemester(semesterId: string, page?: number, limit?: number): Promise<ServiceResult<AvailableCourses>> {
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
+
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
 
         const result = await this.coursesModel.findAndCountAll({
             subQuery: false,// prevent nested query
-            limit,
-            offset,
+            limit: limitOption,
+            offset: offsetOption,
             where: {
                 '$offeredCourses.id$': null,  // get only courses with no matching offered-course (in left-join, null is placed on offered courses for courses with no match)
             },

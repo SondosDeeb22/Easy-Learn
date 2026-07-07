@@ -7,14 +7,16 @@ import { CurrentStudentCourses, WithdrawStudentCourse, AllCourses } from "../cou
 //=====================================================
 //? Get filtered courses
 //=====================================================
-export const getCourses = async (filters: CourseFilterParams, page: number, limit: number): Promise<AllCourses> => {
+export const getCourses = async (filters: CourseFilterParams, page?: number, limit?: number): Promise<AllCourses> => {
   const params = new URLSearchParams();
   if (filters.code) params.append('code', filters.code);
   if (filters.title) params.append('title', filters.title);
   if (filters.status) params.append('status', filters.status);
+  if (page !== undefined) params.append('page', String(page));
+  if (limit !== undefined) params.append('limit', String(limit));
 
   console.log(JSON.stringify(params))
-  const response = await apiClient.get(`/api/courses?${params.toString()}&page=${page}&limit=${limit}`);
+  const response = await apiClient.get(`/api/courses?${params.toString()}`);
   console.log(`Response for /api/courses`, response.data.data);
   return response.data.data;
 }

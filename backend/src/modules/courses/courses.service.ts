@@ -120,7 +120,7 @@ export class CoursesService {
     //? get courses with optional filters (code, name, status)
     // =========================================================================
 
-    async getCourses(query: GetCoursesQueryDto, page: number, limit: number): Promise<ServiceResult<AllCourses>> {
+    async getCourses(query: GetCoursesQueryDto, page?: number, limit?: number): Promise<ServiceResult<AllCourses>> {
         const { code, title, status } = query;
 
         let whereClause: WhereOptions<CoursesModel> = {};
@@ -139,11 +139,16 @@ export class CoursesService {
             whereClause.active = status === 'true';
         }
 
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
 
-        const offset = (page - 1) * limit;
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
+
         const result = await this.coursesModel.findAndCountAll({
-            limit,
-            offset,
+            limit: limitOption,
+            offset: offsetOption,
             where: whereClause,
             logging: console.log,
         });
@@ -174,13 +179,19 @@ export class CoursesService {
     // =========================================================================
     //? get all courses studnet is associated with
     // =========================================================================
-    async getAllStudentCourses(id: string, page: number, limit: number, semester?: string): Promise<ServiceResult<AllStudentCourses>> {
+    async getAllStudentCourses(id: string, page?: number, limit?: number, semester?: string): Promise<ServiceResult<AllStudentCourses>> {
         let customMessage: string;
 
-        const offset = (page - 1) * limit;
+        const parsedPage = page ? Number(page) : undefined;
+        const parsedLimit = limit ? Number(limit) : undefined;
+        const usePagination = parsedPage !== undefined && parsedLimit !== undefined && !isNaN(parsedPage) && !isNaN(parsedLimit) && parsedPage > 0 && parsedLimit > 0;
+
+        const limitOption = usePagination ? parsedLimit : undefined;
+        const offsetOption = usePagination ? (parsedPage - 1) * parsedLimit : undefined;
+
         const allStudentCourses = await this.academicRecordsModel.findAndCountAll({
-            offset,
-            limit,
+            offset: offsetOption,
+            limit: limitOption,
             where: {
                 studentId: id,
             },

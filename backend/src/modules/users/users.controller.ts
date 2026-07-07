@@ -23,6 +23,24 @@ import { StudentDataDto, UserCardDataDto, GetStudentsQueryDto } from './dtos/use
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
+  /// ============================================================
+  //? fetch the filtered students
+  // =============================================================
+  @Get('/students')
+  @ApiOperation({ summary: 'Get List of Filtered Students', description: 'Fetch a list of students with pagination. Filter by courseId, or semesterId.' })
+
+  @HttpCode(200)
+  @ApiOkResponse({ description: "User fetched successfully" })
+
+  //error
+  @ApiForbiddenResponse({ description: "Forbidden access" })
+  async getStudents(
+    @Query() query: GetStudentsQueryDto,
+  ) {
+    return this.usersService.getStudents(query);
+  }
+
+
   /// ================================================================
   //? fetch the user data
   // ===============================================================
@@ -59,24 +77,6 @@ export class UsersController {
     const result = await this.usersService.getCurrentStudentGPA(studentId, semesterId);
     if (!result) throw new NotFoundError("User was not found");
     return result;
-  }
-
-
-  /// ============================================================
-  //? fetch the filtered students
-  // =============================================================
-  @Get('/students')
-  @ApiOperation({ summary: 'Get List of Filtered Students', description: 'Fetch a list of students with pagination. Filter by courseId, or semesterId.' })
-
-  @HttpCode(200)
-  @ApiOkResponse({ description: "User fetched successfully" })
-
-  //error
-  @ApiForbiddenResponse({ description: "Forbidden access" })
-  async getStudents(
-    @Query() query: GetStudentsQueryDto,
-  ) {
-    return this.usersService.getStudents(query);
   }
 
 

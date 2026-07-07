@@ -10,7 +10,7 @@ import { getAllSemesters, getCurrentSemester } from '../../semesters/semesters.s
 // =======================================================================
 //? fetch offered courses 
 // =======================================================================
-export const useAdminOfferedCourses = (semesterId: string | undefined, page: number, limit: number) => {
+export const useAdminOfferedCourses = (semesterId: string | undefined, page?: number, limit?: number) => {
     return useQuery({
         queryKey: ['AdminOfferedCourses', semesterId, page, limit],
         queryFn: () => getOfferedCourses(semesterId, page, limit),

@@ -89,8 +89,8 @@ export class CoursesController {
   @Get()
   @ApiOperation({ summary: 'Get Filtered Courses', description: 'Fetch a list of courses. Filter by code, name, or status.' })
   @HttpCode(200)
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 5, description: 'Number of items per page' })
 
   @ApiQuery({ name: 'code', required: false, type: String, example: 'CSE101', description: 'Filter by course code' })
   @ApiQuery({ name: 'title', required: false, type: String, example: 'Introduction to Computer Science', description: 'Filter by course title' })
@@ -101,8 +101,8 @@ export class CoursesController {
   @ApiForbiddenResponse({ description: 'You are not authorized to access' })
   async getCourses(
     @Query() query: GetCoursesQueryDto,
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
   ) {
     return this.coursesService.getCourses(query, page, limit);
   }
@@ -114,8 +114,8 @@ export class CoursesController {
   @Get("student/all")
   @SetMetadata('roles', [Roles.STUDENT])
   @ApiOperation({ summary: 'Get Student All Registered Courses', description: 'Retrieve history of all courses the authenticated student is or has been registered in.' })
-  @ApiQuery({ name: 'page', required: true, type: Number, example: 1, description: 'Page number for pagination' })
-  @ApiQuery({ name: 'limit', required: true, type: Number, example: 5, description: 'Number of items per page' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number for pagination' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 5, description: 'Number of items per page' })
   @ApiQuery({
     name: 'semester',
     required: false,
@@ -130,8 +130,8 @@ export class CoursesController {
 
   async getAllStudentCourses(
     @Request() req,
-    @Query("page") page: number,
-    @Query("limit") limit: number,
+    @Query("page") page?: number,
+    @Query("limit") limit?: number,
     @Query("semester") semester?: string,
   ) {
     console.log(req.user);
