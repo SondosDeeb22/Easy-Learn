@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 import { login } from './redux/actions/authAction';
 import { startLoading, stopLoading, setError, clearError, clearSpecificError } from './redux/slices/authSlice';
-
+import DemoCredentialsCard from './shared/components/DemoCredentialsCard';
 
 
 // ==============================================
@@ -246,7 +246,9 @@ export default function Login() {
 
           </form>
 
-        </div>{/* end .login-left-inner */}
+          <DemoCredentialsCard />
+
+        </div>
       </section>
 
       {/* ===================== RIGHT PANEL ===================== */}
