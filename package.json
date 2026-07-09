@@ -4,7 +4,11 @@
     "scripts": {
         "predev": "npx kill-port 3000 && npm run db:reset",
         "dev": "dotenv -e .env -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:localhost:3000 --timeout 60000 --interval 1000 && npm run dev --prefix frontend\"",
-        "db:reset": "npm run db:reset --prefix backend"
+        "dev:docker": "dotenv -e .env.docker -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:localhost:3000 --timeout 60000 --interval 1000 && npm run dev --prefix frontend\"",
+        "dev:local": "dotenv -e .env.local -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:localhost:3000 --timeout 60000 --interval 1000 && npm run dev --prefix frontend\"",
+        "dev:prod": "dotenv -e .env.production -- concurrently \"npm run start:dev --prefix backend\" \"wait-on tcp:localhost:3000 --timeout 60000 --interval 1000 && npm run dev --prefix frontend\"",
+        "db:reset": "npm run db:reset --prefix backend",
+        "start": "docker compose up --build"
     },
     "devDependencies": {
         "concurrently": "^9.2.1",

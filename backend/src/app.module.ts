@@ -31,7 +31,14 @@ import { SeedService } from './seeders/seed.service';
   providers: [AppService, SeedService],
 
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      envFilePath:
+        process.env.NODE_ENV === "production"
+          ? ".env.production"
+          : ".env.local"
+
+      , isGlobal: true
+    }),
     SequelizeModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => getSequelizeConfig(configService)
