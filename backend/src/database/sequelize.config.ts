@@ -13,7 +13,7 @@ export const getSequelizeConfig = (configService: ConfigService): SequelizeModul
         host: configService.get<string>('DB_HOST', 'localhost'),
         port: configService.get<number>('DB_PORT', 5432),
         username: configService.get<string>('DB_USERNAME', 'postgres'),
-        password: configService.get<string>('DB_PASSWORD', 'database123'),
+        password: configService.get<string>('DB_PASSWORD', '123'),
         database: configService.get<string>('DB_DATABASE', 'easylearn'),
         dialectOptions: configService.get<string>('NODE_ENV') === 'production' ? {
             ssl: {

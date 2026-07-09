@@ -12,7 +12,8 @@ import autoprefixer from 'autoprefixer'
 export default defineConfig(({ mode }) => {
 
   // Load env variables 
-  const env = loadEnv(mode, '.');
+  // const env = loadEnv(mode, '.');
+  console.log(`[vite.conifg] env.vite_backend_api_url: ${process.env.VITE_BACKEND_API_URL}`)
 
   return {
     plugins: [react()],
@@ -27,21 +28,12 @@ export default defineConfig(({ mode }) => {
 
 
     server: {
-      port: Number(env.VITE_FRONTEND_PORT) || 3001,
+      port: Number(process.env.VITE_FRONTEND_PORT),
       allowedHosts: true,
 
       proxy: {
-        // Proxy all endpoints directly to backend
-        // "/auth": {
-        //   target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
-        //   changeOrigin: true,
-        // },
-        // "/courses": {
-        //   target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
-        //   changeOrigin: true,
-        // }
         "/api": {
-          target: env.VITE_BACKEND_API_URL || "http://localhost:3000",
+          target: process.env.VITE_BACKEND_API_URL,
           changeOrigin: true,
         }
       }

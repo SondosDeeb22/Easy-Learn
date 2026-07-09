@@ -1,0 +1,109 @@
+services:
+  # -----------------------------------------------------------
+  # Postgres Database
+  # -----------------------------------------------------------
+  postgres:
+    image: postgres:17 ## postgres offical image
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+
+    #expose mysql to the machine
+    ports:
+      - "5431:5432" # hostMachine(myLaptop) : container(DockerNetwork - internal)
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+    # check if db is ready
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+
+  # -----------------------------------------------------------
+  # Redis
+  # -----------------------------------------------------------
+  redis:
+
+    image: redis:7.4
+
+    container_name: redis
+
+    ports:
+
+      - "6379:6379"
+
+    restart: unless-stopped
+
+    volumes:
+
+      - redis_data:/data
+
+
+  # -----------------------------------------------------------
+  # Backend (NestJS)
+  # -----------------------------------------------------------
+  backend:
+
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+
+    env_file:
+      - .env
+    environment:
+      IS_DOCKER: "true"
+      BACKEND_SERVER_PORT: ${BACKEND_PORT}
+      BACKEND_SERVER_HOST: 0.0.0.0
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${DB_USERNAME}
+      DATABASE_PASSWORD: ${DB_PASSWORD}
+      DATABASE_NAME: ${DB_DATABASE}
+      TZ: Europe/Istanbul
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+
+  # -----------------------------------------------------------
+  # Frontend (Vite + React)
+  # -----------------------------------------------------------
+  frontend:
+    env_file:
+      - .env
+
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    ports:
+      - "${FRONTEND_PORT}:${VITE_FRONTEND_PORT}" # localComputerPort:vitePort
+
+    environment:
+      API_TARGET: http://backend:${BACKEND_PORT}
+
+    depends_on:
+      - backend
+
+# -----------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------
+volumes:
+  postgres_data:
+  redis_data:
