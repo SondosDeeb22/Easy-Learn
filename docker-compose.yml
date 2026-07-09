@@ -17,15 +17,13 @@ services:
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    
+
     # check if db is ready
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
       interval: 5s
       timeout: 5s
       retries: 10
-
-
 
   # -----------------------------------------------------------
   # Redis
@@ -46,7 +44,6 @@ services:
 
       - redis_data:/data
 
-
   # -----------------------------------------------------------
   # Backend (NestJS)
   # -----------------------------------------------------------
@@ -61,7 +58,7 @@ services:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
 
     env_file:
-      - .env
+      - .env.docker
     environment:
       IS_DOCKER: "true"
       BACKEND_SERVER_PORT: ${BACKEND_PORT}
@@ -77,14 +74,12 @@ services:
       postgres:
         condition: service_healthy
 
-
-
   # -----------------------------------------------------------
   # Frontend (Vite + React)
   # -----------------------------------------------------------
   frontend:
     env_file:
-      - .env
+      - .env.docker
 
     build:
       context: ./frontend
