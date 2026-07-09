@@ -189,6 +189,7 @@ export class CoursesController {
     @Param('courseId') courseId: string,
     @Request() req
   ) {
+    console.log("removing course for student :", studentId)
     const result = await this.coursesService.withdrawStudentCourse(studentId, courseId);
     return result;
   }

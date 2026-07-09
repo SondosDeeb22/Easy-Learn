@@ -87,7 +87,7 @@ export class GradesService {
         const hasUngradedCourses = currentSemesterCourses.some(
             course => course.letterGrade === null,
         );
-        console.log(`(backend/grades.service)\nStudent has ungraded courses: `, hasUngradedCourses);
+        console.log(`[backend/grades.service] Student has ungraded courses: `, hasUngradedCourses);
 
         // stop the process of calcuating the GPA if a current course was not graded yet
         if (hasUngradedCourses) {
@@ -144,8 +144,9 @@ export class GradesService {
             gpaRecord.totalCredits = semesterCredits;
             await gpaRecord.save();
         } else {
+            console.log(`Inserting new GPA Record for student: ${studentId} in semester: ${semesterId}`);
             await this.gpaRecordsModel.create({
-                id: uuidv4().substring(0, 8),
+                id: uuidv4(),
                 studentId,
                 semesterId,
                 gpa,
@@ -173,7 +174,7 @@ export class GradesService {
             return total + item.totalCredits;
         }, 0);
 
-        //calculate GPA
+        //calculate CGPA
         const cgpa = Number((cumulativeQualityPoints / cumulativeCredits).toFixed(2));
         console.log(`(backend/grades.service)\nCalculated CGPA: `, cgpa);
 

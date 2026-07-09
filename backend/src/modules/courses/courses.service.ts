@@ -21,16 +21,15 @@ import { NotFoundError } from "../../common/errors";
 // dtos
 import { GetCoursesQueryDto, CreateCourseDto, UpdateCourseDto } from './dtos/courses.dto';
 
-
-// enums
-import { Roles } from "../users/enums/users.enum";
-
 // helper
 import { CrudHelper } from "../../common/helpers/crud.helper";
 
 // services
 import { CourseEnrollmentService } from './services/CourseEnrollment.service';
 import { GetCurrentStudentCoursesService } from './services/GetCurrentStudentCourses.service';
+
+import { GradeProducer } from "../background-jobs/producers/grade.producer";
+import { SemestersService } from "../semesters/semesters.service";
 // =========================================================================
 @Injectable()
 export class CoursesService {
@@ -51,6 +50,9 @@ export class CoursesService {
         private readonly crudHelper: CrudHelper,
         private readonly courseEnrollment: CourseEnrollmentService,
         private readonly getCurrentStudentCoursesService: GetCurrentStudentCoursesService,
+
+        private readonly semestersService: SemestersService,
+        private readonly gradeProducer: GradeProducer,
     ) { }
 
     // =========================================================================
@@ -273,10 +275,34 @@ export class CoursesService {
         if (!course) throw new NotFoundError("Course not found");
 
         // remove the academic record
-        await this.crudHelper.remove(this.academicRecordsModel, {
+        const result = await this.crudHelper.remove(this.academicRecordsModel, {
             studentId: studentId,
             courseId: courseId
         });
+
+        // ----------------------------------------------------------------------------------
+        // calculate the student's GPA and CGPA if the removed course was the only ungraded course
+
+
+        const semester = await this.semestersService.getCurrentSemester();
+        const semesterId = semester.data?.id;
+
+        console.log(`the result of withdrawing course ${courseId} for student ${studentId} is ${result}`)
+        console.log(`[backend/courses.service.ts] Triggering grade calculation for student ${studentId} in semester ${semesterId} for course ${courseId}`)
+        // trigger grade calculation for that semester
+        if (result && studentId && semesterId) {
+            console.log("Before adding job");
+
+            await this.gradeProducer.updateGPAAndCGPAJob({
+                studentId,
+                semesterId,
+            });
+
+            console.log("After adding job");
+        }
+        // --------------------------------------------------------------
+
+
 
         // deduct course credits from student's totals
         await this.crudHelper.update(this.usersModel, {

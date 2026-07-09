@@ -22,7 +22,9 @@ export class GradeProducer {
         studentId: string;
         semesterId: string;
     }) {
-        await this.queue.add('update-gpa-and-cgpa', data, { // here we're storing data for redis
+        console.log("[Producer] Before adding job");
+
+        const job = await this.queue.add('update-gpa-and-cgpa', data, { // here we're storing data for redis
             attempts: 3,
             backoff: {
                 type: 'exponential',
@@ -31,5 +33,7 @@ export class GradeProducer {
             removeOnComplete: true,
             removeOnFail: false,
         });
+        console.log("[Producer] job added: ", job.id);
+
     }
 }
