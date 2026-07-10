@@ -25,7 +25,6 @@ import ErrorState from "../../../shared/components/ErrorState";
 import { useUpdateStudentGrade } from '../hooks/useUpdateStudentGrade';
 import { useWithdrawStudentCourse } from '../hooks/useWithdrawStudentCourse';
 
-
 import { colors } from '../../../styles/colorPalette'
 // ====================================================
 
@@ -125,12 +124,10 @@ const CurrentStudentCoursesTable: React.FC<CurrentStudentCourses> = ({
             {
                 onSuccess: () => {
                     setIsWithdrawModalOpen(false);
-
                     api.success({
                         title: "Student withdraw successfully",
                         placement: "topRight",
                     });
-
                 },
                 onError: (error: any) => {
                     setWithdrawError(error?.message || "Failed to withdraw course");

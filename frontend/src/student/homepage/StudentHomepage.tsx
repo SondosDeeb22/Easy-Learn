@@ -40,6 +40,8 @@ export default function StudentHomepage() {
         queryClient.invalidateQueries({
             queryKey: ['currentStudentCourses'],
         });
+        queryClient.invalidateQueries({ queryKey: ['studentGPA'] });
+        queryClient.invalidateQueries({ queryKey: ['studentData'] });
     }, []);
 
     // show loading

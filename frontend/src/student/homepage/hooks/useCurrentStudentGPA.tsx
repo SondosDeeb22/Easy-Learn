@@ -15,6 +15,6 @@ export const useCurrentStudentGPA = (
         queryKey: ['studentGPA', studentId, semesterId],
         queryFn: () => getCurrentStudentGPA(studentId!, semesterId!),
         enabled: !!studentId && !!semesterId,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 0, // always refetch when invalidated
     });
 };

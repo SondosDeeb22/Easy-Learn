@@ -11,13 +11,16 @@ export const useWithdrawStudentCourse = () => {
     return useMutation({
         mutationFn: withdrawStudentFromCourse,
         onSuccess: () => {
-            // Invalidate both the current courses query and the student list/detail query
+            // Invalidate courses table and offered courses
             queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
             queryClient.invalidateQueries({ queryKey: ['offeredCourses'] });
+            // Invalidate GPA (all semesters for any affected student)
+            queryClient.invalidateQueries({ queryKey: ['studentGPA'] });
+            // Invalidate student data (credits, cgpa, etc.)
+            queryClient.invalidateQueries({ queryKey: ['studentData'] });
         },
         onError: (error: Error) => {
             console.log("Error [Withdraw Student's course]:", error);
-            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
         },
     });
 }; 

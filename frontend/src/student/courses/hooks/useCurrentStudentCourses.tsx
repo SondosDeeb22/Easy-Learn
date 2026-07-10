@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 
 // =======================================================================
 //? fetch current semester courses
-// api: /courses/current 
 // ==============================================================
 export const useCurrentStudentCourses = () => {
     return useQuery({

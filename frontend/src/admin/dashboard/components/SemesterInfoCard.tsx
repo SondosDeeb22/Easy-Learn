@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CalendarOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { useCurrentSemester } from '../../offeredCourses/hooks/offeredCourses.hook';
+import { useCurrentSemester } from '../../semesters/semesters.hook';
 import dayjs from 'dayjs';
 
 // ==============================================================================

@@ -28,19 +28,6 @@ export const useAdminAvailableCourses = (semesterId: string | undefined) => {
         enabled: !!semesterId,
     });
 };
-
-
-// =======================================================================
-//? fetch current active semester
-// =======================================================================
-export const useCurrentSemester = () => {
-    return useQuery({
-        queryKey: ['CurrentSemester'],
-        queryFn: getCurrentSemester,
-        staleTime: 10 * 60 * 1000,
-    });
-};
-
 // =======================================================================
 //? create offered course
 // =======================================================================

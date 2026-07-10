@@ -3,8 +3,8 @@ import { Button, ConfigProvider, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 // hooks
-import { useAdminOfferedCourses, useCurrentSemester } from '../offeredCourses/hooks/offeredCourses.hook';
-
+import { useAdminOfferedCourses } from '../offeredCourses/hooks/offeredCourses.hook';
+import { useCurrentSemester } from '../semesters/semesters.hook';
 // components
 import OfferedCoursesFilterPanel from '../offeredCourses/components/OfferedCoursesFilterPanel';
 import OfferedCoursesTable from '../offeredCourses/components/OfferedCoursesTable';

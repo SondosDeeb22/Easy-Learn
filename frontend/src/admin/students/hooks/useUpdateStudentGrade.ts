@@ -11,13 +11,16 @@ export const useUpdateStudentGrade = () => {
 
     return useMutation({
         mutationFn: updateStudentGrade,
-        onSuccess: () => {
-            // Invalidate both the current courses query and the student list/detail query
+        onSuccess: (_data, variables) => {
+            // Invalidate courses table
             queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
+            // Invalidate GPA (all semesters for any student that may be affected)
+            queryClient.invalidateQueries({ queryKey: ['studentGPA'] });
+            // Invalidate student data (credits, cgpa, etc.)
+            queryClient.invalidateQueries({ queryKey: ['studentData'] });
         },
         onError: (error: Error) => {
             console.log("error in updating grade :", error);
-            queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
         },
     });
 };

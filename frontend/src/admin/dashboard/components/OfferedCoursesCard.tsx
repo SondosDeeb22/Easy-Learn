@@ -2,7 +2,7 @@ import React from 'react';
 import { BookOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 // hooks
-import { useCurrentSemester } from '../../offeredCourses/hooks/offeredCourses.hook';
+import { useCurrentSemester } from '../../semesters/semesters.hook';
 import { useAdminOfferedCourses } from '../../offeredCourses/hooks/offeredCourses.hook';
 // ==============================================================================
 const OfferedCoursesInfoCard: React.FC = () => {

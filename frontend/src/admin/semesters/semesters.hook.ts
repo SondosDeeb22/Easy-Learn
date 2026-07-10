@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 // api
-import { getAllSemesters, createSemester, updateSemester } from './semesters.service';
+import { getAllSemesters, createSemester, updateSemester, getCurrentSemester } from './semesters.service';
 
 import { Semester, GetSemestersParam } from './semesters.interface';
 
@@ -12,6 +12,16 @@ export const useAllSemesters = () => {
     return useQuery({
         queryKey: ['AllSemesters'],
         queryFn: () => getAllSemesters(),
+        staleTime: 10 * 60 * 1000,
+    });
+};
+// =======================================================================
+//? fetch current active semester
+// =======================================================================
+export const useCurrentSemester = () => {
+    return useQuery({
+        queryKey: ['CurrentSemester'],
+        queryFn: getCurrentSemester,
         staleTime: 10 * 60 * 1000,
     });
 };
