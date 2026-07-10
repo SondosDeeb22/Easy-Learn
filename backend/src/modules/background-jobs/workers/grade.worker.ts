@@ -25,6 +25,22 @@ export class GradeWorker {
                 connection: redisConnection, // redis connection data
             },
         );
+
+        this.worker.on("ready", () => {
+            console.log("Grade worker ready");
+        });
+
+        this.worker.on('error', (err: Error) => {
+            console.error('Error in grade worker:', err);
+        });
+
+        this.worker.on('closed', () => {
+            console.log('Grade worker closed');
+        });
+
+
+
+
     }
 
     // ----------------------------------------------------

@@ -4,4 +4,12 @@ export const redisConnection = {
 
     port: Number(process.env.REDIS_PORT),
 
+    password: process.env.REDIS_PASSWORD || undefined,
+
 };
+console.log(`
+Redis connection:
+host: ${redisConnection.host},
+port: ${redisConnection.port},
+password: ${redisConnection.password ? "FOUND" : "MISSING"},
+`);

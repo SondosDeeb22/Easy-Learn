@@ -33,9 +33,9 @@ import { SeedService } from './seeders/seed.service';
   imports: [
     ConfigModule.forRoot({
       envFilePath:
-        process.env.NODE_ENV === "production"
-          ? ".env.production"
-          : ".env.local"
+        process.env.NODE_ENV === "development"
+          ? ".env.local"
+          : undefined
 
       , isGlobal: true
     }),
