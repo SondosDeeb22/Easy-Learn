@@ -27,11 +27,15 @@ RUN npm run build
 # ==========================
 FROM nginx:alpine
 
+# Default Nginx template variables
+ENV API_TARGET=http://backend:3000
+ENV NGINX_ENVSUBST_FILTER=API_TARGET
+
 # Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy our nginx configuration
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy our nginx template configuration
+COPY nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
 
 # Copy the built React application
 COPY --from=builder /app/dist /usr/share/nginx/html
