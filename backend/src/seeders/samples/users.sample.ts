@@ -81,7 +81,7 @@ export const sampleUsers: User[] = [
         email: 'lina@gmail.com',
         gender: Gender.FEMALE,
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
-        currentSemesterCredits: 15,
+        currentSemesterCredits: 7,
         totalCredits: 30,
         cgpa: 4.05,
         status: Status.ACTIVE

@@ -87,6 +87,26 @@ export default function DemoCredentialsCard() {
 
 
             {/* Student Section */}
+
+            {/* Student 1 */}
+
+            <div>
+              <div style={{ marginBottom: '8px' }}>
+                <Tag color={colors.burgundy}>Student</Tag>
+              </div>
+              <Space direction="vertical" size={2} style={{ width: '100%', paddingLeft: '4px' }}>
+                <Space>
+                  <Text type="secondary">ID:</Text>
+                  <Text copyable={{ icon: [<CopyOutlined style={{ color: colors.burgundy }} />] }} style={{ fontFamily: 'monospace' }}>20261144</Text>
+                </Space>
+                <Space>
+                  <Text type="secondary">Password:</Text>
+                  <Text copyable={{ icon: [<CopyOutlined style={{ color: colors.burgundy }} />] }} style={{ fontFamily: 'monospace' }}>123</Text>
+                </Space>
+              </Space>
+            </div>
+
+            {/* Student 2 */}
             <div>
               <div style={{ marginBottom: '8px' }}>
                 <Tag color={colors.burgundy}>Student</Tag>
@@ -102,6 +122,7 @@ export default function DemoCredentialsCard() {
                 </Space>
               </Space>
             </div>
+
           </div>
         </Card>
       </div>
