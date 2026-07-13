@@ -18,6 +18,8 @@ export const useWithdrawStudentCourse = () => {
             queryClient.invalidateQueries({ queryKey: ['studentGPA'] });
             // Invalidate student data (credits, cgpa, etc.)
             queryClient.invalidateQueries({ queryKey: ['studentData'] });
+
+            queryClient.invalidateQueries({ queryKey: ['studentDetails'] });
         },
         onError: (error: Error) => {
             console.log("Error [Withdraw Student's course]:", error);

@@ -145,7 +145,7 @@ const UpdateCourseModal: React.FC<UpdateCourseModalProps> = ({ open, course, onC
                     </Form.Item>
 
                     {error && (
-                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                        <Alert title={error} type="error" showIcon style={{ marginTop: 16 }} />
                     )}
                 </Form>
             </Modal>

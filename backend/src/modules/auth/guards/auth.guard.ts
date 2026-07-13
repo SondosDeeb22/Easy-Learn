@@ -1,7 +1,7 @@
 // ===========================================================
 //?importing
 // ===========================================================
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
 import { Reflector } from '@nestjs/core';
@@ -52,7 +52,7 @@ export class RolesGuard implements CanActivate {
     const token = request.cookies['login-token'];
     console.log(`this is cookie : ${token}`)
     if (!token) {
-      return false;
+      throw new UnauthorizedException('No authentication token provided');
     }
 
 
@@ -72,17 +72,24 @@ export class RolesGuard implements CanActivate {
       const userRole = payload.role;
       if (!userRole) {
         this.authHelper.removeCookie(response, 'login-token');
-        return false;
+        throw new UnauthorizedException('Token payload is missing role');
       }
 
       // check if user role is authorized to access the route -----------------------------------
-      const result: boolean = requiredRoles.some(role => role == userRole);
-      return result;
+      const isAuthorized: boolean = requiredRoles.some(role => role == userRole);
+
+      if (!isAuthorized) {
+        throw new ForbiddenException('Insufficient permissions for this resource');
+      }
+      return true;
 
       // ==========================================
     } catch (error) {
+      if (error instanceof UnauthorizedException || error instanceof ForbiddenException) {
+        throw error;
+      }
       this.authHelper.removeCookie(response, 'login-token');
-      return false;
+      throw new UnauthorizedException('Invalid or expired authentication token');
     }
 
   }

@@ -42,7 +42,7 @@ export const sampleUsers: User[] = [
         email: 'tiana@gmail.com',
         gender: Gender.FEMALE,
         password: '$2b$08$aOc.CwK/vqj/R/QHoaWxJ.KkIry58pOShrI8T6vaKX0wqhQOG.V/C',
-        currentSemesterCredits: 5,
+        currentSemesterCredits: 16,
         totalCredits: 75,
         cgpa: 2.84,
         status: Status.PASSIVE

@@ -121,7 +121,7 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({ open, onClose }) => {
                     </Form.Item>
 
                     {error && (
-                        <Alert message={error} type="error" showIcon style={{ marginTop: 16 }} />
+                        <Alert title={error} type="error" showIcon style={{ marginTop: 16 }} />
                     )}
                 </Form>
             </Modal>

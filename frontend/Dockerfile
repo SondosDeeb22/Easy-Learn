@@ -1,27 +1,41 @@
-# -----------------------------------------------------------
-# Build context: webApp/ directory
-#   docker build -f frontend/Dockerfile .
-# -----------------------------------------------------------
+# ==========================
+# Stage 1 - Build
+# ==========================
+FROM node:22-alpine AS builder
 
-FROM node:22.19.0
-WORKDIR /app/frontend
+WORKDIR /app
 
-# -----------------------------------------------------------
+# the varaibles are used from railways varibales 
+ARG VITE_BACKEND_API_URL 
+ENV VITE_BACKEND_API_URL=$VITE_BACKEND_API_URL
 
-COPY package.json ./
+# Copy package files first (better Docker caching)
+COPY package*.json ./
 
 RUN npm install
 
-# -----------------------------------------------------------
-
-# install versions in package-lock.json
-RUN npm ci
-
+# Copy the rest of the project
 COPY . .
 
-# -----------------------------------------------------------
 
-EXPOSE 5173
-# -----------------------------------------------------------
+# Build the React application
+RUN npm run build
 
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+# ==========================
+# Stage 2 - Production
+# ==========================
+FROM nginx:alpine
+
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy our nginx configuration
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy the built React application
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

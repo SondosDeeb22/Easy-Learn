@@ -15,6 +15,8 @@ export const useEnrollStudentInCourse = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['CurrentStudentCoursesForAdmin'] });
             queryClient.invalidateQueries({ queryKey: ['offeredCourses'] });
+
+            queryClient.invalidateQueries({ queryKey: ['studentDetails'] });
         },
         onError: (error: Error) => {
             console.log("Error [Enroll Student in course - hook]:", error);

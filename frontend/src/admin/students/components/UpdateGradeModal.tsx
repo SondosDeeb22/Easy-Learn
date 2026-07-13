@@ -101,7 +101,7 @@ const UpdateGradeModal: React.FC<Props> = ({
                 </div>
 
                 {error && (
-                    <Alert message={error} type="error" showIcon style={{ marginTop: 8 }} />
+                    <Alert title={error} type="error" showIcon style={{ marginTop: 8 }} />
                 )}
             </div>
         </Modal>

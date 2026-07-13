@@ -11,5 +11,4 @@ console.log(`
 Redis connection:
 host: ${redisConnection.host},
 port: ${redisConnection.port},
-password: ${redisConnection.password ? "FOUND" : "MISSING"},
 `);

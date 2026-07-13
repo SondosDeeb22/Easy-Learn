@@ -66,9 +66,9 @@ const EnrollStudentInCourseModal: React.FC<Props> = ({ open, studentId, loading,
                     onChange={(value) => setCourseId(value)}
                     allowClear
                 />
-                
+
                 {error && (
-                    <Alert message={error} type="error" showIcon style={{ marginTop: 8 }} />
+                    <Alert title={error} type="error" showIcon style={{ marginTop: 8 }} />
                 )}
             </div>
         </Modal>

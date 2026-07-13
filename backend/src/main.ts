@@ -20,8 +20,13 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Trust Railway's proxy so Express correctly detects HTTPS requests
+  // app.set() is Express-specific; access the underlying Express instance to call it
+
+  app.getHttpAdapter().getInstance().set('trust proxy', 1);
+
   app.enableCors({
-    origin: true,
+    origin: process.env.FRONTEND_URL ?? 'https://easy-learn.up.railway.app',
     credentials: true,
   });
 
