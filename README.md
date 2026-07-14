@@ -157,3 +157,10 @@ Future possible improvements include:
 The API documentation is available on SwaggerHub.
 
 https://app.swaggerhub.com/apis/punica-543/apis-documentation-for-easylearn-web-app/1.0
+
+
+## Live Web Application 
+
+I deployed the web application on Railway. you can access it through the following link:
+
+https://easy-learn.up.railway.app/
