@@ -7,6 +7,8 @@ WORKDIR /app
 
 # the varaibles are used from railways varibales 
 ARG VITE_BACKEND_API_URL 
+ARG BACKEND_PORT 
+
 ENV VITE_BACKEND_API_URL=$VITE_BACKEND_API_URL
 
 # Copy package files first (better Docker caching)
@@ -28,7 +30,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Default Nginx template variables
-ENV API_TARGET=http://backend:3000
+ENV API_TARGET=http://backend:${BACKEND_PORT}
 ENV NGINX_ENVSUBST_FILTER=API_TARGET
 
 # Remove default nginx website
